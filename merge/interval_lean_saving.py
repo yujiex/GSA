@@ -364,6 +364,30 @@ def process_index_dygraph(measure_type, dirname, outname):
     with open(os.getcwd() + '/plot_FY_weather/html/single_building/interval/{1}/{0}.html'.format(measure_type, outname), 'w+') as wt:
         wt.write(''.join(result))
 
+def hourly_trend():
+    # hourly trend dygraph 
+    files = glob.glob(os.getcwd() + '/plot_interval_hour/plot_interval_hour/*.html')
+    for f in files:
+        shutil.copyfile(f,
+                        f.replace('/plot_interval_hour/plot_interval_hour/',
+                                  '/plot_FY_weather/html/single_building/interval/trend_hour/'))
+    process_index_dygraph('gas', 'plot_interval_hour', 'trend_hour')
+    process_index_dygraph('electric', 'plot_interval_hour', 'trend_hour')
+    return
+
+def cmp_euas():
+    for measure_type in ['electric', 'gas']:
+        uo.dir2html(os.getcwd() + \
+                    '/input/FY/interval/ion_0627/cmp_euas/',
+                    '*_{0}.png'.format(measure_type), 
+                    'ION vs EUAS: {0}'.format(measure_type.title()),
+                    '{0}_cmp.html'.format(measure_type), 
+                    templatepath='/css_template/01-bootstrap-kickoff-template/index.html',
+                    assetdir='../', style='width:45%',
+                    withname=False)
+    files = glob.glob(os.getcwd() + '/input/FY/interval/ion_0627/cmp_euas/*')
+    for f in files:
+        shutil.copyfile(f, f.replace('/input/FY/interval/ion_0627/', '/plot_FY_weather/html/single_building/interval/'))
 
 def main():
     # read_interval_building('NM0050ZZ')
@@ -387,11 +411,9 @@ def main():
     #     shutil.copyfile(f, f.replace('/plot_interval/plot_interval/', '/plot_FY_weather/html/single_building/interval/trend/'))
     # process_index_dygraph('gas', 'plot_interval', 'trend')
     # process_index_dygraph('electric', 'plot_interval', 'trend')
-    files = glob.glob(os.getcwd() + '/plot_interval_hour/plot_interval_hour/*.html')
-    for f in files:
-        shutil.copyfile(f, f.replace('/plot_interval_hour/plot_interval_hour/', '/plot_FY_weather/html/single_building/interval/trend_hour/'))
-    process_index_dygraph('gas', 'plot_interval_hour', 'trend_hour')
-    process_index_dygraph('electric', 'plot_interval_hour', 'trend_hour')
+    # hourly_trend()
+
+    cmp_euas()
     return
     
 main()

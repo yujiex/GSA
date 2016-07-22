@@ -24,17 +24,33 @@ def view_building(b, col):
     df = pd.read_sql('SELECT DISTINCT Building_Number, Fiscal_Year, Fiscal_Month, year, month, [Gross_Sq.Ft], [Region_No.], Cat, [{1}] FROM EUAS_monthly WHERE Building_Number = \'{0}\''.format(b, col), conn)
     return df
 
-def dir2html_wtemplate(dirname, suffix, title, outfile):
-    files = glob.glob(dirname + suffix)
-    print len(files)
+def create_header(title, templatepath=None, assetdir=None):
     lines = []
-    lines.append('<!DOCTYPE html>')
-    lines.append('<html>')
-    lines.append('<head>')
-    lines.append('<title>{0}</title>'.format(title))
-    lines.append('<h1>{0}</h1>'.format(title))
+    if templatepath is None:
+        lines.append('<!DOCTYPE html>')
+        lines.append('<html>')
+        lines.append('<head>')
+        lines.append('<title>{0}</title>'.format(title))
+        lines.append('<h1>{0}</h1>'.format(title))
+    else:
+        with open (os.getcwd() + templatepath, 'r') as rd:
+            temp = rd.readlines()
+            head_end_idx = (map(lambda x: '</head>' in x, temp)).index(True)
+            lines = temp[:head_end_idx]
+        for i in range(len(lines)):
+            lines[i] = lines[i].replace("<title>Page title - Sitename</title>", "<title>{0}</title>".format(title))
+            lines[i] = lines[i].replace("assets/", "{0}assets/".format(assetdir))
+    return lines
+
+def dir2html(dirname, suffix, title, outfile, templatepath = None, assetdir=None, style='width:700px;height:auto;', withname=True):
+    files = glob.glob(dirname + suffix)
+    lines = create_header(title, templatepath, assetdir)
     if '.png' in suffix:
-        template = '<h2>name</h2>\n<img src="file" alt="No Data" style="width:700px;height:auto;">'
+        if withname:
+            template = '<h2>name</h2>\n<img src="file" alt="No Data" style="{0}">'.format(style)
+        else:
+            template = '<img src="file" alt="No Data" style="{0}">'.format(style)
+    lines.append('<h1>{0}</h1>'.format(title))
     for f in files:
         relative = f[- len(f) + len(dirname):]
         filename = f[f.rfind('/') + 1: f.find(suffix[1:])]
@@ -47,33 +63,36 @@ def dir2html_wtemplate(dirname, suffix, title, outfile):
         wt.write('\n'.join(lines))
     print 'end'
     return
-
-def dir2html(dirname, suffix, title, outfile):
-    files = glob.glob(dirname + suffix)
-    print len(files)
-    lines = []
-    lines.append('<!DOCTYPE html>')
-    lines.append('<html>')
-    lines.append('<head>')
-    lines.append('<title>{0}</title>'.format(title))
-    lines.append('<h1>{0}</h1>'.format(title))
-    if '.png' in suffix:
-        template = '<h2>name</h2>\n<img src="file" alt="No Data" style="width:700px;height:auto;">'
-    for f in files:
-        relative = f[- len(f) + len(dirname):]
-        filename = f[f.rfind('/') + 1: f.find(suffix[1:])]
-        line = template.replace('file', relative)
-        line = line.replace('name', filename)
-        lines.append(line)
-    lines.append('</body>')
-    lines.append('</html>')
-    with open(dirname + outfile, 'w+') as wt:
-        wt.write('\n'.join(lines))
-    print 'end'
+    
+def csv2html(path, rename_dict=None, format_dict=None, ):
+    df = pd.read_csv(path)
+    df.rename(columns=rename_dict, inplace=True)
+    if len(format_dict) > 0:
+        for k in format_dict:
+            df[k] = df[k].map(format_dict[k])
+    df.to_html(path.replace('.csv', '.html'))
     return
 
-# dir2html(os.getcwd() + '/input/FY/interval/ion_0627/cmp_euas/', '*_gas.png', 'gas ION vs EUAS', 'gas_cmp.html')
-# dir2html(os.getcwd() + '/input/FY/interval/ion_0627/cmp_euas/', '*_electric.png', 'electric ION vs EUAS', 'electric_cmp.html')
-# files = glob.glob(os.getcwd() + '/input/FY/interval/ion_0627/cmp_euas/*')
-# for f in files:
-#     shutil.copyfile(f, f.replace('/input/FY/interval/ion_0627/', '/plot_FY_weather/html/single_building/interval/'))
+# def dir2html(dirname, suffix, title, outfile):
+#     files = glob.glob(dirname + suffix)
+#     lines = []
+#     lines.append('<!DOCTYPE html>')
+#     lines.append('<html>')
+#     lines.append('<head>')
+#     lines.append('<title>{0}</title>'.format(title))
+#     lines.append('<h1>{0}</h1>'.format(title))
+#     if '.png' in suffix:
+#         template = '<h2>name</h2>\n<img src="file" alt="No Data" style="width:700px;height:auto;">'
+#     for f in files:
+#         relative = f[- len(f) + len(dirname):]
+#         filename = f[f.rfind('/') + 1: f.find(suffix[1:])]
+#         line = template.replace('file', relative)
+#         line = line.replace('name', filename)
+#         lines.append(line)
+#     lines.append('</body>')
+#     lines.append('</html>')
+#     with open(dirname + outfile, 'w+') as wt:
+#         wt.write('\n'.join(lines))
+#     print 'end'
+#     return
+

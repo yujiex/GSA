@@ -173,9 +173,22 @@ def check_hourly(b, measure_type):
     df_all = pd.merge(df1_re, df2, on=['year', 'month'], how='left')
     df_all.set_index(pd.DatetimeIndex(pd.to_datetime(df_all['Date'])), inplace=True)
     df_all.drop('Date', axis=1, inplace=True)
-    line1, = plt.plot(df_all.index, df_all[ion_dict[measure_type]], '-o')
-    line2, = plt.plot(df_all.index, df_all[euas_dict[measure_type]], '-o')
+    df_all.rename(columns={ion_dict[measure_type]: 'ION', euas_dict[measure_type]: 'EUAS'}, inplace=True)
+
+    df_inn = pd.merge(df1_re, df2, on=['year', 'month'], how='inner')
+    df_inn.set_index(pd.DatetimeIndex(pd.to_datetime(df_inn['Date'])), inplace=True)
+    df_inn.drop('Date', axis=1, inplace=True)
+    df_inn.rename(columns={ion_dict[measure_type]: 'ION', euas_dict[measure_type]: 'EUAS'}, inplace=True)
+    df_inn[b] = df_inn['ION']/df_inn['EUAS']
+    # df_inn.to_csv(homedir + 'temp/{0}_{1}_ion_euas.csv'.format(b, measure_type)) # temp check the data
+    dsc = df_inn[[b]].describe().transpose()
+    dsc['overall'] = df_inn['ION'].sum()/df_inn['EUAS'].sum()
+    sns.set_context("talk", font_scale=1.0)
+    sns.set_palette(sns.color_palette('Set2'))
+    line1, = plt.plot(df_all.index, df_all['ION'], '-o')
+    line2, = plt.plot(df_all.index, df_all['EUAS'], '-o')
     plt.legend([line1, line2], ['ION', 'EUAS'], loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.title('{0} {1} ION vs EUAS monthly'.format(b, measure_type), fontsize=30)
     if measure_type == 'electric':
         plt.ylabel('KWH')
     else:
@@ -184,22 +197,34 @@ def check_hourly(b, measure_type):
     path = os.getcwd() + '/input/FY/interval/ion_0627/cmp_euas/{0}_{1}.png'.format(b, measure_type)
     P.savefig(path, dpi = my_dpi, figsize = (2000/my_dpi, 500/my_dpi), bbox_inches='tight')
     plt.close()
+    return dsc
 
-def check_0711():
-    conn = uo.connect('interval_ion')
-    # with conn:
-    #     df = pd.read_sql('SELECT * FROM electric_id', conn)
-    # ids = df['id']
-    # for b in ids:
-    #     print b
-    #     check_hourly(b, 'electric')
+def check_match(conn, measure_type):
     with conn:
-        df = pd.read_sql('SELECT * FROM gas_id', conn)
+        df = pd.read_sql('SELECT * FROM {0}_id'.format(measure_type),
+                         conn)
     ids = df['id']
+    dfs = []
     for b in ids:
         print b
-        check_hourly(b, 'gas')
-    
+        dsc = check_hourly(b, measure_type)
+        dfs.append(dsc)
+    df_all = pd.concat(dfs)
+    df_all.sort('75%', inplace=True)
+    path = os.getcwd() + '/input/FY/interval/ion_0627/cmp_euas/{0}_ratio.csv'.format(measure_type)
+    df_all.to_csv(path)
+    return
+
+def check_0711():
+    # conn = uo.connect('interval_ion')
+    # check_match(conn, 'electric')
+    # check_match(conn, 'gas')
+    # conn.close()
+    keys = ['mean', 'std', 'min', '25%', '50%', '75%', 'max', 'overall']
+    format_dict = {k: lambda x: '{0:.2f}'.format(x) for k in keys}
+    uo.csv2html(os.getcwd() + '/input/FY/interval/ion_0627/cmp_euas/electric_ratio.csv', {'Unnamed: 0': 'Building_Number'}, format_dict)
+    uo.csv2html(os.getcwd() + '/input/FY/interval/ion_0627/cmp_euas/gas_ratio.csv', {'Unnamed: 0': 'Building_Number'}, format_dict)
+    return
 
 # demonstrate the '0000' rule to identify facility number does not apply
 def show_covered_exception(b, **kwargs):
@@ -304,7 +329,7 @@ def missing_area():
         print x
 
 def main():
-    missing_area()
+    # missing_area()
     # check_0711()
     # check_0706()
     # b = 'FL0067ZZ'
