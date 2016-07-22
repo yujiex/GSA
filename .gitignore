@@ -25,6 +25,10 @@ merge/css_template/
 *.eot
 *.css
 
+# backup files #
+###################
+*~
+
 # plots #
 ###################
 *.png
