@@ -65,6 +65,7 @@ merge/css_template/
 *.swp
 *.db
 *.csv
+*.txt
 *.xlsx
 *.xls
 
