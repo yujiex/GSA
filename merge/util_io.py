@@ -64,10 +64,11 @@ def dir2html(dirname, suffix, title, outfile, templatepath = None, assetdir=None
     print 'end'
     return
     
-def csv2html(path, rename_dict=None, format_dict=None, ):
+def csv2html(path, rename_dict=None, format_dict=None):
     df = pd.read_csv(path)
-    df.rename(columns=rename_dict, inplace=True)
-    if len(format_dict) > 0:
+    if not rename_dict is None:
+        df.rename(columns=rename_dict, inplace=True)
+    if not format_dict is None:
         for k in format_dict:
             df[k] = df[k].map(format_dict[k])
     df.to_html(path.replace('.csv', '.html'))

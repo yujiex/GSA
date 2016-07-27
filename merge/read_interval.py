@@ -669,7 +669,7 @@ def plot_scatter_long(hue_str, measure_type):
     ylabel = {'electric': 'electric (kBtu/sq.ft)', 'gas': 'gas kBtu/sq.ft'}
     # test = ['TX0057ZZ', 'NY0281ZZ', 'NY0304ZZ', 'MO0106ZZ']
     # bs_pair = [x for x in bs_pair if x[0] in test]
-    for b, s in bs_pair[4:]:
+    for b, s in bs_pair:
         print b, s
         # df_w = pd.read_sql('SELECT * FROM {0} WHERE Timestamp between \'\2015-01-01\' and \'2016-01-01\''.format(s), conn)
         col = value_lb_dict[measure_type]
@@ -733,12 +733,6 @@ def plot_scatter_long(hue_str, measure_type):
             plt.suptitle('{0} -- {1}'.format(min_time, max_time))
             plt.subplots_adjust(top=0.85)
         elif hue_str == 'status_week_day_night_nonflex':
-            # check distribution of the shooting up ones
-            # df_all = df_all[(df_all['Temperature_F'] < 50) & (df_all['Temperature_F'] > 45)]
-            # df_all = df_all[df_all['status_week_day_night'] == 'week day']
-            # print df_all.describe()
-            # sns.distplot(df_all[df_all['eui'] < 40]['eui'])
-            # print len(df_all[df_all['eui'] > 40])
             df_plot = df_all.groupby('year').filter(lambda x: len(x) > 7500)
             if len(df_plot) == 0:
                 print 'not enough data points'
@@ -750,7 +744,8 @@ def plot_scatter_long(hue_str, measure_type):
                            palette='husl',
                            # palette='Paired',
                            size=5, aspect = 1.0, data=df_plot, 
-                           fit_reg=False)
+                           fit_reg=False, scatter_kws={'s':8}, 
+                           legend=False)
                            # lowess=True, scatter_kws={'s':4})
             plt.ylabel(ylabel[measure_type])
             g.set(ylabel=ylabel[measure_type])
@@ -761,7 +756,8 @@ def plot_scatter_long(hue_str, measure_type):
                 # plt.ylim((0, 0.04))
             min_time = df_all['Timestamp'].min()
             max_time = df_all['Timestamp'].max()
-
+            plt.legend(loc='center left', bbox_to_anchor=(1, 0.5),
+                       markerscale=3)
             print min_time, max_time
             # plt.title('{0} {1} Setback'.format(b,
             #                                    measure_type.title()))
@@ -866,7 +862,7 @@ def plot_scatter(hue_str, measure_type):
     return
     
 def plot_piecewise(measure_type, df_all, b, s):
-    npar = 3
+    npar = 2
     if measure_type == 'gas':
         df_reg = df_all.rename(columns={'Temperature_F': '{0}'.format(s), '{0}'.format(b): 'eui_gas', 'Timestamp': 'timestamp'})
         ltm.piecewise_reg_one(b, s, npar, 'eui_gas', False, None, df_reg)
@@ -895,7 +891,8 @@ def code_0712():
         # uo.dir2html(os.getcwd() + '/input/FY/interval/ion_0627/{0}_scatter/'.format(measure_type), '*_status_week_day_night_nonflex.png', 'ION {0} setback by year'.format(measure_type), '{0}_byyear.html'.format(measure_type))
         files = glob.glob(os.getcwd() + '/input/FY/interval/ion_0627/{0}_scatter/*'.format(measure_type))
         for f in files:
-            shutil.copyfile(f, f.replace('/input/FY/interval/ion_0627/', '/plot_FY_weather/html/single_building/interval/scatter/'))
+            shutil.copyfile(f, f.replace('/input/FY/interval/ion_0627/', '/plot_FY_weather/html/interval/scatter/'))
+    print 'end'
     return
         
 def main():

@@ -10,6 +10,7 @@ import shutil
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pylab as P
+import json
 
 import lean_temperature_monthly as ltm
 import util_io as uo
@@ -137,7 +138,7 @@ def plot(x):
     fig.suptitle('Comparing Outlier Tests with n={}'.format(len(x)), size=14)
     plt.show()
 
-def show_outlier(points, b, method, measure_type, threshold):
+def show_outlier(points, b, method, measure_type, threshold, plot=False):
     if method == 'box':
         outliers_mild, outlier_extreme = box_based_roll_outlier(points, nb_size=3000)
     elif method == 'upper':
@@ -152,24 +153,21 @@ def show_outlier(points, b, method, measure_type, threshold):
     elif method == 'median':
         outliers = median_based_outlier(points)
     outlier_plot = [0 if x else np.nan for x in outliers]
-    plt.plot(range(len(points)), (outlier_plot), 'ro', clip_on=False)
-    plt.plot(range(len(points)), points)
-    n_removed = len([x for x in outliers if x])
-    n_total = len(points)
-    print 'remove: {0}, total{1}'.format(n_removed, n_total)
-    # positive = [x for x in points if x > 0]
-    # median = np.median(positive, axis=0)
-    # pos_median = np.median([x for x in points if x > median], axis=0)
-    # plt.title('median of positive: {0}, median of upper {4} # remove {1}, # total {2} ({3:.2%})'.format(median, n_removed, n_total, n_removed/n_total, pos_median))
-    plt.title('# remove {0}, # total {1} ({2:.2%})'.format(n_removed, n_total, 1.0 * n_removed/n_total))
-    # plt.show()
-    path = os.getcwd() + '/input/FY/interval/ion_0627/outlier/{0}_{1}.png'.format(b, measure_type)
-    P.savefig(path, dpi = my_dpi, figsize = (2000/my_dpi, 500/my_dpi))
-    plt.close()
-    print outliers[:5]
+    if plot:
+        plt.plot(range(len(points)), (outlier_plot), 'ro', clip_on=False)
+        plt.plot(range(len(points)), points)
+        n_removed = len([x for x in outliers if x])
+        n_total = len(points)
+        print 'remove: {0}, total{1}'.format(n_removed, n_total)
+        plt.title('# remove {0}, # total {1} ({2:.2%})'.format(n_removed, n_total, 1.0 * n_removed/n_total))
+        path = os.getcwd() + '/input/FY/interval/ion_0627/outlier/{0}_{1}.png'.format(b, measure_type)
+        P.savefig(path, dpi = my_dpi, figsize = (2000/my_dpi, 500/my_dpi))
+        plt.close()
+    # print outliers[:5]
     return outliers
 
-def plot_piece(gr, ax, title, color, measure_type, b, s):
+def plot_piece(gr, ax, title, color, measure_type, b, s, scatter=True,
+               annote=False, jsondir=None, csvdir=None):
     group = gr.get_group(title)
     temp = group.reset_index()
     d = compute_piecewise(measure_type, temp, b, s)
@@ -183,11 +181,32 @@ def plot_piece(gr, ax, title, color, measure_type, b, s):
         x = np.array([x0, b0, b1, x1])
     else:
         x = np.array([x0, d['breakpoint'], x1])
-    ax.plot(d['x'], d['y'], 'o', c=color)
-    ax.plot(x, d['fun'](x, *d['regression_par']))
+    if scatter:    
+        ax.plot(d['x'], d['y'], 'o', c=color)
+    y = d['fun'](x, *d['regression_par'])
+    ax.plot(x, y)
+    if annote:
+        if measure_type == 'electric':
+            ax.annotate(b, xy=(x[-1], y[-1]))
+        else:
+            ax.annotate(b, xy=(x[0], y[0]))
     ax.set_ylabel(lb.ylabel_dict[measure_type])
+    if not jsondir is None:
+        d_plot = {}
+        d_plot['name'] = b
+        x = map(lambda m: round(m, 4), x)
+        y = map(lambda m: round(m, 4), y)
+        d_plot['data'] = map(list, zip(x, y)) 
+        with open ('{0}{1}_{2}.json'.format(jsondir, b, measure_type), 'w+') as wt:
+            json.dump(d_plot, wt)
+    if not csvdir is None:
+        x = map(lambda m: round(m, 2), x)
+        y = map(lambda m: round(m, 2), y)
+        df = pd.DataFrame({'x': x, 'y': y})
+        df['id'] = b
+        df.to_csv('{0}{1}_{2}.csv'.format(csvdir, b, measure_type), index=False)
     return d
-
+    
 # saving of d0 under d1 condition
 def compute_saving(d_active, d_rest, sum_other):
     if d_active is None or d_rest is None:
@@ -218,6 +237,59 @@ def plot_outlier(measure_type):
         df['outlier_mild'] = map(lambda x: maxi * 0.5 if x else np.nan, outliers_mild)
         df['outlier_extreme'] = map(lambda x: maxi * 0.75 if x else np.nan, outliers_extreme)
         df.to_csv(homedir + 'temp/{0}.csv'.format(b), index=False)
+    return
+
+def fit_time(measure_type, occtime):
+    conn = uo.connect('interval_ion')
+    with conn:
+        df_bs = pd.read_sql('SELECT * FROM {0}_id_station'.format(measure_type), conn)
+        df_area = pd.read_sql('SELECT * FROM area', conn)
+    df_area.set_index('Building_Number', inplace=True)
+    bs_pair = zip(df_bs['Building_Number'], df_bs['ICAO'])
+    sns.set_style("whitegrid")
+    sns.set_context("talk", font_scale=1)
+    value_lb_dict = {'electric': 'Electric_(KWH)', 'gas':
+                     'Gas_(CubicFeet)'}
+    multiplier_dict = {'electric':  3.412, 'gas': 1.026}
+    col = value_lb_dict[measure_type]
+    m = multiplier_dict[measure_type]
+    ylabel = {'electric': 'electric (kBtu/sq.ft)', 'gas': 'gas kBtu/sq.ft'}
+    print len(bs_pair)
+    sns.set_style("whitegrid")
+    # palette = sns.cubehelix_palette(len(bs_pair))
+    palette = sns.color_palette('husl', len(bs_pair))
+    sns.set_palette(palette)
+    colors_rgb = [util.float2hex(x) for x in palette]
+    sns.set_context("talk", font_scale=1)
+    jsondir = os.getcwd() + '/input/FY/interval/ion_0627/piecewise_all/json_{0}/'.format(occtime)
+    # csvdir = os.getcwd() + '/input/FY/interval/ion_0627/piecewise_all/csv/'
+    for i, (b, s) in enumerate(bs_pair):
+        print b, s
+        try:
+            area = df_area.ix[b, 'Gross_Sq.Ft']
+        except KeyError:
+            print 'No area found'
+            continue
+        df = join_interval(b, s, area, col, m, measure_type, conn)
+        df.to_csv(homedir + 'temp/{0}.csv'.format(b))
+        df = df[df[col] >= 0]
+        points = df[col]
+        outliers = show_outlier(points, b, 'upper', measure_type, 5)
+        df['outlier'] = outliers
+        df = df[~np.array(outliers)]
+        df['status_week_day_night'] = \
+            df.apply(lambda r: util.get_status(r['hour'], r['day']), axis=1)
+        min_time = df['Timestamp'].min()
+        max_time = df['Timestamp'].max()
+        gr = df.groupby('status_week_day_night')
+        bx = plt.axes()
+        d0 = plot_piece(gr, bx, occtime, colors_rgb[i], measure_type, b, s, scatter=False, annote=True, jsondir=jsondir)
+    plt.xlabel('Temperature_F')
+    # plt.show()
+    path = os.getcwd() + '/input/FY/interval/ion_0627/piecewise_all/{0}_{1}.png'.format(measure_type, occtime)
+    P.savefig(path, dpi = my_dpi, figsize = (2000/my_dpi, 500/my_dpi), bbox_inches='tight')
+    shutil.copy(path, path.replace('input/FY/interval/ion_0627/piecewise_all', 'plot_FY_weather/html/interval/lean/all'))
+    plt.close()
     return
 
 def fit(measure_type):
@@ -278,7 +350,7 @@ def fit(measure_type):
         f.text(0.5, 0.04, 'Temperature_F', ha='center', va='center')
         path = os.getcwd() + '/input/FY/interval/ion_0627/piecewise/{1}/{0}_{1}.png'.format(b, measure_type)
         P.savefig(path, dpi = my_dpi, figsize = (2000/my_dpi, 500/my_dpi), bbox_inches='tight')
-        shutil.copy(path, path.replace('input/FY/interval/ion_0627/piecewise', 'plot_FY_weather/html/single_building/interval/lean'))
+        shutil.copy(path, path.replace('input/FY/interval/ion_0627/piecewise', 'plot_FY_weather/html/interval/lean'))
         plt.close()
         lines.append(','.join([b] + save + err))
     with open(os.getcwd() + '/input/FY/interval/ion_0627/table/{0}_save.csv'.format(measure_type), 'w+') as wt:
@@ -323,7 +395,7 @@ def read_interval_building(b):
     df.to_csv(homedir + 'temp/{0}_int.csv'.format(b))
     
 def process_html(measure_type):
-    with open (os.getcwd() + '/plot_FY_weather/html/single_building/interval/lean/template.html', 'r') as rd:
+    with open (os.getcwd() + '/plot_FY_weather/html/interval/lean/template.html', 'r') as rd:
         lines = rd.readlines()
     for i, line in enumerate(lines):
         if 'start' in line:
@@ -332,7 +404,7 @@ def process_html(measure_type):
             end_id = i
         lines[i] = lines[i].replace('measure_type', measure_type)
     print start_id, end_id
-    files = glob.glob(os.getcwd() + '/plot_FY_weather/html/single_building/interval/lean/{0}/*.png'.format(measure_type))
+    files = glob.glob(os.getcwd() + '/plot_FY_weather/html/interval/lean/{0}/*.png'.format(measure_type))
     to_replace = lines[start_id + 1: end_id]
     newlines = []
     for f in files:
@@ -343,12 +415,12 @@ def process_html(measure_type):
             print x
             print x.replace('WY0029ZZ', building)
     final = lines[:start_id] + newlines + lines[end_id + 1:]
-    with open(os.getcwd() + '/plot_FY_weather/html/single_building/interval/lean/{0}.html'.format(measure_type), 'w+') as wt:
+    with open(os.getcwd() + '/plot_FY_weather/html/interval/lean/{0}.html'.format(measure_type), 'w+') as wt:
         wt.write(''.join(final))
     return
     
 def process_index_dygraph(measure_type, dirname, outname):
-    with open (os.getcwd() + '/plot_FY_weather/html/single_building/interval/trend/template.html', 'r') as rd:
+    with open (os.getcwd() + '/plot_FY_weather/html/interval/trend/template.html', 'r') as rd:
         lines = rd.readlines()
     for i, line in enumerate(lines):
         if 'href' in line:
@@ -361,7 +433,7 @@ def process_index_dygraph(measure_type, dirname, outname):
         building_name = f[f.rfind('/') + 1: f.rfind('_')]
         newlines.append(to_replace.replace('building', building_name))
     result = lines[:replace_idx] + newlines + lines[replace_idx + 1:]
-    with open(os.getcwd() + '/plot_FY_weather/html/single_building/interval/{1}/{0}.html'.format(measure_type, outname), 'w+') as wt:
+    with open(os.getcwd() + '/plot_FY_weather/html/interval/{1}/{0}.html'.format(measure_type, outname), 'w+') as wt:
         wt.write(''.join(result))
 
 def hourly_trend():
@@ -370,7 +442,7 @@ def hourly_trend():
     for f in files:
         shutil.copyfile(f,
                         f.replace('/plot_interval_hour/plot_interval_hour/',
-                                  '/plot_FY_weather/html/single_building/interval/trend_hour/'))
+                                  '/plot_FY_weather/html/interval/trend_hour/'))
     process_index_dygraph('gas', 'plot_interval_hour', 'trend_hour')
     process_index_dygraph('electric', 'plot_interval_hour', 'trend_hour')
     return
@@ -387,9 +459,67 @@ def cmp_euas():
                     withname=False)
     files = glob.glob(os.getcwd() + '/input/FY/interval/ion_0627/cmp_euas/*')
     for f in files:
-        shutil.copyfile(f, f.replace('/input/FY/interval/ion_0627/', '/plot_FY_weather/html/single_building/interval/'))
+        shutil.copyfile(f, f.replace('/input/FY/interval/ion_0627/', '/plot_FY_weather/html/interval/'))
 
+def plot_csv(dirname, measure_type):
+    files = glob.glob(os.getcwd() + \
+                      '/input/FY/interval/ion_0627/{0}/csv/*_{1}.csv'.format(dirname, measure_type))
+    dfs = [pd.read_csv(f) for f in files]
+    df_all = pd.concat(dfs, ignore_index=True)
+    df_p = df_all.pivot(index='x', columns='id', values='y')
+    csv_data = os.getcwd() + '/input/FY/interval/ion_0627/{0}/{1}.csv'.format(dirname, measure_type)
+    df_p.to_csv(csv_data, index=True)
+    with open (os.getcwd() + '/input/FY/interval/ion_0627/{0}/template-dy.html'.format(dirname, measure_type), 'r') as rd:
+        lines = rd.readlines()
+    for i in range(len(lines)):
+        lines[i] = lines[i].replace('filename', '{0}.csv'.format(measure_type))
+    with open (os.getcwd() + '/input/FY/interval/ion_0627/{0}/{1}-dy.html'.format(dirname, measure_type), 'w+') as wt:
+        wt.write(''.join(lines))
+    print 'end'
+
+def plot_json(dirname, measure_type, occtime):
+    files = glob.glob(os.getcwd() + \
+                      '/input/FY/interval/ion_0627/{0}/json_{1}/*_{2}.json'.format(dirname, occtime, measure_type))
+    data = []
+    for x in files:
+        with open (x, 'r') as rd:
+            j = json.load(rd)
+        data.append(j)
+    data_str = 'series: [{0}]'.format(','.join(map(str, data)))
+    data_str = data_str.replace('u\'', '\'')
+    with open (os.getcwd() + '/input/FY/interval/ion_0627/{0}/template.html'.format(dirname, measure_type), 'r') as rd:
+        lines = rd.readlines()
+    for i in range(len(lines)):
+        lines[i] = lines[i].replace('series: []', data_str)
+        lines[i] = lines[i].replace('Mytitle', 'Hourly {0} (kBtu/sq.ft) vs Temperature (F), {1}'.format(measure_type, occtime))
+        lines[i] = lines[i].replace('Myylabel', 'kBtu/sq.ft'.format(measure_type, occtime))
+    f = os.getcwd() + '/input/FY/interval/ion_0627/{0}/{1}_{2}.html'.format(dirname, measure_type, occtime)
+    with open (f, 'w+') as wt:
+        wt.write(''.join(lines))
+    shutil.copyfile(f, f.replace('/input/FY/interval/ion_0627/', '/plot_FY_weather/html/interval/'))
+    print 'end'
+    return
+    
+def create_summary_daynightlean():
+    files = glob.glob(os.getcwd() + '/input/FY/interval/ion_0627/table/*.csv')
+    for f in files:
+        uo.csv2html(f)
+    files = glob.glob(os.getcwd() + '/input/FY/interval/ion_0627/table/*.html')
+    for f in files:
+        shutil.copyfile(f, f.replace('/input/FY/interval/ion_0627/',
+                                     '/plot_FY_weather/html/interval/'))
+    return
+    
+def plot_saving_oneplot(occtime):
+    for measure_type in ['electric', 'gas']:
+        fit_time(measure_type, occtime)
+        plot_json('piecewise_all', measure_type, occtime)
+    
 def main():
+    plot_saving_oneplot('weekend day')
+    plot_saving_oneplot('weekend night')
+    # create_summary_daynightlean()
+    # plot_csv('piecewise_all', 'electric')
     # read_interval_building('NM0050ZZ')
     # read_interval_building('LA0085ZZ')
     # temp()
@@ -398,7 +528,7 @@ def main():
     # uo.dir2html('/media/yujiex/work/SEED/gitDir/SEEDproject/Code/merge/input/FY/interval/ion_0627/outlier/', '*_gas.png', 'Gas Outlier', 'gas_outlier.html')
     # files = glob.glob(os.getcwd() + '/input/FY/interval/ion_0627/outlier/*')
     # for f in files:
-    #     shutil.copyfile(f, f.replace('/input/FY/interval/ion_0627/', '/plot_FY_weather/html/single_building/interval/'))
+    #     shutil.copyfile(f, f.replace('/input/FY/interval/ion_0627/', '/plot_FY_weather/html/interval/'))
     # fit('electric')
     # uo.dir2html('/media/yujiex/work/SEED/gitDir/SEEDproject/Code/merge/input/FY/interval/ion_0627/outlier/', '*_electric.png', 'Electric Outlier', 'electric_outlier.html')
     # print 'end'
@@ -408,12 +538,12 @@ def main():
     # use R to plot dygraphs
     # files = glob.glob(os.getcwd() + '/plot_interval/plot_interval/*.html')
     # for f in files:
-    #     shutil.copyfile(f, f.replace('/plot_interval/plot_interval/', '/plot_FY_weather/html/single_building/interval/trend/'))
+    #     shutil.copyfile(f, f.replace('/plot_interval/plot_interval/', '/plot_FY_weather/html/interval/trend/'))
     # process_index_dygraph('gas', 'plot_interval', 'trend')
     # process_index_dygraph('electric', 'plot_interval', 'trend')
     # hourly_trend()
 
-    cmp_euas()
+    # cmp_euas()
     return
     
 main()

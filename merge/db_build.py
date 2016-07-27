@@ -1330,7 +1330,7 @@ def main():
     # read_ecm_program()
     # db_view('all', False, 'EUAS_monthly')
     # check()
-    # get_use()
+    get_use()
     # dump_covered()
     # concat_covered()
     # db_view('other_input', True)

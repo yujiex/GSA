@@ -1028,6 +1028,76 @@ def year_of_data(df, n, low, high):
     return df2['Building_Number'].unique()
 
 def flow_chart():
+    conn = uo.connect('all')
+    aci_set = gbs.get_cat_set(['A', 'C', 'I'], conn)
+    ai_set = gbs.get_cat_set(['A', 'C'], conn)
+    with conn:
+        df_eui = pd.read_sql('SELECT Building_Number, Fiscal_Year, eui_elec, eui_gas, eui FROM eui_by_fy', conn)
+    df_eui = df_eui[df_eui['eui'] != np.inf]
+    df1 = df_eui.groupby('Fiscal_Year').agg({'Building_Number': 'count', 'eui': 'mean'})
+    df_result = pd.DataFrame({'Fiscal_Year': map(str, range(2003,
+                                                            2017)),
+                              'All': df1['Building_Number'].tolist()})
+    # print df1
+    # print 'at least 6 years', len(year_of_data(df_eui, 6, 2007, 2015))
+    # df_1 = df_all.groupby('Fiscal_Year').agg({'Building_Number': 'count', 'Gross_Sq.Ft': 'sum', 'Total_kBtu': 'sum'})
+
+    # print 'A + C + I Building'
+    df2 = df_eui[df_eui['Building_Number'].isin(aci_set)].groupby('Fiscal_Year').agg({'Building_Number': 'count', 'eui': 'mean'})
+    df_result['A + C + I'] = df2['Building_Number'].tolist()
+    # print df2
+
+    # print 'at least 6 years', len(year_of_data(df_eui[df_eui['Building_Number'].isin(aci_set)], 6, 2007, 2015))
+    # df_2 = df_all[df_all['Building_Number'].isin(aci_set)].groupby('Fiscal_Year').agg({'Building_Number': 'count', 'Gross_Sq.Ft': 'sum', 'Total_kBtu': 'sum'})
+    # df_2['intensity'] = df_2['Total_kBtu']/df_2['Gross_Sq.Ft']
+    # print df_2[['intensity', 'Building_Number']]
+    # print 'A + I Building'
+    df3 = df_eui[df_eui['Building_Number'].isin(ai_set)].groupby('Fiscal_Year').agg({'Building_Number': 'count', 'eui': 'mean'})
+    # print df3
+    df_result['A + I'] = df3['Building_Number'].tolist()
+    # print 'at least 6 years', len(year_of_data(df_eui[df_eui['Building_Number'].isin(ai_set)], 6, 2007, 2015))
+    # df_3 = df_all[df_all['Building_Number'].isin(ai_set)].groupby('Fiscal_Year').agg({'Building_Number': 'count', 'Gross_Sq.Ft': 'sum', 'Total_kBtu': 'sum'})
+    # df_3['intensity'] = df_3['Total_kBtu']/df_3['Gross_Sq.Ft']
+    # print df_3[['intensity', 'Building_Number']]
+    print 'good_elec'
+    df4 = df_eui[(df_eui['Building_Number'].isin(ai_set)) & 
+                 (df_eui['eui_elec'] >= 12)].groupby('Fiscal_Year').agg({'Building_Number': 'count', 'eui': 'mean'})
+    df_result['A + I, good elec'] = df4['Building_Number'].tolist()
+    # print df4
+    # print 'at least 6 years', len(year_of_data(df_eui[(df_eui['Building_Number'].isin(ai_set)) & (df_eui['eui_elec'] >= 12)], 6, 2007, 2015))
+    # df_all = df_all[df_all['eui_elec'] != np.inf]
+    # df_4 = df_all[(df_all['Building_Number'].isin(ai_set)) & (df_all['eui_elec'] >= 12)].groupby('Fiscal_Year').agg({'Building_Number': 'count', 'Gross_Sq.Ft': 'sum', 'Total_kBtu': 'sum'})
+    # df_4['intensity'] = df_4['Total_kBtu']/df_4['Gross_Sq.Ft']
+    # print df_4[['intensity', 'Building_Number']]
+    print 'good_gas'
+    df5 = df_eui[(df_eui['Building_Number'].isin(ai_set)) & 
+                 (df_eui['eui_gas'] >= 3)].groupby('Fiscal_Year').agg({'Building_Number': 'count', 'eui': 'mean'})
+    df_result['A + I, good gas'] = df5['Building_Number'].tolist()
+    # print df5
+    # print 'at least 6 years', len(year_of_data(df_eui[(df_eui['Building_Number'].isin(ai_set)) & (df_eui['eui_gas'] >= 3)], 6, 2007, 2015))
+    # df_5 = df_all[(df_all['Building_Number'].isin(ai_set)) & (df_all['eui_gas'] >= 3)].groupby('Fiscal_Year').agg({'Building_Number': 'count', 'Gross_Sq.Ft': 'sum', 'Total_kBtu': 'sum'})
+    # df_5['intensity'] = df_5['Total_kBtu']/df_5['Gross_Sq.Ft']
+    # print df_5[['intensity', 'Building_Number']]
+    print 'good_both'
+    df6 = df_eui[(df_eui['Building_Number'].isin(ai_set)) & 
+                 (df_eui['eui_gas'] >= 3) & (df_eui['eui_elec'] >= 12)].groupby('Fiscal_Year').agg({'Building_Number': 'count', 'eui': 'mean'})
+
+    df_result['A + I, good both'] = df6['Building_Number'].tolist()
+    df_result.ix['6 year', 'All'] = len(year_of_data(df_eui, 6, 2007,
+                                                     2015))
+    df_result.ix['6 year', 'A + C + I'] = len(year_of_data(df_eui[df_eui['Building_Number'].isin(aci_set)], 6, 2007, 2015))
+    df_result.ix['6 year', 'A + I'] = len(year_of_data(df_eui[df_eui['Building_Number'].isin(ai_set)], 6, 2007, 2015))
+    df_result.ix['6 year', 'A + I, good elec'] = len(year_of_data(df_eui[(df_eui['Building_Number'].isin(ai_set)) & (df_eui['eui_elec'] >= 12)], 6, 2007, 2015))
+    df_result.ix['6 year', 'A + I, good gas'] = len(year_of_data(df_eui[(df_eui['Building_Number'].isin(ai_set)) & (df_eui['eui_gas'] >= 3)], 6, 2007, 2015))
+    df_result.ix['6 year', 'A + I, good both'] = len(year_of_data(df_eui[(df_eui['Building_Number'].isin(ai_set)) & (df_eui['eui_gas'] >= 3) & (df_eui['eui_elec'] >= 12)], 6, 2007, 2015))
+    cols = list(df_result)
+    cols.remove('Fiscal_Year')
+    cols.insert(0, 'Fiscal_Year')
+    df_result = df_result[cols]
+    df_result.to_csv(homedir + 'temp/flow_chart.csv', index=False)
+    return
+
+def flow_chart_verbo():
     # conn = uo.connect('backup/all_old')
     conn = uo.connect('all')
     aci_set = gbs.get_cat_set(['A', 'C', 'I'], conn)
@@ -1602,7 +1672,7 @@ def main():
     # plot_trend_fan('eui', 'Y')
     # plot_trend_ave('eui', 'Y')
     # temp()
-    # flow_chart()
+    flow_chart()
     # plot_trend_all_possible()
     # energy_set = gbs.get_energy_set('eui')
     # ai_set = gbs.get_cat_set(['A', 'I'])
@@ -1647,7 +1717,7 @@ def main():
     # test_hypo('eui', 'All')
     # test_hypo_absolute('eui', 'AIcovered', 'long', [2003], [2014, 2015])
     # test_hypo_absolute('eui', 'AI', 'long', [2003], [2014, 2015])
-    test_hypo_absolute('eui', 'All', 'long', [2003], [2014, 2015])
+    # test_hypo_absolute('eui', 'All', 'long', [2003], [2014, 2015])
     # bar_plot_before_after()
     return
     
