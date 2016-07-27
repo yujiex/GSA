@@ -4,6 +4,9 @@ library(RColorBrewer)
 library(plyr)
 library(stringr)
 library(Rmisc)
+n <- 60
+qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
+col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
 con = dbConnect(drv=RSQLite::SQLite(), dbname="csv_FY/db/all.db")
 
 df1 = dbGetQuery(con, 'SELECT DISTINCT Building_Number, Fiscal_Year FROM EUAS_monthly')
@@ -14,6 +17,37 @@ df <- df[df$Fiscal_Year < 2016,]
 df$Cat <- factor(df$Cat, levels=c("A", "I", "C", "B", "D", "E"))
 ggplot(df, aes(Fiscal_Year, fill=Cat)) + geom_bar() + ylab("Building Count") + labs(title="EUAS Building Count By Category") + scale_fill_brewer(palette="Set3")
 ggsave(file="plot_FY_annual/quant/building_by_cat.png", width=8, height=4, units="in")
+
+
+## Building type count by year
+colors = (c(brewer.pal(12, 'Set3'), "gray"))
+## pie(rep(1,13), col=colors)
+df1 = dbGetQuery(con, 'SELECT Building_Number, [Self-Selected_Primary_Function] as Type FROM EUAS_type')
+df2 = dbGetQuery(con, 'SELECT DISTINCT Building_Number, Fiscal_Year FROM EUAS_monthly')
+df = merge(x=df2, y=df1, by="Building_Number", all.x=TRUE)
+df <- df[df$Fiscal_Year < 2016,]
+df[is.na(df)] <- 'No Data'
+df$Type <- factor(df$Type)
+levels(df$Type)
+df$Type <- factor(df$Type, levels(df$Type)[c(6, 1, 9, 2, 3, 5, 7, 8, 10:13, 4)])
+levels(df$Type)
+ggplot(df, aes(x=Fiscal_Year, fill=Type)) + geom_bar() + ylab("Building Count") + labs(title="EUAS Building Type Count by Year") + scale_fill_brewer(palette="Set3") + scale_fill_manual(values=colors)
+ggsave(file="plot_FY_annual/quant/type_by_year.png", width=8, height=4, units="in")
+
+## Building type count by cat
+## colors = (c(brewer.pal(12, 'Set3'), "gray"))
+## pie(rep(1,13), col=colors)
+df1 = dbGetQuery(con, 'SELECT Building_Number, [Self-Selected_Primary_Function] as Type FROM EUAS_type')
+df2 = dbGetQuery(con, 'SELECT DISTINCT Building_Number, Cat FROM EUAS_monthly')
+df = merge(x=df2, y=df1, by="Building_Number", all.x=TRUE)
+df[is.na(df)] <- 'No Data'
+df$Type <- factor(df$Type)
+levels(df$Type)
+df$Type <- factor(df$Type, levels(df$Type)[c(6, 1, 9, 2, 3, 5, 7, 8, 10:13, 4)])
+levels(df$Type)
+df$Cat <- factor(df$Cat, levels=c("A", "I", "C", "B", "D", "E"))
+ggplot(df, aes(x=Cat, fill=Type)) + geom_bar() + ylab("Building Count") + labs(title="EUAS Building Type Count By Category") + scale_fill_brewer(palette="Set3") + scale_fill_manual(values=colors)
+ggsave(file="plot_FY_annual/quant/type_by_cat.png", width=8, height=4, units="in")
 
 ## Use the original count record
 ## library(ggplot2)
@@ -207,9 +241,15 @@ ggsave(file="plot_FY_annual/quant/ave_area_bycat.png", width=8, height=4, units=
 ## covered by category
 df1 = dbGetQuery(con, 'SELECT DISTINCT Building_Number from covered_facility')
 df2 = dbGetQuery(con, 'SELECT Building_Number, Cat from EUAS_category')
+df3 = dbGetQuery(con, 'SELECT Building_Number, [Self-Selected_Primary_Function] as Type FROM EUAS_type')
 df = merge(df1, df2, on='Building_Number')
+df <- merge(df, df3, on='Building_Number')
 df$Cat <- factor(df$Cat, levels=c("A", "I", "C", "B", "D", "E"))
-ggplot(df, aes(x=Cat)) + geom_bar() + ylab("Building Count") + xlab("Category") + labs(title="Covered facility by category") + scale_fill_brewer(palette="Set3") + theme(legend.position="bottom")
+df$Type <- factor(df$Type)
+levels(df$Type)
+df$Type <- factor(df$Type, levels(df$Type)[c(4, 1, 6, 2, 3, 5)])
+levels(df$Type)
+ggplot(df, aes(x=Cat, fill=Type)) + geom_bar() + ylab("Building Count") + xlab("Category") + labs(title="Covered facility by category and type") + scale_fill_brewer(palette="Set3")
 ggsave(file="plot_FY_annual/quant/cover_bycat.png", width=8, height=4, units="in")
 
 ## area distribution by year cat I
