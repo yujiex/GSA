@@ -33,6 +33,12 @@ merge/css_template/
 ###################
 *.png
 
+# pdf #
+###################
+*.pdf
+*.aux
+*.out
+
 # Compiled source #
 ###################
 *.com
