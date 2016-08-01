@@ -1,7 +1,6 @@
 merge/csv/
 merge/csv_FY/
 merge/plot_FY/
-merge/plot_FY_annual/
 merge/plot_FY_cal/
 merge/plot_FY_pie/
 merge/plot_FY_weather/
@@ -13,7 +12,6 @@ merge/css_template/
 
 # webpages #
 ###################
-*.html
 *.html~
 *.json
 *.json~
