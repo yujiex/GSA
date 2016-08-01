@@ -1,0 +1,403 @@
+<!-- template source: http://maxdesign.com.au/jobs/css-layouts/01-bootstrap-kickoff-template/ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>level 2 Analysis - GSA Energy Analysis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Description" lang="en" content="ADD SITE DESCRIPTION">
+    <meta name="author" content="ADD AUTHOR INFORMATION">
+    <meta name="robots" content="index, follow">
+
+    <!-- icons -->
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Bootstrap Core CSS file -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <!-- Override CSS file - add your own CSS rules -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <!-- Conditional comment containing JS files for IE6 - 8 -->
+    <!--[if lt IE 9]>
+	    <script src="assets/js/html5.js"></script>
+	    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+    </head>
+<title>level2Analysis</title>
+<body>
+    <!-- Navigation -->
+	    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#pagetop">GSA Level 2</a>
+				</div>
+				<!-- /.navbar-header -->
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="#list">Energy Programs/Actions List</a></li>
+						<li><a href="#vio">EUI Distribution by Investment</a></li>
+						<li><a href="#high">High Level Summary</a></li>
+						<!-- <li><a href="#group">Summary by Action Group</a></li> -->
+						<li><a href="#table">Single building stories</a></li>
+
+					</ul>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+		<!-- /.navbar --> 
+
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+	<!-- Page breadcrumb -->
+	<ol class="breadcrumb">
+	    <li><a href="index.html">Home</a></li>
+	    <li class="active">Level 2 analysis</li>
+	</ol>
+
+  <h1 id="pagetop">Level 2: Analysis of Energy Program and ECM impacts (&lt;400 bldgs)</h1>
+  <h2 id="list">Energy Programs/Actions List: Capital and Operational</h2>
+  <ul>
+    <li>capital upgrade investment</li>
+    <ul>
+      <!-- <li>BA54 expenditures</li> -->
+      <li>American Recovery and Reinvestment Act (ARRA)</li>
+      <li>Energy Service Performance Contracts (ESPC)</li>
+      <li>CTS ECM action record</li>
+      <li>LEED New Construction</li>
+      <li>Guiding Principles New Construction</li>
+    </ul>
+    <li>operational upgrade investment</li>
+    <ul>
+      <li>E4</li>
+      <li>GSALink</li>
+      <li>First Fuel</li>
+      <li>Shave Energy</li>
+      <li>Guiding Principles Existing Building</li>
+      <li>LEED Existing Building</li>
+      <li>AMI real time monitoring, advanced metering ECM action</li>
+    </ul>
+  </ul>
+  <h2 id="vio">EUI Distribution by Investment</h2>
+  <h3>Energy investment EUI distribution FY2003 vs FY2015</h3>
+  <p>TODO: break GP EB vs NC</p>
+  <!-- <h4>Violin plot Electric + Gas EUI FY2003</h4> -->
+  <!-- <img src="quant/invest_eui_AI_2003_vio.png" alt="to be added" style="width:100%"> -->
+  <h4>Box plot Electric + Gas EUI FY2003 vs FY2015 (Ranked by percent reduction high to low)</h4>
+  <img src="quant/invest_eui_1315.png" alt="to be added" style="width:100%">
+  <table align="center">
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">investment</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">median.2003</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">median.2015</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">percent reduction</th>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">LEED_EB</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">53.14</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">38.89</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">26.8%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">ESPC</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">63.84</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">46.95</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">26.5%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">GSALink</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">57.93</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">42.83</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">26.1%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">first fuel</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">59.14</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">43.88</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">25.8%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Building Tuneup or Utility Improvements</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">60.43</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">45.64</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">24.5%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">HVAC</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">60.70</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">46.43</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">23.5%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Lighting</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">60.55</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">47.06</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">22.3%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Advanced Metering</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">56.61</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">44.57</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">21.3%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">GP</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">52.16</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">41.33</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">20.8%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">E4</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">60.90</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">48.47</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">20.4%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Building Envelope</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">55.63</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">45.64</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">18.0%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Shave Energy</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">57.84</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">48.81</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">15.6%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">LEED_NC</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">44.46</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">42.25</td>
+<td  valign="bottom"  align="right"  style=" font-size:10pt;">5.0%</td>
+</tr>
+  </table>
+  <!-- <p>TODO: put 2003 and 2015 side by side -->
+  <!-- <img src="quant/invest_eui_AI_2003_box.png" alt="to be added" style="width:100%"> -->
+  <!-- <h4>Violin plot Electric + Gas EUI FY2015</h4> -->
+  <!-- <img src="quant/invest_eui_AI_2015_vio.png" alt="to be added" style="width:100%"> -->
+  <!-- <h4>Box plot Electric + Gas EUI FY2015</h4> -->
+  <!-- <img src="quant/invest_eui_AI_2015_box.png" alt="to be added" style="width:100%"> -->
+  <h2 id="high"><a href="weatherNormMethod.html">Weather Normalized</a> Saving by ECM Actions</h2>
+    <h3> High Level Summary </h3>
+    <img src="quant/saving_by_act_yuzhe/electricity_saving_summary_ordered_by_relative_value.png" alt="to be added" style="width:90%">
+    <img src="quant/saving_by_act_yuzhe/gas_saving_summary_ordered_by_relative_value.png" alt="to be added" style="width:90%">
+    <hr>
+    <table align="center">
+      <tr>
+	<th>Electric</th>
+	<th>Gas</th>
+      </tr>
+      <tr>
+<td><img src="quant/saving_by_act_yuzhe/advanced_metering_saving_elec.png" alt="to be added" style="width:90%"></td>
+<td><img src="quant/saving_by_act_yuzhe/advanced_metering_saving_gas.png" alt="to be added" style="width:90%"></td>
+      </tr>
+      <tr>
+<td><img src="quant/saving_by_act_yuzhe/combined_actions_saving_elec.png" alt="to be added" style="width:90%"></td>
+<td><img src="quant/saving_by_act_yuzhe/combined_actions_saving_gas.png" alt="to be added" style="width:90%"></td>
+      </tr>
+      <tr>
+<td><img src="quant/saving_by_act_yuzhe/envelope_saving_elec.png" alt="to be added" style="width:90%"></td>
+<td><img src="quant/saving_by_act_yuzhe/envelope_saving_gas.png" alt="to be added" style="width:90%"></td>
+      </tr>
+      <tr>
+<td><img src="quant/saving_by_act_yuzhe/gsalink_saving_elec.png" alt="to be added" style="width:90%"></td>
+<td><img src="quant/saving_by_act_yuzhe/gsalink_saving_gas.png" alt="to be added" style="width:90%"></td>
+      </tr>
+      <tr>
+<td><img src="quant/saving_by_act_yuzhe/HVAC_saving_elec.png" alt="to be added" style="width:90%"></td>
+<td><img src="quant/saving_by_act_yuzhe/HVAC_saving_gas.png" alt="to be added" style="width:90%"></td>
+      </tr>
+      <tr>
+<td><img src="quant/saving_by_act_yuzhe/single_action_saving_elec.png" alt="to be added" style="width:90%"></td>
+<td><img src="quant/saving_by_act_yuzhe/single_action_saving_gas.png" alt="to be added" style="width:90%"></td>
+      </tr>
+      <tr>
+    </table>
+<p>Solo high level ECM Action
+<!--     <h3 id="group"> Summary by action group </h3> -->
+<!--   <ul> -->
+<!--     <li>Buildings invested in <code>Advanced Metering</code> saved on average 15.1% and 6.07 kBtu/sq.ft Electricity, 18.9% and 4.03 kBtu/sq.ft Gas</li> -->
+<!--     <li>Buildings invested in <code>Buildings Envelope</code> saved on average 15.8% and 6.25 kBtu/sq.ft Electricity, 22.4% and 8.89 kBtu/sq.ft Gas</li> -->
+<!--     <li>Buildings invested in <code>HVAC</code> saved on average 33% and 14.04 kBtu/sq.ft Electricity, 25.5% and 9.95 kBtu/sq.ft Gas</li> -->
+<!--     <li>Buildings invested in <code>Lighting</code> saved on average 22% and 8.23 kBtu/sq.ft Electricity</li> -->
+<!--     <li>Buildings invested in <code>GSALink</code> saved on average 31.5% and 26.48 kBtu/sq.ft Electricity</li> -->
+<!--   </ul> -->
+<!-- <p>Solo detail level ECM Action -->
+<!--   <ul> -->
+<!--     <li>Buildings invested in <code>Advanced Metering - Building/Facility</code> saved on average 10.8% and 3.53 kBtu/sq.ft Electricity, 16.7% and 2.88 kBtu/sq.ft Gas</li> -->
+<!--     <li>Buildings invested in <code>Advanced Metering - Submetering</code> saved on average 23.7 % and 11.16 kBtu/sq.ft Electricity, 20.5% and 4.88 kBtu/sq.ft Gas</li> -->
+<!--     <li>Buildings invested in <code>Building Envelope - New Roof</code> saved on average 4.1% and 2.21 kBtu/sq.ft Electricity</li> -->
+<!--     <li>Buildings invested in <code>HVAC - New Air Handler</code> saved on average 45.6% and 19.65kBtu/sq.ft Electricity, 24.9% and 11.21 kBtu/sq.ft Gas</li> -->
+<!--     <\!-- <li>Buildings invested in <code>Advanced Metering - Building/Facility</code> saved on average xx % and xx kBtu/sq.ft Electricity, xx % and xx kBtu/sq.ft Gas</li> -\-> -->
+<!--     <\!-- <li>Buildings invested in <code>Advanced Metering - Submetering</code> saved on average xx % and xx kBtu/sq.ft Electricity, xx % and xx kBtu/sq.ft Gas</li> -\-> -->
+<!--     <\!-- <li>Buildings invested in <code>Building Envelope - New Roof</code> saved on average xx % and xx kBtu/sq.ft Electricity, xx % and xx kBtu/sq.ft Gas</li> -\-> -->
+<!--     <\!-- <li>Buildings invested in <code>Building Envelope - Repair Roof</code> saved on average xx % and xx kBtu/sq.ft Electricity, xx % and xx kBtu/sq.ft Gas</li> -\-> -->
+<!--     <\!-- <li>Buildings invested in <code>Building Envelope - Repair Window</code> saved on average xx % and xx kBtu/sq.ft Electricity, xx % and xx kBtu/sq.ft Gas</li> -\-> -->
+<!--     <\!-- <li>Buildings invested in <code>HVAC - New Air Handler</code> saved on average xx % and xx kBtu/sq.ft Electricity, xx % and xx kBtu/sq.ft Gas</li> -\-> -->
+<!--   </ul> -->
+<!--     <p> Combined High Level Action -->
+<!--   <ul> -->
+<!--     <li>Buildings invested in <code>Advanced Metering + Envelope</code> saved on average 16.2% and 7.06 kBtu/sq.ft Electricity, 4% and 2.10 kBtu/sq.ft Gas</li> -->
+<!--     <li>Buildings invested in <code>Advanced Metering + HVAC</code> saved on average 16.4% and 4.59 kBtu/sq.ft Electricity, 6.1% and 1.3 kBtu/sq.ft Gas</li> -->
+<!--     <li>Buildings invested in <code>Commissioning and one other action</code> saved on average 11.8% and 4.70 kBtu/sq.ft Electricity, 27.2% and 10.24 kBtu/sq.ft Gas</li> -->
+<!--     <li>Buildings invested in <code>GSALink after capital actions</code> saved on average 12.9% and 4.54kBtu/sq.ft Electricity, 18.7% and 4.95 kBtu/sq.ft Gas</li> -->
+<!--     <li>Buildings invested in <code>four or five actions</code> saved on average 21.8% and 8.08 kBtu/sq.ft Electricity, 22.6% and 8.42 kBtu/sq.ft Gas</li> -->
+<!--     <li>Buildings invested in <code>Advanced Metering + Commissioning</code> saved on average 2.9% and 1.13kBtu/sq.ft Electricity</li> -->
+<!--     <\!-- <li>Buildings invested in <code>Advanced Metering + Commissioning</code> saved on average 2.9% and 1.13kBtu/sq.ft Electricity, xx % and xx kBtu/sq.ft Gas</li> -\-> -->
+<!--     <\!-- <li>Buildings invested in <code>HVAC + Commissioning</code> saved on average xx % and xx kBtu/sq.ft Electricity, xx % and xx kBtu/sq.ft Gas</li> -\-> -->
+<!--     <\!-- <li>Buildings invested in <code>Buildings Envelope + Commissioning</code> saved on average xx % and xx kBtu/sq.ft Electricity, xx % and xx kBtu/sq.ft Gas</li> -\-> -->
+<!--   </ul> -->
+    <h4> Solo High Level Action </h4>
+    <table align="center">
+      <tr>
+	<th>Electric</th>
+	<th>Gas</th>
+      </tr>
+      <tr>
+    <td><img src="quant/saving_by_act_yuzhe/advanced_metering_only_elec.png" alt="to be added" style="width:90%"></td>
+    <td><img src="quant/saving_by_act_yuzhe/advanced_metering_only_gas.png" alt="to be added" style="width:90%"></td>
+      </tr>
+      <tr>
+        <th colspan="2">Buildings invested in <code>Advanced Metering</code> saved on average 15.1% and 6.07 kBtu/sq.ft Electricity, 18.9% and 4.03 kBtu/sq.ft Gas</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/envelope_only_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img src="quant/saving_by_act_yuzhe/envelope_only_gas.png" alt="to be added" style="width:90%"></th>
+      </tr>
+      <tr>
+    <th colspan="2">Buildings invested in <code>Buildings Envelope</code> saved on average 15.8% and 6.25 kBtu/sq.ft Electricity, 22.4% and 8.89 kBtu/sq.ft Gas</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/hvac_only_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img src="quant/saving_by_act_yuzhe/hvac_only_gas.png" alt="to be added" style="width:90%"></th>
+      </tr>
+      <tr>
+    <th colspan="2">Buildings invested in <code>HVAC</code> saved on average 33% and 14.04 kBtu/sq.ft Electricity, 25.5% and 9.95 kBtu/sq.ft Gas</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/lighting_only_elec.png" alt="to be added" style="width:90%"></th>
+      </tr>
+      <tr>
+    <th colspan="2">Buildings invested in <code>Lighting</code> saved on average 22% and 8.23 kBtu/sq.ft Electricity</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/gsalink_only_elec.png" alt="to be added" style="width:90%"></th>
+      </tr>
+      <tr>
+    <th colspan="2">Buildings invested in <code>GSALink</code> saved on average 31.5% and 26.48 kBtu/sq.ft Electricity</th>
+      </tr>
+    </table>
+    
+    <h4>Solo detail level ECM Action</h4>
+    <table align="center">
+      <tr>
+	<th>Electric</th>
+	<th>Gas</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/advanced_metering_building_facility_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img src="quant/saving_by_act_yuzhe/advanced_metering_building_facility_gas.png" alt="to be added" style="width:90%"></th>
+      </tr>
+    <th colspan="2">Buildings invested in <code>Advanced Metering - Building/Facility</code> saved on average 10.8% and 3.53 kBtu/sq.ft Electricity, 16.7% and 2.88 kBtu/sq.ft Gas</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/advanced_metering_submetering_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img src="quant/saving_by_act_yuzhe/advanced_metering_submetering_gas.png" alt="to be added" style="width:90%"></th>
+      </tr>
+      <tr>
+    <th colspan="2">Buildings invested in <code>Advanced Metering - Submetering</code> saved on average 23.7 % and 11.16 kBtu/sq.ft Electricity, 20.5% and 4.88 kBtu/sq.ft Gas</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/envelope_new_roof_elec.png" alt="to be added" style="width:90%"></th>
+    <!-- <th><img src="quant/saving_by_act_yuzhe/envelope_new_roof_gas.png" alt="to be added" style="width:90%"></th> -->
+      </tr>
+      <tr>
+    <th colspan="2">Buildings invested in <code>Building Envelope - New Roof</code> saved on average 4.1% and 2.21 kBtu/sq.ft Electricity</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/HVAC_new_air_handler_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img src="quant/saving_by_act_yuzhe/HVAC_new_air_handler_gas.png" alt="to be added" style="width:90%"></th>
+      </tr>
+      <tr>
+    <th colspan="2">Buildings invested in <code>HVAC - New Air Handler</code> saved on average 45.6% and 19.65kBtu/sq.ft Electricity, 24.9% and 11.21 kBtu/sq.ft Gas</th>
+    </table>
+    <h4> Combined High Level Action </h4>
+    <table align="center">
+      <tr>
+	<th>Electric</th>
+	<th>Gas</th>
+      </tr>
+      <tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/advanced_metering_and_envelope_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img src="quant/saving_by_act_yuzhe/advanced_metering_and_envelope_gas.png" alt="to be added" style="width:90%"></th>
+      </tr>
+      <tr>
+    <th colspan="2">Buildings invested in <code>Advanced Metering + Envelope</code> saved on average 16.2% and 7.06 kBtu/sq.ft Electricity, 4% and 2.10 kBtu/sq.ft Gas</th>
+      </tr>
+      <tr>
+
+    <th><img src="quant/saving_by_act_yuzhe/advanced_metering_and_hvac_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img src="quant/saving_by_act_yuzhe/advanced_metering_and_hvac_gas.png" alt="to be added" style="width:90%"></th>
+      </tr>
+      <tr>
+    <th colspan="2">Buildings invested in <code>Advanced Metering + HVAC</code> saved on average 16.4% and 4.59 kBtu/sq.ft Electricity, 6.1% and 1.3 kBtu/sq.ft Gas</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/commissioning_and_one_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img src="quant/saving_by_act_yuzhe/commissioning_and_one_gas.png" alt="to be added" style="width:90%"></th>
+      </tr>
+      <tr>
+    <th colspan="2">Buildings invested in <code>Commissioning and one other action</code> saved on average 11.8% and 4.70 kBtu/sq.ft Electricity, 27.2% and 10.24 kBtu/sq.ft Gas</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/gsalink_after_c_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img src="quant/saving_by_act_yuzhe/gsalink_after_c_gas.png" alt="to be added" style="width:90%"></th>
+      </tr>
+      <tr>
+    <th colspan="2">Buildings invested in <code>GSALink after capital actions</code> saved on average 12.9% and 4.54kBtu/sq.ft Electricity, 18.7% and 4.95 kBtu/sq.ft Gas</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/over_four_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img src="quant/saving_by_act_yuzhe/over_four_gas.png" alt="to be added" style="width:90%"></th>
+      </tr>
+      <tr>
+    <th colspan="2">Buildings invested in <code>four or five actions</code> saved on average 21.8% and 8.08 kBtu/sq.ft Electricity, 22.6% and 8.42 kBtu/sq.ft Gas</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/advanced_metering_and_commissioning_elec.png" alt="to be added" style="width:90%"></th>
+      </tr>
+      <tr>
+    <th colspan="2">Buildings invested in <code>Advanced Metering + Commissioning</code> saved on average 2.9% and 1.13kBtu/sq.ft Electricity</th>
+      </tr>
+    </table>
+  <h2 id="table">Single building stories</h2>
+  <ul>
+  <li>Energy saving stories for buildings with robust gas + electric data: <a href="robust_energy_link.html">link</a></li>
+  <li>Energy saving stories for buildings with robust electric data: <a href="robust_electric_link.html">link</a></li>
+  </ul>
+		    </div>
+	    </div>
+	    <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+    <!-- JQuery scripts -->
+<script src="assets/js/jquery-1.11.2.min.js"></script>
+    <!-- Bootstrap Core scripts -->
+    <script src="assets/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!-- template source: http://maxdesign.com.au/jobs/css-layouts/01-bootstrap-kickoff-template/ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Weather Normalization and Saving Computing Method</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Description" lang="en" content="ADD SITE DESCRIPTION">
+    <meta name="author" content="ADD AUTHOR INFORMATION">
+    <meta name="robots" content="index, follow">
+
+    <!-- icons -->
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Bootstrap Core CSS file -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <!-- Override CSS file - add your own CSS rules -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <!-- Conditional comment containing JS files for IE6 - 8 -->
+    <!--[if lt IE 9]>
+	    <script src="assets/js/html5.js"></script>
+	    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+    </head>
+<title>Weather Normalization and Saving Computing Method</title>
+<body>
+    <!-- Navigation -->
+	    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#pagetop">GSA Appendix</a>
+				</div>
+				<!-- /.navbar-header -->
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="#method">Weather Normalization Method</a></li>
+
+					</ul>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+		<!-- /.navbar --> 
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+	<!-- Page breadcrumb -->
+	<ol class="breadcrumb">
+	    <li><a href="#method">Home</a></li>
+	    <li><a href="level2.html">Level 2 analysis</a></li>
+	    <li class="active">Weather Normalization</li>
+	</ol>
+
+  <h2 id="method">Weather Normalized Saving Calculation Methodology</h1>
+  <p>The weather normalized saving for each action or group of action is computed with the three <code>inputs</code></p>
+  <ul>
+    <li>Monthly energy: from EUAS data set</li>
+    <li>Monthly average temperature: from <a href="http://www.osisoft.com/pi-system/">PI system</a></li>
+    <li>ECM action</li>
+      <ul>
+	<li>excel: Covered_Facilities_All Energy mmBTUs_FY14_EISA07Sec432</li>
+	<li><a href="http://ctsedwweb.ee.doe.gov/CTSDataAnalysis/Reports/PublicReport_ProjectsByFiscalYear.aspx">CTS</a></li>
+	<li>excel: Light-Touch M_V</a></li>
+	<li>excel: Portfolio HPGB Dashboard</li>
+	<li>excel: GSAlink_Buildings_First_55</li>
+      </ul>
+  </ul>
+  <p>The computing <code>process</code> is</p>
+ <ol>
+   <li>tidy data: tidy the ECM action inputs into such
+   a <a href="EUAS_ecm.html">table</a> format and group actions
+   by building_number and substantial_completion_date
+   <li>define evaluation period: the period before
+   "substantial_completion_date" of an action or a group of actions up
+   to 3 years is defined as the <code>"pre" period</code>, the time
+   period after the "substantial_completion_date" of an action or a
+   group of actions is defined as the <code>"post" period</code>
+   <li>compute lean regression for the "pre" period and return:
+  regression parameters, error estimates, actual measurement, etc. 
+   <li>compute estimated consumption: for the "post" period, compute
+  the estimated monthly consumption by applying the "pre" period model
+  on the monthly average temperature of the "post" period.
+   <li>Aggregate the monthly of 2 to 3 year period to one year for
+  both the "pre" and "post" period: Compute the <code>average actual
+  monthly</code> consumption (group by month, aggregate by mean), A_i
+  (i in {1, 2, ..., 12}). Compute the <code>average estimated
+  monthly</code> consumption, E_i (i = {1, 2, ..., 12})
+   <li>compute saving:<br>
+  total actual consumption A = \sum(A_i)<br>
+  total estimated consumption E = \sum(E_i)<br>
+  saving percent = (E - A)/E<br>
+  saving amount = E - A<br>
+     </ol>
+</li>
+  </ul>
+		    </div>
+	    </div>
+	    <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+    <!-- JQuery scripts -->
+<script src="assets/js/jquery-1.11.2.min.js"></script>
+    <!-- Bootstrap Core scripts -->
+    <script src="assets/js/bootstrap.min.js"></script>
+</body>
+</html>
