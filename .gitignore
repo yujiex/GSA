@@ -1,7 +1,15 @@
+merge/.Rhistory
 merge/csv/
 merge/csv_FY/
 merge/plot_FY/
+merge/plot_dynamic/
 merge/plot_FY_cal/
+merge/plot_interval/
+merge/plot_interval_hour/
+merge/plot_FY_annual/quant/
+merge/plot_FY_annual/quant_data/
+merge/plot_FY_annual/table/
+merge/plot_FY_annual/assets/
 merge/plot_FY_pie/
 merge/plot_FY_weather/
 merge/input/
