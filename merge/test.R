@@ -4,6 +4,7 @@ library(RColorBrewer)
 library(plyr)
 library(stringr)
 library(Rmisc)
+library(dplyr)
 n <- 60
 qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
 col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
@@ -17,7 +18,6 @@ df <- df[df$Fiscal_Year < 2016,]
 df$Cat <- factor(df$Cat, levels=c("A", "I", "C", "B", "D", "E"))
 ggplot(df, aes(Fiscal_Year, fill=Cat)) + geom_bar() + ylab("Building Count") + labs(title="EUAS Building Count By Category") + scale_fill_brewer(palette="Set3")
 ggsave(file="plot_FY_annual/quant/building_by_cat.png", width=8, height=4, units="in")
-
 
 ## Building type count by year
 colors = (c(brewer.pal(12, 'Set3'), "gray"))
@@ -117,6 +117,79 @@ ggsave(file="plot_FY_annual/quant/co_energy.png", width=8, height=4, units="in")
 
 library(plyr)
 library(stringr)
+getType <- function(s) {
+    if (s %in% c("GSALink", "Advanced Metering", "LEED_EB", "GP", "first fuel", "Shave Energy", "E4")) {
+        return("Operational")
+    }
+    else {
+        return("Capital")
+    }
+}
+give.n <- function(x){
+return(c(y = median(x)*1.10, label = length(x))) 
+}
+# function for mean labels
+mean.n <- function(x){
+return(c(y = median(x)*0.97, label = round(mean(x),2))) 
+# experiment with the multiplier to find the perfect position
+}
+# function for median labels
+median.n <- function(x){
+return(c(y = median(x)*0.92, label = round(median(x),1))) 
+# experiment with the multiplier to find the perfect position
+}
+actionCountEUIgb <- function(cat, plottype) {
+    df1 = dbGetQuery(con, 'SELECT DISTINCT Building_Number, high_level_ECM from EUAS_ecm WHERE high_level_ECM != \'GSALink\'')
+    df2 = dbGetQuery(con, 'SELECT Building_Number, ECM_Program from EUAS_ecm_program')
+    if (cat == "AI") {
+        query = sprintf('SELECT Building_Number, Fiscal_Year, eui from eui_by_fy WHERE Cat in (%s) AND Fiscal_Year in (\'2003\', \'2015\')', '\'A\', \'I\'')
+    }
+    else {
+        query = sprintf('SELECT Building_Number, Fiscal_Year, eui from eui_by_fy WHERE Fiscal_Year in (\'2003\', \'2015\')')
+    }
+    df3 = dbGetQuery(con, query)
+    df1 <- df1[complete.cases(df1),]
+    df2 <- df2[complete.cases(df2),]
+    print(names(df1))
+    print(names(df2))
+    df1 <- plyr::rename(df1, c("high_level_ECM"="investment"))
+    df2 <- plyr::rename(df2, c("ECM_program"="investment"))
+    df = rbind(df1, df2)
+    ## need to correct GP
+    dfall = merge(df, df3, by="Building_Number", all.x=TRUE)
+    dfall$type = sapply(dfall$investment, getType)
+    dfall$type <-
+        factor(dfall$type, levels=c("Capital", "Operational"))
+    dfall <- dfall[complete.cases(dfall),]
+    dfall$Fiscal_Year <- factor(dfall$Fiscal_Year)
+    dfall$investment <-
+    factor(dfall$investment, levels=c("LEED_EB","ESPC","GSALink",
+                                      "first fuel",
+                                      "Building Tuneup or Utility Improvements",
+                                      "HVAC","Lighting",
+                                      "Advanced Metering","GP","E4",
+                                      "Building Envelope",
+                                      "Shave Energy","LEED_NC"))
+    dfall %>% dplyr::group_by(investment, Fiscal_Year) %>% dplyr::summarize(median=median(eui)) %>% write.csv(file="/media/yujiex/work/GSA/merge/plot_FY_annual/quant_data/box03vs15.csv")
+    p <- ggplot(dfall, aes(x=investment, y=eui, fill=Fiscal_Year))
+    if (plottype == "vio") {
+        p <- p + geom_violin()
+    }
+    else if (plottype == "box") {
+        p <- p + geom_boxplot()
+    }
+    p <- p + ylab("kBtu/sq.ft") +
+        labs(title=sprintf("Electric + Gas EUI by Energy Investment %s Building in FY2003 vs FY2015", cat)) +
+        scale_fill_brewer(palette="Accent") +
+        theme(legend.position="bottom") +
+        scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+        stat_summary(fun.data=give.n, geom="text", fun.y=median, position=position_dodge(width = 0.75), size=3) +
+        stat_summary(fun.data=median.n, geom="text", fun.y=median, position=position_dodge(width = 0.75), size=3)
+    ggsave(file=sprintf("plot_FY_annual/quant/invest_eui_1315.png", cat, plottype), width=12, height=6, units="in")
+    print(p)
+}
+actionCountEUIgb("AI", "box")
+
 getType <- function(s) {
     if (s %in% c("GSALink", "Advanced Metering", "LEED_EB", "GP", "first fuel", "Shave Energy", "E4")) {
         return("Operational")
