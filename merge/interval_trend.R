@@ -4,6 +4,7 @@ library("xts")
 library("htmlwidgets")
 ## hourly
 con = dbConnect(drv=RSQLite::SQLite(), dbname="csv_FY/db/interval_ion.db")
+
 ids = dbGetQuery(con, 'SELECT DISTINCT Building_Number FROM gas')[['Building_Number']]
 for (x in ids) {
     query = paste0(sprintf("SELECT Building_Number, SUM([Gas_(CubicFeet)]) AS Gas, Timestamp FROM gas WHERE Building_Number = '%s'", x), " GROUP BY STRFTIME('%Y', Timestamp), STRFTIME('%m', Timestamp), STRFTIME('%d', Timestamp), STRFTIME('%H', Timestamp);")
@@ -39,25 +40,20 @@ for (x in ids) {
     dygraph(timeseries, xlab='Time', ylab='KWH', main=paste0(x, ' Electric')) %>% dyRangeSelector() %>% saveWidget(sprintf("plot_interval/%s_electric.html", x), selfcontained=FALSE,libdir="plot_interval")
 }
 
-library("dygraphs")
-library("xts")
-library("htmlwidgets")
-df = read.csv("csv_FY/temp/MA0131ZZ.csv")
-head(df)
-tsEnergy = xts(df["Electric_.KWH."], as.POSIXlt(df$Timestamp))
-tsOutMild = xts(df["outlier_mild"], as.POSIXlt(df$Timestamp))
-tsOutExt = xts(df["outlier_extreme"], as.POSIXlt(df$Timestamp))
-head(tsEnergy)
-dygraph(cbind(tsOut, tsEnergy, tsOutExt)) %>% dyRangeSelector %>% print()
-
-## test
-library("DBI")
-library("dygraphs")
-library("xts")
-x = "MA0131ZZ"
+## after remove outlier
 con = dbConnect(drv=RSQLite::SQLite(), dbname="csv_FY/db/interval_ion.db")
-p1 = dbGetQuery(con,sprintf('SELECT * FROM electric WHERE Building_Number = \'%s\'', x))
-head(p1)
-timeseries = xts(p1["Electric_(KWH)"], as.POSIXlt(p1$Timestamp))
-head(timeseries)
-dygraph(timeseries, xlab='Time', ylab='KWH', main=paste0(x, ' Electric')) %>% dyRangeSelector() %>% print()
+ids = dbGetQuery(con, 'SELECT DISTINCT Building_Number FROM gas_outlier_tag')[['Building_Number']]
+for (x in ids) {
+    print(x)
+    p1 = dbGetQuery(con,sprintf('SELECT * FROM gas_outlier_tag WHERE Building_Number = \'%s\' AND outlier == \'0\'', x)) ## original
+    timeseries = xts(p1["Gas_(CubicFeet)"], as.POSIXlt(p1$Timestamp))
+    dygraph(timeseries, xlab='Time', ylab='Cubic Feet', main=paste0(x, 'Gas')) %>% dyRangeSelector() %>% saveWidget(sprintf("remove_outlier_gas/%s_gas.html", x), selfcontained=FALSE,libdir="remove_outlier_gas")
+}
+
+ids = dbGetQuery(con, 'SELECT DISTINCT Building_Number FROM electric_outlier_tag')[['Building_Number']]
+for (x in ids) {
+    print(x)
+    p1 = dbGetQuery(con,sprintf('SELECT * FROM electric_outlier_tag WHERE Building_Number = \'%s\' AND outlier = \'0\'', x))
+    timeseries = xts(p1["Electric_(KWH)"], as.POSIXlt(p1$Timestamp))
+    dygraph(timeseries, xlab='Time', ylab='KWH', main=paste0(x, ' Electric')) %>% dyRangeSelector() %>% saveWidget(sprintf("remove_outlier_elec/%s_electric.html", x), selfcontained=FALSE,libdir="remove_outlier_elec")
+}
