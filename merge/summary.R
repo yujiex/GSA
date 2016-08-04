@@ -399,3 +399,64 @@ p <- ggplot(df, aes(x=Fiscal_Year, y=Gross_Sq.Ft))
 p <- p + geom_boxplot()
 print(p)
 ggsave(file=sprintf("plot_FY_annual/quant/area_byyear_%s.png", cat), width=8, height=4, units="in")
+
+# energy trend vs PNNL
+## input = "aci_all"
+input = "ai_good_eng"
+title = "A + I"
+eng = "robust energy"
+df1 = read.csv(sprintf("input_R/%s.csv", input))
+df2 = read.csv("input_R/pnnl.csv")
+df1$Year <- (df1$Year)
+df2$Year <- (df2$Year)
+p1 <- ggplot(df1, aes(x=Year, y=EUI_Btu_per_SF)) +
+    geom_line(color="red") +
+    geom_point(color="red") +
+    theme(legend.position="none") +
+    ggtitle(sprintf("%s in EUAS data set (%s), EUI", title, eng)) +
+    ylim(40000, 95000) +
+    scale_x_continuous(breaks=seq(2003, 2015, 1)) +
+    geom_text(label=df1$EUI_Btu_per_SF, vjust=0, size=3.5)
+p2 <- ggplot(df2, aes(x=Year, y=EUI_Btu_per_SF)) +
+    geom_line(color="red") +
+    geom_point(color="red") +
+    ggtitle("PNNL study, EUI") +
+    theme(legend.position="none") +
+    ylim(40000, 95000) +
+    scale_x_continuous(breaks=seq(2003, 2015, 1)) +
+    geom_text(label=df2$EUI_Btu_per_SF, vjust=0, size=3.5)
+p3 <- ggplot(df1, aes(x=Year, y=Energy_Use_BBtu)) +
+    geom_line(color="blue") +
+    geom_point(color="blue") +
+    theme(legend.position="none") +
+    ggtitle(sprintf("%s in EUAS data set (%s), Energy Use", title, eng)) +
+    ylim(5000, 18000) +
+    scale_x_continuous(breaks=seq(2003, 2015, 1)) +
+    geom_text(label=df1$Energy_Use_BBtu, vjust=0, size=3.5)
+p4 <- ggplot(df2, aes(x=Year, y=Energy_Use_BBtu)) +
+    geom_line(color="blue") +
+    geom_point(color="blue") +
+    theme(legend.position="none") +
+    ggtitle("PNNL study, Energy Use") +
+    ylim(5000, 18000) +
+    scale_x_continuous(breaks=seq(2003, 2015, 1)) +
+    geom_text(label=df2$Energy_Use_BBtu, vjust=0, size=3.5)
+p5 <- ggplot(df1, aes(x=Year, y=Floor_Space_kSF)) +
+    geom_line(color="green") +
+    geom_point(color="green") +
+    theme(legend.position="none") +
+    ggtitle(sprintf("%s in EUAS data set (%s), Square Footage", title, eng)) +
+    ylim(80000, 200000) +
+    scale_x_continuous(breaks=seq(2003, 2015, 1)) +
+    geom_text(label=df1$Floor_Space_kSF, vjust=0, size=3.5)
+p6 <- ggplot(df2, aes(x=Year, y=Floor_Space_kSF)) +
+    geom_line(color="green") +
+    geom_point(color="green") +
+    theme(legend.position="none") +
+    ggtitle("PNNL study, Square Footage") +
+    ylim(80000, 200000) +
+    scale_x_continuous(breaks=seq(2003, 2015, 1)) +
+    geom_text(label=df2$Floor_Space_kSF, vjust=0, size=3.5)
+png(file=sprintf("plot_FY_annual/quant/%s_trend.png", input), width=14, height=7, units="in", res=300)
+multiplot(p1, p3, p5, p2, p4, p6, cols=2)
+dev.off()
