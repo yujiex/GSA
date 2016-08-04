@@ -477,6 +477,59 @@ def summary_long(measure_type):
     indir = os.getcwd() + '/input/FY/interval/ion_0627/summary_long/'
     with open (indir + 'summary_{0}.csv'.format(measure_type), 'w+') as wt:
         wt.write('\n'.join(lines))
+        
+def create_index_interval():
+    files = glob.glob(os.getcwd() +
+                      '/input/FY/interval/ion_0627/summary_long/*.csv')
+    def type_err(n_outlier, n_neg):
+        if n_outlier > n_neg:
+            if n_neg > 0:
+                return 'negative|extreme'
+            else:
+                return 'extreme'
+        else:
+            if n_neg > 0:
+                return 'negative|extreme'
+            else:
+                return 'NA'
+
+    df_err = pd.read_csv(homedir + 'temp/Updated error Table.csv')
+    err_dict = dict(zip(df_err['Building_Number'], df_err['type_of_err']))
+    clean_dict = dict(zip(df_err['Building_Number'], df_err['Cleaning Methods']))
+    for f in files:
+        df1 = pd.read_csv(f)
+        measure_type = f[f.rfind('_') + 1: f.rfind('.')]
+        print measure_type
+        df1 = df1[['Building_Number', 'min_time', 'max_time', 'expect_count', 'missing_count', 'neg_count']]
+        df2 = pd.read_csv(os.getcwd() +
+                          '/input/FY/interval/ion_0627/summary_long/outlier/{0}_outlier.csv'.format(measure_type))
+        df = pd.merge(df1, df2, on='Building_Number', how='left')
+        df['max_time'] = pd.to_datetime(df['max_time'])
+        df['min_time'] = pd.to_datetime(df['min_time'])
+        df['data_time_span'] = df['max_time'] - df['min_time']
+        df['percent_data_available'] = df.apply(lambda r: '{0:.2%}'.format(1 - float(r['missing_count'])/r['expect_count']), axis=1)
+        df['before_cleaning'] = df['Building_Number'].map(lambda x: '<a href="trend/{0}_{1}.html">link</a>'.format(x, measure_type))
+        if measure_type == 'gas':
+            df['type_of_err'] = df.apply(lambda r: type_err(r['n_outlier'], r['neg_count']), axis=1)
+        else:
+            df['type_of_err'] = df['Building_Number'].map(lambda x: err_dict[x])
+        df['after_cleaning'] = df['Building_Number'].map(lambda x: '<a href="trend_no/{0}_{1}.html">link</a>'.format(x, measure_type))
+        if measure_type == 'electric':
+            df['Cleaning Method'] = df['Building_Number'].map(lambda x: clean_dict[x])
+        df = df[['Building_Number', 'data_time_span', 
+                 'percent_data_available', 'before_cleaning', 'after_cleaning', 'type_of_err', 'Cleaning Method']]
+        print df.head()
+        outfile = f.replace('.csv', '.html')
+        outfile = outfile.replace('/input/FY/interval/ion_0627/summary_long/', '/plot_FY_weather/html/interval/')
+        df.to_html(outfile, index=False)
+        with open(outfile, 'r') as rd:
+            lines = rd.readlines()
+        for i in range(len(lines)):
+            lines[i] = lines[i].replace('&lt;', '<')
+            lines[i] = lines[i].replace('&gt;', '>')
+            lines[i] = lines[i].replace('...', '')
+        with open(outfile, 'w') as wt:
+            wt.write(''.join(lines))
     
 def summary_wide(measure_type):
     conn = uo.connect('interval_ion_single')
@@ -887,7 +940,7 @@ def check_0705():
 def code_0712():
     # add_temperature_long_gsalink()
     for measure_type in ['electric', 'gas']:
-        # plot_scatter_long('status_week_day_night_nonflex', measure_type)
+        plot_scatter_long('status_week_day_night_nonflex', measure_type)
         # uo.dir2html(os.getcwd() + '/input/FY/interval/ion_0627/{0}_scatter/'.format(measure_type), '*_status_week_day_night_nonflex.png', 'ION {0} setback by year'.format(measure_type), '{0}_byyear.html'.format(measure_type))
         files = glob.glob(os.getcwd() + '/input/FY/interval/ion_0627/{0}_scatter/*'.format(measure_type))
         for f in files:
@@ -896,7 +949,8 @@ def code_0712():
     return
         
 def main():
-    code_0712()
+    create_index_interval()
+    # code_0712()
     # check_0705()
     # for measure_type in ['electric', 'gas']:
     # for measure_type in ['electric']:

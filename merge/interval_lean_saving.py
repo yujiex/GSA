@@ -68,11 +68,17 @@ def mad_based_outlier(points, thresh=5):
 
     return modified_z_score > thresh
 
-def pos_p60_based_outlier(points, threshold=50):
+# def pos_p60_based_outlier(points, threshold=50):
+#     positive = [x for x in points if x > 0]
+#     p60 = np.percentile(positive, 80, axis=0)
+#     pos_median = np.median([x for x in points if x > p60], axis=0)
+#     return [(x > threshold * pos_median) or (x < 0) for x in points]
+
+def pos_p60_based_outlier(points, threshold=5):
     positive = [x for x in points if x > 0]
-    p60 = np.percentile(positive, 80, axis=0)
+    p60 = np.percentile(positive, 90, axis=0)
     pos_median = np.median([x for x in points if x > p60], axis=0)
-    return [(x > threshold * pos_median) for x in points]
+    return [(x > threshold * pos_median) or (x < 0) for x in points]
 
 def pos_median_based_outlier(points, threshold=50):
     positive = [x for x in points if x > 0]
@@ -112,6 +118,22 @@ def box_based_roll_outlier(points, nb_size=1000):
         outlier_extreme.append(indicator)
     return outlier_mild, outlier_extreme
 
+def pos_p60_based_roll_outlier(points, nb_size=1000):
+    length = len(points)
+    outlier = []
+    print length
+    for i in range(length):
+        nb = neighbor(points, i, nb_size)
+        # print i
+        lower = 0
+        positive = [x for x in nb if x > 0]
+        p60 = np.percentile(positive, 90, axis=0)
+        pos_median = np.median([x for x in nb if x > p60], axis=0)
+        upper = 1.5 * pos_median
+        indicator = points[i] < lower or points[i] > upper
+        outlier.append(indicator)
+    return outlier
+
 def median_based_outlier(points, threshold=50):
     median = np.median(points, axis=0)
     return [(x > threshold * median) for x in points]
@@ -140,7 +162,10 @@ def plot(x):
 
 def show_outlier(points, b, method, measure_type, threshold, plot=False):
     if method == 'box':
-        outliers_mild, outlier_extreme = box_based_roll_outlier(points, nb_size=3000)
+        outliers_mild, outliers_extreme = box_based_roll_outlier(points, nb_size=500)
+        return outliers_mild, outliers_extreme
+    elif method == 'pos_roll':
+        outliers = pos_p60_based_roll_outlier(points, nb_size=200)
     elif method == 'upper':
         outliers = pos_p60_based_outlier(points, threshold)
     elif method == 'percentile':
@@ -239,6 +264,36 @@ def plot_outlier(measure_type):
         df.to_csv(homedir + 'temp/{0}.csv'.format(b), index=False)
     return
 
+def remove_outliers(measure_type):
+    value_lb_dict = {'electric': 'Electric_(KWH)', 'gas':
+                     'Gas_(CubicFeet)'}
+    col = value_lb_dict[measure_type]
+    conn = uo.connect('interval_ion')
+    dfs = []
+    with conn:
+        df_bs = pd.read_sql('SELECT * FROM {0}_id_station'.format(measure_type), conn)
+    bs_pair = zip(df_bs['Building_Number'], df_bs['ICAO'])
+    # bs_pair = [x for x in bs_pair if x[0] == 'AL0039AB']
+    for i, (b, s) in enumerate(bs_pair):
+        print i, b
+        with conn:
+            df = pd.read_sql('SELECT * FROM {0} WHERE Building_Number = \'{1}\''.format(measure_type, b), conn)
+        # df = df.head(n = 5000)
+        # df.info()
+        points = df[col]
+        outliers = show_outlier(points, b, 'upper', measure_type, 1.5)
+        # outliers = show_outlier(points, b, 'pos_roll', measure_type, 1.5)
+        # mild, outliers = show_outlier(points, b, 'box', measure_type, 1.5)
+        df['outlier'] = outliers
+        print len([x for x in outliers if x])
+        dfs.append(df)
+    df_all = pd.concat(dfs, ignore_index=True)
+    print df_all.head()
+    with conn:
+        df_all.to_sql('{0}_outlier_tag'.format(measure_type),
+                      conn, if_exists='replace')
+    return
+
 def fit_time(measure_type, occtime):
     conn = uo.connect('interval_ion')
     with conn:
@@ -313,7 +368,7 @@ def fit(measure_type):
     # test = ['TN0088ZZ', 'TX0057ZZ', 'NY0281ZZ', 'NY0304ZZ', 'MO0106ZZ']
     # test = ['NM0050ZZ']
     # bs_pair = [x for x in bs_pair if x[0] in test]
-    lines = ['Building_Number,week night save%, weekend day save%, weekend night save%, aggregate save%, CVRMSE week night, CVRMSE weekend day, CVRMSE weekend night']
+    lines = ['Building_Number,week night save%,weekend day save%,weekend night save%,aggregate save%,CVRMSE week day,CVRMSE week night,CVRMSE weekend day,CVRMSE weekend night']
     print len(bs_pair)
     for b, s in bs_pair:
         print b, s
@@ -356,12 +411,13 @@ def fit(measure_type):
     with open(os.getcwd() + '/input/FY/interval/ion_0627/table/{0}_save.csv'.format(measure_type), 'w+') as wt:
         wt.write('\n'.join(lines))
     return
-        
+    
 def compute_saving_all(d0, d1, d2, d3, axarr):
     if None in [d0, d1, d2, d3]:
         return
     save = []
     err = []
+    err.append('{0:.3f}'.format(d0['CV(RMSE)']))
     save_percent = compute_saving(d0, d1, sum(d2['y']) + sum(d3['y']))
     axarr[0, 1].set_title('{0}\nbreak point {1}F, CV(RMSE): {2:.3f}, save {3:.2%}'.format('week night', d1['breakpoint'], d1['CV(RMSE)'], save_percent))
     save.append('{0:.2%}'.format(save_percent))
@@ -515,16 +571,27 @@ def plot_saving_oneplot(occtime):
         fit_time(measure_type, occtime)
         plot_json('piecewise_all', measure_type, occtime)
     
+def get_low_err_lean():
+    files = glob.glob(os.getcwd() + '/input/FY/interval/ion_0627/table/*.csv')
+    for f in files:
+        df = pd.read_csv(f)
+        df = df[df['CVRMSE week day'] < 0.35]
+        df.to_csv(f.replace('.csv', '_lowerr.csv'), index=False)
+    return
+
 def main():
-    plot_saving_oneplot('weekend day')
-    plot_saving_oneplot('weekend night')
+    # remove_outliers('electric')
+    remove_outliers('gas')
+    # plot_saving_oneplot('weekend day')
+    # plot_saving_oneplot('weekend night')
+    # get_low_err_lean()
     # create_summary_daynightlean()
     # plot_csv('piecewise_all', 'electric')
     # read_interval_building('NM0050ZZ')
     # read_interval_building('LA0085ZZ')
     # temp()
     # copy outlier files
-    # fit('gas')
+    # fit('electric')
     # uo.dir2html('/media/yujiex/work/SEED/gitDir/SEEDproject/Code/merge/input/FY/interval/ion_0627/outlier/', '*_gas.png', 'Gas Outlier', 'gas_outlier.html')
     # files = glob.glob(os.getcwd() + '/input/FY/interval/ion_0627/outlier/*')
     # for f in files:
