@@ -1,0 +1,587 @@
+<!-- template source: http://maxdesign.com.au/jobs/css-layouts/01-bootstrap-kickoff-template/ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Summary analysis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Description" lang="en" content="ADD SITE DESCRIPTION">
+    <meta name="author" content="ADD AUTHOR INFORMATION">
+    <meta name="robots" content="index, follow">
+
+    <!-- icons -->
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Bootstrap Core CSS file -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <!-- Override CSS file - add your own CSS rules -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <!-- Conditional comment containing JS files for IE6 - 8 -->
+    <!--[if lt IE 9]>
+	    <script src="assets/js/html5.js"></script>
+	    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+    </head>
+<title>Summary</title>
+<body>
+    <!-- Navigation -->
+	    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#pagetop">GSA Summary Plots</a>
+				</div>
+				<!-- /.navbar-header -->
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<!-- <li><a href="#count">Count</a></li> -->
+						<!-- <li><a href="#totalTrend">Total Energy Trend</a></li> -->
+						<!-- <li><a href="#box_co">EUI distribution of FY2013 vs FY2014-2015</a></li> -->
+						<!-- <li><a href="#distTrend">EUI Distribution Trend</a></li> -->
+					</ul>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+		<!-- /.navbar --> 
+
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+	<!-- Page breadcrumb -->
+	<ol class="breadcrumb">
+	    <li><a href="index.html">Home</a></li>
+	    <li class="active">Summary</li>
+	</ol>
+
+  <h1 id="pagetop">Summary of level 1</h1>
+  <ol class="nested">
+  <li id="count">Count
+  <ol class="nested">
+  <li>Total number of buildings in the EUAS data set by category</li>
+  
+  <p style="font-size: 15px"> Assumption: take the record of building category, <code>"Cat"</code>, in the most recent year as the category designation for a building</p>
+  <img src="quant/building_by_cat.png" alt="total building count by category" style="width:60%">
+  <ul class="d">
+    <li style="font-size: 15px">A: Government Goal</li>
+    <li style="font-size: 15px">I: Energy Intensive</li>
+    <li style="font-size: 15px">C: Lease</li>
+    <li style="font-size: 15px">B: Government Exempt</li>
+    <li style="font-size: 15px">D: Lease Exempt</li>
+    <li style="font-size: 15px">E: Reimbursable non reportable</li>
+  </ul>
+
+<table class="table table-striped">
+<!-- <caption>cat_cnt_by_year.csv</caption> -->
+<thead>
+<tr>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">Cat</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2003</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2004</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2005</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2006</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2007</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2008</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2009</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2010</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2011</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2012</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2013</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2014</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2015</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">A</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">511</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">513</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">514</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">514</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">515</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">514</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">520</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">523</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">529</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">531</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">545</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">544</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">540</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">I</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">125</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">124</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">123</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">122</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">122</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">122</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">123</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">127</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">128</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">128</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">128</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">127</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">119</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">C</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">89</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">90</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">90</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">89</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">90</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">92</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">89</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">91</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">88</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">85</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">82</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">76</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">72</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">B</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">200</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">181</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">157</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">145</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">137</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">128</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">121</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">110</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">102</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">100</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">87</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">83</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">79</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">D</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">491</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">470</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">444</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">425</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">418</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">390</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">362</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">344</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">312</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">284</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">244</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">224</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">191</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">E</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">23</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">29</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">28</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">27</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">28</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">24</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">23</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">23</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">34</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">35</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">37</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">42</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">38</td>
+</tr>
+</tbody>
+</table>
+  <!-- <li>Building types in the EUAS data set by year</li> -->
+  <!-- <img src="quant/type_by_year.png" alt="total building count by category" style="width:60%"> -->
+  <!-- <li>Building types in the EUAS data set by category</li> -->
+  <!-- <img src="quant/type_by_cat.png" alt="total building count by category" style="width:60%"> -->
+  <li><code>Covered</code> facility by category and type</li>
+  <img src="quant/cover_bycat.png" alt="building eui by year" style="width:60%">
+  <table class="table table-striped">
+    <thead>
+<tr>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">Cat</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">Office</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">Courthouse</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">Other</th>
+</tr>
+    </thead>
+    <tbody>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">A</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">115</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">53</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">4</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">I</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">12</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">0</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">1</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">B</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">6</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">2</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">4</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">E</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">11</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">0</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">0</td>
+</tr>
+    </tbody>
+</table>
+  <!-- <li>Building EUI check, EUAS data set (<code>All</code> buildings)</li> -->
+  <!-- <p  style="font-size: 15px"> Assumption: 12 kBtu/sq.ft (lowest 10th percentile of electric EUI), and 3 kBtu/sq.ft (lowest 10th percentile of gas consumption) are used as the cutoff for energy robustness.</p> -->
+  <!-- <img src="quant/eui_byyear.png" alt="building eui by year" style="width:60%"> -->
+  <!-- <li>Building EUI check, EUAS data set (<code>A + I</code> buildings)</li> -->
+  <!-- <img src="quant/eui_byyear_ai.png" alt="building eui by year" style="width:60%"> -->
+  <!-- <li>Flow chart</li> -->
+  <!-- <img src="quant/flow_chart.png" alt="to be added" style="width:60%"> -->
+  <!-- <li>Robust Energy Set: buildings with at least 6 years of Electric EUI >= 12 and Gas EUI >= 3</li> -->
+  <!-- <img src="quant/robust_energy_cnt.png" alt="to be added" style="width:60%"> -->
+  <li>Energy Programs/Actions: Capital and Operational</li>
+  <ul class="d">
+    <li>capital upgrade investment
+    <ul class="c">
+      <!-- <li>BA54 expenditures</li> -->
+      <li>American Recovery and Reinvestment Act (ARRA)</li>
+      <li>Energy Service Performance Contracts (ESPC)</li>
+      <li>CTS ECM action record</li>
+      <li>LEED New Construction</li>
+      <li>Guiding Principles New Construction</li>
+    </ul>
+    <li>operational upgrade investment
+    <ul class="c">
+      <li>E4</li>
+      <li>GSALink</li>
+      <li>First Fuel</li>
+      <li>Shave Energy</li>
+      <li>Guiding Principles Existing Building</li>
+      <li>LEED Existing Building</li>
+      <li>AMI real time monitoring, advanced metering ECM action</li>
+    </ul>
+  </ul>
+  <li>Capital vs operational investment building count <code>by year</code> in EUAS data set (All buildings)</li>
+  <img src="quant/co_cnt_byyear_with.png" alt="to be added" style="width:60%">
+  <table class="table table-striped">
+    <thead>
+<tr>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">status</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2003</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2004</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2005</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2006</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2007</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2008</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2009</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2010</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2011</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2012</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2013</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2014</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">2015</th>
+</tr>
+    </thead>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Capital and Operational</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">223</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">228</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">228</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">233</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">234</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">236</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">238</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">238</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">240</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">240</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">243</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">244</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">242</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Capital Only</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">52</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">52</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">52</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">53</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">53</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">53</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">53</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">54</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">54</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">55</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">57</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">57</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">58</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Operational Only</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">83</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">84</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">85</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">89</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">91</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">93</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">92</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">95</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">102</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">106</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">106</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">106</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">105</td>
+</tr>
+</table>
+  <!-- <li>Capital vs operational investment building count <code>by category</code> in EUAS data set (All buildings)</li> -->
+  <!-- <img src="quant/co_cnt_bycat.png" alt="to be added" style="width:60%"> -->
+  <li>Capital vs operational investment <code>robust vs non-robust energy</code> set</li>
+  <img src="quant/with_wout_energy.png" alt="to be added" style="width:60%">
+  <img src="quant/co_energy.png" alt="to be added" style="width:60%">
+  <li>Energy investment breakdown</li>
+  <p style="font-size: 15px"> The chart denotes the number of buildings that participate in
+  each of the following energy investments (program or action), could
+  be double counted if a building participates in two
+  programs/actions.</p>
+  <p style="font-size: 15px">TODO: break GP EB vs NC</p>
+  <img src="quant/invest_cnt_All.png" alt="to be added" style="width:60%">
+  <table class="table table-striped">
+    <thead>
+<tr>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">investment</th>
+<th colspan="2"  valign="bottom"  align="left"  style=" font-size:10pt;">building_count</th>
+</tr>
+    </thead>
+    <tbody>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Advanced Metering</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">240</td>
+<td  style=""></td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">E4</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">13</td>
+<td  style=""></td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">first fuel</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">181</td>
+<td  style=""></td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">GSALink</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">58</td>
+<td  style=""></td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">GP</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">160</td>
+<td  style=""></td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">LEED_EB</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">48</td>
+<td  style=""></td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Shave Energy</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">57</td>
+<td  style=""></td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Building Tuneup or Utility Improvements</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">190</td>
+<td  style=""></td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">HVAC</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">226</td>
+<td  style=""></td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Lighting</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">212</td>
+<td  style=""></td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Building Envelope</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">151</td>
+<td  style=""></td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">ESPC</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">31</td>
+<td  style=""></td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">LEED_NC</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">5</td>
+<td  style=""></td>
+</tr>
+    </tbody>
+</table>
+  </ol>
+  <hr>
+<p>!!BOORMARK!!
+  <hr>
+  <li id="totalTrend">Total Energy Trend
+  <ol class="nested">
+  <li>EUI trend of <code>A + I</code> buildings in EUAS data set with <code>robust energy</code> data, only consider <code>Gas + Electric</code> for EUI (24% reduction till 2015, 18% reduction till 2013)</li>
+  <p style="font-size: 15px"> Assumptions</p>
+  <ul class="d">
+    <li style="font-size: 15px">The buildings plotted are the set of A + I buildingss that have at least 6 years of robust energy data (Electric EUI >= 12 kBtu/sq.ft and Gas EUI >= 3 kBtu/sq.ft) from FY2007 to FY2015. </li>
+    <li style="font-size: 15px">The EUI is calculated as total Electric + Gas consumption divided by total square footage</li>
+    <li style="font-size: 15px">The category uses the record in the most recent year</li>
+    <li style="font-size: 15px">The square footage uses the record of the corresponding year
+    (not averaged across years)</li>
+  </ul>
+  <img src="quant/eui_trend_AI_elec_gas_totalOverTotal_eui.png" alt="to be added" style="width:60%">
+  <li>EUI trend of <code>A + C + I</code> buildings in EUAS data set using <code>raw Category</code> designation, EUI computed including <code>all energy types</code> (23% reduction till 2015, 20% reduction till 2013)</li>
+  <p style="font-size: 15px"> Assumptions</p>
+  <ul class="d">
+    <li style="font-size: 15px">The buildings plotted are A + C + I buildingss in EUAS data set. </li>
+    <li style="font-size: 15px">The EUI is calculated as total Electric + Gas + Steam + Oil consumption divided by total square footage</li>
+    <li style="font-size: 15px">The square footage uses the record of the corresponding year
+    (not averaged across years)</li>
+    <li style="font-size: 15px">The category uses the record of the corresponding year
+    (not the most recent record)</li>
+  </ul>
+  <img src="quant/eui_trend_ACI_all_type_totalOverTotal_None_currentCat.png" alt="to be added" style="width:60%">
+  <li>PNNL study (24% reduction till 2013)</li>
+  <p style="font-size: 15px"> source: <a href="http://www.pnnl.gov/main/publications/external/technical_reports/PNNL-23063.pdf">link</a></p>
+  <img src="quant/pnnl.png" alt="to be added" style="width:60%">
+  <!-- <li>Average building square footage of buildings in the EUAS data set</li> -->
+  <!-- <img src="quant/ave_area.png" alt="to be added" style="width:60%"> -->
+  </ol>
+  <li id="box_co">EUI distribution of FY2013 vs FY2014-2015
+  <ol class="nested">
+    <li><code>A + I</code> Buildings Median EUI Reduction FY2013 vs FY2014-2015</li>
+  <img src="quant/invest_box_AI.png" alt="to be added" style="width:50%">
+    <table border="1">
+    <tr>
+    <td  style=""></td>
+    <td style="font-size: 15px">pre (FY2003)</td>
+    <td style="font-size: 15px">post (FY2014--FY2015)</td>
+    <td style="font-size: 15px">n (pre)</td>
+    <td style="font-size: 15px">n (post)</td>
+    <td style="font-size: 15px">Percent Reduction</td>
+    </tr>
+    <tr>
+    <td style="font-size: 15px">Capital and Operational</td>
+    <td style="font-size: 15px">63.1</td>
+    <td style="font-size: 15px">51.0</td>
+    <td style="font-size: 15px">133</td>
+    <td style="font-size: 15px">141</td>
+    <td style="font-size: 15px">19.1%</td>
+    </tr>
+    <tr>
+    <td style="font-size: 15px">Operational Only</td>
+    <td style="font-size: 15px">64.3</td>
+    <td style="font-size: 15px">48.8</td>
+    <td style="font-size: 15px">49</td>
+    <td style="font-size: 15px">56</td>
+    <td style="font-size: 15px">24.1%</td>
+    </tr>
+    <tr>
+    <td style="font-size: 15px">Capital Only</td>
+    <td style="font-size: 15px">74.5</td>
+    <td style="font-size: 15px">58.9</td>
+    <td style="font-size: 15px">36</td>
+    <td style="font-size: 15px">36</td>
+    <td style="font-size: 15px">20.9%</td>
+    </tr>
+    <tr>
+    <td style="font-size: 15px">No Known Investment</td>
+    <td style="font-size: 15px">73.1</td>
+    <td style="font-size: 15px">66.2</td>
+    <td style="font-size: 15px">142</td>
+    <td style="font-size: 15px">147</td>
+    <td style="font-size: 15px">9.4%</td>
+    </tr>
+    </table>
+    <li><code>A + I Covered Facility</code> Median EUI Reduction FY2013 vs FY2014-2015</li>
+  <img src="quant/invest_box_AIcovered.png" alt="to be added" style="width:50%">
+    <table border="1">
+    <tr>
+    <td  style=""></td>
+    <td style="font-size: 15px">pre (FY2003)</td>
+    <td style="font-size: 15px">post (FY2014--FY2015)</td>
+    <td style="font-size: 15px">n (pre)</td>
+    <td style="font-size: 15px">n (post)</td>
+    <td style="font-size: 15px">Percent Reduction</td>
+    </tr>
+    <tr>
+    <td style="font-size: 15px">Capital and Operational</td>
+    <td style="font-size: 15px">67.0</td>
+    <td style="font-size: 15px">52.1</td>
+    <td style="font-size: 15px">66</td>
+    <td style="font-size: 15px">74</td>
+    <td style="font-size: 15px">22.3%</td>
+    </tr>
+    <tr>
+    <td style="font-size: 15px">Operational Only</td>
+    <td style="font-size: 15px">70.8</td>
+    <td style="font-size: 15px">52.4</td>
+    <td style="font-size: 15px">15</td>
+    <td style="font-size: 15px">17</td>
+    <td style="font-size: 15px">26.0%</td>
+    </tr>
+    </table>
+  </ol>
+  <li id="distTrend">EUI Distribution Trend</li>
+  <ol class="nested">
+  <!-- <li><code>Monthly</code> Gas + Electric EUI Trend of <code>Covered Facility</code> with Robust Energy</li></li> -->
+  <!-- <img src="quant/fan_eui_M_Covered Facility.png" alt="to be added" style="width:60%"> -->
+  <li><code>Annual</code> Gas + Electric EUI Trend of <code>Covered Facility</code> with Robust Energy (24% reduction in median)</li></li>
+  <img src="quant/fan_eui_Y_Covered Facility.png" alt="to be added" style="width:60%">
+  <!-- <li><code>Monthly</code> Gas + Electric EUI Trend of <code>A + I</code> Buildings with Robust Energy</li></li> -->
+  <!-- <img src="quant/fan_eui_M_.png" alt="to be added" style="width:60%"> -->
+  <li><code>Annual</code> Gas + Electric EUI Trend of <code>A + I</code> Buildings with Robust Energy (18% reduction in median)</li></li>
+  <img src="quant/fan_eui_Y_.png" alt="to be added" style="width:60%">
+  <!-- <li><code>Monthly</code> Gas + Electric EUI Trend of Buildings <code>Having Investment</code> and Robust Energy</li></li> -->
+  <!-- <img src="quant/fan_eui_M_With Investment.png" alt="to be added" style="width:60%"> -->
+  <li><code>Annual</code> Gas + Electric EUI Trend of Buildings <code>Having Investment</code> and Robust Energy (22% reduction in median)</li></li>
+  <img src="quant/fan_eui_Y_With Investment.png" alt="to be added" style="width:60%">
+  <!-- <li><code>Monthly</code> Gas + Electric EUI Trend of Buildings with <code>Only Capital</code> Investment with Robust Energy</li></li> -->
+  <!-- <img src="quant/fan_eui_M_Capital Only.png" alt="to be added" style="width:60%"> -->
+  <li><code>Annual</code> Gas + Electric EUI Trend of Buildings with <code>Only Capital</code> Investment with Robust Energy (24% reduction in median)</li></li>
+  <img src="quant/fan_eui_Y_Capital Only.png" alt="to be added" style="width:60%">
+  <!-- <li><code>Monthly</code> Gas + Electric EUI Trend of Buildings with <code>Only Operational</code> Investment with Robust Energy</li></li> -->
+  <!-- <img src="quant/fan_eui_M_Operational Only.png" alt="to be added" style="width:60%"> -->
+  <li><code>Annual</code> Gas + Electric EUI Trend of Buildings with <code>Only Operational</code> Investment with Robust Energy (27% reduction in median)</li></li>
+  <img src="quant/fan_eui_Y_Operational Only.png" alt="to be added" style="width:60%">
+  <!-- <li><code>Monthly</code> Gas + Electric EUI Trend of Buildings with Both <code>Capital and Operational</code> Investment with Robust Energy</li></li> -->
+  <!-- <img src="quant/fan_eui_M_Capital and Operational.png" alt="to be added" style="width:60%"> -->
+  <li><code>Annual</code> Gas + Electric EUI Trend of Buildings with Both <code>Capital and Operational</code> Investment with Robust Energy (23% reduction in median)</li></li>
+  <img src="quant/fan_eui_Y_Capital and Operational.png" alt="to be added" style="width:60%">
+  <!-- <li><code>Monthly</code> Gas + Electric EUI Trend of Buildings with <code>No Known</code> Investment with Robust Energy</li></li> -->
+  <!-- <img src="quant/fan_eui_M_No Known Investment.png" alt="to be added" style="width:60%"> -->
+  <li><code>Annual</code> Gas + Electric EUI Trend of Buildings with <code>No Known</code> Investment with Robust Energy (10% reduction in median)</li></li>
+  <img src="quant/fan_eui_Y_No Known Investment.png" alt="to be added" style="width:60%">
+  </ol>
+  </ol>
+		    </div>
+	    </div>
+	    <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+    <!-- JQuery scripts -->
+<script src="assets/js/jquery-1.11.2.min.js"></script>
+    <!-- Bootstrap Core scripts -->
+    <script src="assets/js/bootstrap.min.js"></script>
+</body>
+</html>
