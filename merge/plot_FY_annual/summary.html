@@ -85,7 +85,8 @@
     <li style="font-size: 15px">E: Reimbursable non reportable</li>
   </ul>
 
-<table class="table table-striped">
+<div style="width: 70%">
+<table class="table table-condensed">
 <!-- <caption>cat_cnt_by_year.csv</caption> -->
 <thead>
 <tr>
@@ -204,13 +205,15 @@
 </tr>
 </tbody>
 </table>
+</div>
   <!-- <li>Building types in the EUAS data set by year</li> -->
   <!-- <img src="quant/type_by_year.png" alt="total building count by category" style="width:60%"> -->
   <!-- <li>Building types in the EUAS data set by category</li> -->
   <!-- <img src="quant/type_by_cat.png" alt="total building count by category" style="width:60%"> -->
   <li><code>Covered</code> facility by category and type</li>
   <img src="quant/cover_bycat.png" alt="building eui by year" style="width:60%">
-  <table class="table table-striped">
+<div style="width: 50%">
+  <table class="table table-condensed">
     <thead>
 <tr>
 <th  valign="bottom"  align="left"  style=" font-size:10pt;">Cat</th>
@@ -246,6 +249,7 @@
 </tr>
     </tbody>
 </table>
+  </div>
   <!-- <li>Building EUI check, EUAS data set (<code>All</code> buildings)</li> -->
   <!-- <p  style="font-size: 15px"> Assumption: 12 kBtu/sq.ft (lowest 10th percentile of electric EUI), and 3 kBtu/sq.ft (lowest 10th percentile of gas consumption) are used as the cutoff for energy robustness.</p> -->
   <!-- <img src="quant/eui_byyear.png" alt="building eui by year" style="width:60%"> -->
@@ -279,7 +283,8 @@
   </ul>
   <li>Capital vs operational investment building count <code>by year</code> in EUAS data set (All buildings)</li>
   <img src="quant/co_cnt_byyear_with.png" alt="to be added" style="width:60%">
-  <table class="table table-striped">
+<div style="width: 70%">
+  <table class="table table-condensed">
     <thead>
 <tr>
 <th  valign="bottom"  align="left"  style=" font-size:10pt;">status</th>
@@ -347,6 +352,7 @@
 <td  valign="bottom"  align="left"  style=" font-size:10pt;">105</td>
 </tr>
 </table>
+</div>
   <!-- <li>Capital vs operational investment building count <code>by category</code> in EUAS data set (All buildings)</li> -->
   <!-- <img src="quant/co_cnt_bycat.png" alt="to be added" style="width:60%"> -->
   <li>Capital vs operational investment <code>robust vs non-robust energy</code> set</li>
@@ -359,7 +365,8 @@
   programs/actions.</p>
   <p style="font-size: 15px">TODO: break GP EB vs NC</p>
   <img src="quant/invest_cnt_All.png" alt="to be added" style="width:60%">
-  <table class="table table-striped">
+<div style="width: 40%">
+  <table class="table table-condensed">
     <thead>
 <tr>
 <th  valign="bottom"  align="left"  style=" font-size:10pt;">investment</th>
@@ -434,43 +441,45 @@
 </tr>
     </tbody>
 </table>
+</div>
   </ol>
-  <hr>
-<p>!!BOORMARK!!
-  <hr>
   <li id="totalTrend">Total Energy Trend
   <ol class="nested">
-  <li>EUI trend of <code>A + I</code> buildings in EUAS data set with <code>robust energy</code> data, only consider <code>Gas + Electric</code> for EUI (24% reduction till 2015, 18% reduction till 2013)</li>
-  <p style="font-size: 15px"> Assumptions</p>
-  <ul class="d">
-    <li style="font-size: 15px">The buildings plotted are the set of A + I buildingss that have at least 6 years of robust energy data (Electric EUI >= 12 kBtu/sq.ft and Gas EUI >= 3 kBtu/sq.ft) from FY2007 to FY2015. </li>
-    <li style="font-size: 15px">The EUI is calculated as total Electric + Gas consumption divided by total square footage</li>
-    <li style="font-size: 15px">The category uses the record in the most recent year</li>
-    <li style="font-size: 15px">The square footage uses the record of the corresponding year
-    (not averaged across years)</li>
-  </ul>
-  <img src="quant/eui_trend_AI_elec_gas_totalOverTotal_eui.png" alt="to be added" style="width:60%">
+  <li>EUI trend of <code>A + I</code> buildings in EUAS data set
+  with <code>robust energy</code> (with at least 6 years of Electric
+  EUI >= 12kBtu/sq.ft and Gas EUI >= 3 kBtu/sq.ft from FY2007 to
+  FY2015) data, only consider <code>Gas + Electric</code> for EUI (24%
+  reduction till 2015, 18% reduction till 2013)</li>
+  <!-- <p style="font-size: 15px"> Assumptions</p> -->
+  <!-- <ul class="d"> -->
+  <!--   <li style="font-size: 15px">The buildings plotted are the set of A + I buildingss that have at least 6 years of robust energy data (Electric EUI >= 12 kBtu/sq.ft and Gas EUI >= 3 kBtu/sq.ft) from FY2007 to FY2015. </li> -->
+  <!--   <li style="font-size: 15px">The EUI is calculated as total Electric + Gas consumption divided by total square footage</li> -->
+  <!--   <li style="font-size: 15px">The category uses the record in the most recent year</li> -->
+  <!--   <li style="font-size: 15px">The square footage uses the record of the corresponding year -->
+  <!--   (not averaged across years)</li> -->
+  <!-- </ul> -->
+  <img src="quant/ai_good_eng_trend.png" alt="to be added" style="width:100%">
   <li>EUI trend of <code>A + C + I</code> buildings in EUAS data set using <code>raw Category</code> designation, EUI computed including <code>all energy types</code> (23% reduction till 2015, 20% reduction till 2013)</li>
-  <p style="font-size: 15px"> Assumptions</p>
-  <ul class="d">
-    <li style="font-size: 15px">The buildings plotted are A + C + I buildingss in EUAS data set. </li>
-    <li style="font-size: 15px">The EUI is calculated as total Electric + Gas + Steam + Oil consumption divided by total square footage</li>
-    <li style="font-size: 15px">The square footage uses the record of the corresponding year
-    (not averaged across years)</li>
-    <li style="font-size: 15px">The category uses the record of the corresponding year
-    (not the most recent record)</li>
-  </ul>
-  <img src="quant/eui_trend_ACI_all_type_totalOverTotal_None_currentCat.png" alt="to be added" style="width:60%">
-  <li>PNNL study (24% reduction till 2013)</li>
-  <p style="font-size: 15px"> source: <a href="http://www.pnnl.gov/main/publications/external/technical_reports/PNNL-23063.pdf">link</a></p>
-  <img src="quant/pnnl.png" alt="to be added" style="width:60%">
+  <!-- <p style="font-size: 15px"> Assumptions</p> -->
+  <!-- <ul class="d"> -->
+  <!--   <li style="font-size: 15px">The buildings plotted are A + C + I buildingss in EUAS data set. </li> -->
+  <!--   <li style="font-size: 15px">The EUI is calculated as total Electric + Gas + Steam + Oil consumption divided by total square footage</li> -->
+  <!--   <li style="font-size: 15px">The square footage uses the record of the corresponding year -->
+  <!--   (not averaged across years)</li> -->
+  <!--   <li style="font-size: 15px">The category uses the record of the corresponding year -->
+  <!--   (not the most recent record)</li> -->
+  <!-- </ul> -->
+  <img src="quant/ai_all_trend.png" alt="to be added" style="width:100%">
+  <!-- <li>PNNL study (24% reduction till 2013)</li> -->
+  <!-- <p style="font-size: 15px"> source: <a href="http://www.pnnl.gov/main/publications/external/technical_reports/PNNL-23063.pdf">link</a></p> -->
+  <!-- <img src="quant/pnnl.png" alt="to be added" style="width:60%"> -->
   <!-- <li>Average building square footage of buildings in the EUAS data set</li> -->
   <!-- <img src="quant/ave_area.png" alt="to be added" style="width:60%"> -->
   </ol>
   <li id="box_co">EUI distribution of FY2013 vs FY2014-2015
   <ol class="nested">
     <li><code>A + I</code> Buildings Median EUI Reduction FY2013 vs FY2014-2015</li>
-  <img src="quant/invest_box_AI.png" alt="to be added" style="width:50%">
+  <img src="quant/invest_box_AI.png" alt="to be added" style="width:60%">
     <table border="1">
     <tr>
     <td  style=""></td>
@@ -514,7 +523,7 @@
     </tr>
     </table>
     <li><code>A + I Covered Facility</code> Median EUI Reduction FY2013 vs FY2014-2015</li>
-  <img src="quant/invest_box_AIcovered.png" alt="to be added" style="width:50%">
+  <img src="quant/invest_box_AIcovered.png" alt="to be added" style="width:60%">
     <table border="1">
     <tr>
     <td  style=""></td>
@@ -543,36 +552,10 @@
     </table>
   </ol>
   <li id="distTrend">EUI Distribution Trend</li>
-  <ol class="nested">
-  <!-- <li><code>Monthly</code> Gas + Electric EUI Trend of <code>Covered Facility</code> with Robust Energy</li></li> -->
-  <!-- <img src="quant/fan_eui_M_Covered Facility.png" alt="to be added" style="width:60%"> -->
-  <li><code>Annual</code> Gas + Electric EUI Trend of <code>Covered Facility</code> with Robust Energy (24% reduction in median)</li></li>
-  <img src="quant/fan_eui_Y_Covered Facility.png" alt="to be added" style="width:60%">
-  <!-- <li><code>Monthly</code> Gas + Electric EUI Trend of <code>A + I</code> Buildings with Robust Energy</li></li> -->
-  <!-- <img src="quant/fan_eui_M_.png" alt="to be added" style="width:60%"> -->
-  <li><code>Annual</code> Gas + Electric EUI Trend of <code>A + I</code> Buildings with Robust Energy (18% reduction in median)</li></li>
-  <img src="quant/fan_eui_Y_.png" alt="to be added" style="width:60%">
-  <!-- <li><code>Monthly</code> Gas + Electric EUI Trend of Buildings <code>Having Investment</code> and Robust Energy</li></li> -->
-  <!-- <img src="quant/fan_eui_M_With Investment.png" alt="to be added" style="width:60%"> -->
-  <li><code>Annual</code> Gas + Electric EUI Trend of Buildings <code>Having Investment</code> and Robust Energy (22% reduction in median)</li></li>
-  <img src="quant/fan_eui_Y_With Investment.png" alt="to be added" style="width:60%">
-  <!-- <li><code>Monthly</code> Gas + Electric EUI Trend of Buildings with <code>Only Capital</code> Investment with Robust Energy</li></li> -->
-  <!-- <img src="quant/fan_eui_M_Capital Only.png" alt="to be added" style="width:60%"> -->
-  <li><code>Annual</code> Gas + Electric EUI Trend of Buildings with <code>Only Capital</code> Investment with Robust Energy (24% reduction in median)</li></li>
-  <img src="quant/fan_eui_Y_Capital Only.png" alt="to be added" style="width:60%">
-  <!-- <li><code>Monthly</code> Gas + Electric EUI Trend of Buildings with <code>Only Operational</code> Investment with Robust Energy</li></li> -->
-  <!-- <img src="quant/fan_eui_M_Operational Only.png" alt="to be added" style="width:60%"> -->
-  <li><code>Annual</code> Gas + Electric EUI Trend of Buildings with <code>Only Operational</code> Investment with Robust Energy (27% reduction in median)</li></li>
-  <img src="quant/fan_eui_Y_Operational Only.png" alt="to be added" style="width:60%">
-  <!-- <li><code>Monthly</code> Gas + Electric EUI Trend of Buildings with Both <code>Capital and Operational</code> Investment with Robust Energy</li></li> -->
-  <!-- <img src="quant/fan_eui_M_Capital and Operational.png" alt="to be added" style="width:60%"> -->
-  <li><code>Annual</code> Gas + Electric EUI Trend of Buildings with Both <code>Capital and Operational</code> Investment with Robust Energy (23% reduction in median)</li></li>
-  <img src="quant/fan_eui_Y_Capital and Operational.png" alt="to be added" style="width:60%">
-  <!-- <li><code>Monthly</code> Gas + Electric EUI Trend of Buildings with <code>No Known</code> Investment with Robust Energy</li></li> -->
-  <!-- <img src="quant/fan_eui_M_No Known Investment.png" alt="to be added" style="width:60%"> -->
-  <li><code>Annual</code> Gas + Electric EUI Trend of Buildings with <code>No Known</code> Investment with Robust Energy (10% reduction in median)</li></li>
-  <img src="quant/fan_eui_Y_No Known Investment.png" alt="to be added" style="width:60%">
-  </ol>
+  <p class="lead">Annual Gas + Electric Median EUI Trend (with at
+  least 6 years of Electric EUI >= 12 kBtu/sq.ft and Gas EUI >= 3
+  kBtu/sq.ft from FY2007 to FY2015)
+  <img src="quant/median_eui_trend.png" alt="to be added" style="width:100%">
   </ol>
 		    </div>
 	    </div>
