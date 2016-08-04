@@ -312,6 +312,7 @@ investCnt <- function(cat) {
     cap = alltype[!(alltype %in% op)]
     print(cap)
     df$investment <- factor(df$investment, levels=c(op, cap))
+    print(head(df))
     p <- ggplot(arrange(df, type), aes(x=investment, fill=type)) +
         geom_bar() + ylab("Building Count")
     if (cat == "AI") {
@@ -460,3 +461,16 @@ p6 <- ggplot(df2, aes(x=Year, y=Floor_Space_kSF)) +
 png(file=sprintf("plot_FY_annual/quant/%s_trend.png", input), width=14, height=7, units="in", res=300)
 multiplot(p1, p3, p5, p2, p4, p6, cols=2)
 dev.off()
+
+# capital vs operation median trend
+df = read.csv("input_R/all_median_trend.csv")
+df$status <-
+    factor(df$status, levels=levels(df$status)[c(1, 4, 3, 6, 2, 5)])
+ggplot(df, aes(x=Fiscal_Year, y=eui, color=status)) +
+    geom_line() +
+    geom_point() +
+    scale_x_continuous(breaks=seq(2003, 2015, 1)) +
+    ylab("Electric + Gas [kBtu/sq.ft]") +
+    ggtitle("Median EUI trend") +
+    scale_colour_brewer(palette="Set3")
+## ggsave(file="plot_FY_annual/quant/median_eui_trend.png", width=8, height=4, units="in")
