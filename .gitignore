@@ -16,6 +16,8 @@ merge/input/
 merge/plot2/
 merge/plot/
 merge/manual/
+merge/remove_outlier_elec/
+merge/remove_outlier_gas/
 merge/css_template/
 
 # webpages #
