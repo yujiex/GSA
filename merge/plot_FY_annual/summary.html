@@ -75,7 +75,8 @@
   <li>Total number of buildings in the EUAS data set by category</li>
   
   <p style="font-size: 15px"> Assumption: take the record of building category, <code>"Cat"</code>, in the most recent year as the category designation for a building</p>
-  <img src="quant/building_by_cat.png" alt="total building count by category" style="width:60%">
+  <div style="width:60%">
+  <img src="quant/building_by_cat.png" alt="total building count by category" style="width:100%">
   <ul class="d">
     <li style="font-size: 15px">A: Government Goal</li>
     <li style="font-size: 15px">I: Energy Intensive</li>
@@ -84,13 +85,11 @@
     <li style="font-size: 15px">D: Lease Exempt</li>
     <li style="font-size: 15px">E: Reimbursable non reportable</li>
   </ul>
-
-<div style="width: 70%">
-<table class="table table-condensed">
-<!-- <caption>cat_cnt_by_year.csv</caption> -->
+<br>
+<table style="width: 90%" align="center" class="table table-condensed">
 <thead>
 <tr>
-<th  valign="bottom"  align="left"  style=" font-size:10pt;">Cat</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">Category</th>
 <th  valign="bottom"  align="left"  style=" font-size:10pt;">2003</th>
 <th  valign="bottom"  align="left"  style=" font-size:10pt;">2004</th>
 <th  valign="bottom"  align="left"  style=" font-size:10pt;">2005</th>
@@ -211,9 +210,9 @@
   <!-- <li>Building types in the EUAS data set by category</li> -->
   <!-- <img src="quant/type_by_cat.png" alt="total building count by category" style="width:60%"> -->
   <li><code>Covered</code> facility by category and type</li>
-  <img src="quant/cover_bycat.png" alt="building eui by year" style="width:60%">
-<div style="width: 50%">
-  <table class="table table-condensed">
+  <div style="width: 60%">
+  <img src="quant/cover_bycat.png" alt="building eui by year" style="width:100%">
+  <table class="table table-condensed" style="width: 50%" align="center">
     <thead>
 <tr>
 <th  valign="bottom"  align="left"  style=" font-size:10pt;">Cat</th>
@@ -264,26 +263,26 @@
     <li>capital upgrade investment
     <ul class="c">
       <!-- <li>BA54 expenditures</li> -->
-      <li>American Recovery and Reinvestment Act (ARRA)</li>
-      <li>Energy Service Performance Contracts (ESPC)</li>
-      <li>CTS ECM action record</li>
-      <li>LEED New Construction</li>
-      <li>Guiding Principles New Construction</li>
+      <li style="font-size: 15px">American Recovery and Reinvestment Act (ARRA)</li>
+      <li style="font-size: 15px">Energy Service Performance Contracts (ESPC)</li>
+      <li style="font-size: 15px">CTS ECM action record</li>
+      <li style="font-size: 15px">LEED New Construction</li>
+      <li style="font-size: 15px">Guiding Principles New Construction</li>
     </ul>
     <li>operational upgrade investment
     <ul class="c">
-      <li>E4</li>
-      <li>GSALink</li>
-      <li>First Fuel</li>
-      <li>Shave Energy</li>
-      <li>Guiding Principles Existing Building</li>
-      <li>LEED Existing Building</li>
-      <li>AMI real time monitoring, advanced metering ECM action</li>
+      <li style="font-size: 15px">E4</li>
+      <li style="font-size: 15px">GSALink</li>
+      <li style="font-size: 15px">First Fuel</li>
+      <li style="font-size: 15px">Shave Energy</li>
+      <li style="font-size: 15px">Guiding Principles Existing Building</li>
+      <li style="font-size: 15px">LEED Existing Building</li>
+      <li style="font-size: 15px">AMI real time monitoring, advanced metering ECM action</li>
     </ul>
   </ul>
   <li>Capital vs operational investment building count <code>by year</code> in EUAS data set (All buildings)</li>
-  <img src="quant/co_cnt_byyear_with.png" alt="to be added" style="width:60%">
-<div style="width: 70%">
+<div style="width: 60%">
+  <img src="quant/co_cnt_byyear_with.png" alt="to be added" style="width:100%">
   <table class="table table-condensed">
     <thead>
 <tr>
@@ -364,9 +363,9 @@
   be double counted if a building participates in two
   programs/actions.</p>
   <p style="font-size: 15px">TODO: break GP EB vs NC</p>
-  <img src="quant/invest_cnt_All.png" alt="to be added" style="width:60%">
-<div style="width: 40%">
-  <table class="table table-condensed">
+  <div style="width: 60%">
+  <img src="quant/invest_cnt_All.png" alt="to be added" style="width:100%">
+  <table align="center" class="table table-condensed" style="width: 60%">
     <thead>
 <tr>
 <th  valign="bottom"  align="left"  style=" font-size:10pt;">investment</th>
@@ -479,8 +478,9 @@
   <li id="box_co">EUI distribution of FY2013 vs FY2014-2015
   <ol class="nested">
     <li><code>A + I</code> Buildings Median EUI Reduction FY2013 vs FY2014-2015</li>
-  <img src="quant/invest_box_AI.png" alt="to be added" style="width:60%">
-    <table border="1">
+    <div style="width: 80%">
+  <img src="quant/invest_box_AI.png" alt="to be added" style="width:80%">
+    <table class="table table-condensed">
     <tr>
     <td  style=""></td>
     <td style="font-size: 15px">pre (FY2003)</td>
@@ -522,9 +522,11 @@
     <td style="font-size: 15px">9.4%</td>
     </tr>
     </table>
+    </div>
     <li><code>A + I Covered Facility</code> Median EUI Reduction FY2013 vs FY2014-2015</li>
-  <img src="quant/invest_box_AIcovered.png" alt="to be added" style="width:60%">
-    <table border="1">
+    <div style="width: 80%">
+  <img src="quant/invest_box_AIcovered.png" alt="to be added" style="width:80%">
+    <table class="table table-condensed" align="center">
     <tr>
     <td  style=""></td>
     <td style="font-size: 15px">pre (FY2003)</td>
@@ -550,13 +552,154 @@
     <td style="font-size: 15px">26.0%</td>
     </tr>
     </table>
+    </div>
   </ol>
   <li id="distTrend">EUI Distribution Trend</li>
   <p class="lead">Annual Gas + Electric Median EUI Trend (with at
   least 6 years of Electric EUI >= 12 kBtu/sq.ft and Gas EUI >= 3
   kBtu/sq.ft from FY2007 to FY2015)
-  <img src="quant/median_eui_trend.png" alt="to be added" style="width:100%">
+  <img src="quant/median_eui_trend.png" alt="to be added" style="width:90%">
   </ol>
+  <h1 id="pagetop">Summary of level 2</h1>
+  <ol class="nested">
+  <li>Box plot Electric + Gas EUI FY2003 vs FY2015 (Ranked by percent reduction high to low)</li>
+  <img src="quant/invest_eui_1315.png" alt="to be added" style="width:100%">
+  <p align="center">[<b>top number</b>: building count, <b>bottom number</b>: median]<br>
+  <!-- <div style="width: 50%"> -->
+  <table align="center" class="table table-condensed" style="width: 50%">
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">investment</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">median of 2003</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">median of 2015</th>
+<th  valign="bottom"  align="left"  style=" font-size:10pt;">percent reduction</th>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">LEED_EB</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">53.14</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">38.89</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">26.8%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">ESPC</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">63.84</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">46.95</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">26.5%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">GSALink</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">57.93</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">42.83</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">26.1%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">first fuel</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">59.14</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">43.88</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">25.8%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Building Tuneup or Utility Improvements</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">60.43</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">45.64</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">24.5%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">HVAC</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">60.70</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">46.43</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">23.5%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Lighting</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">60.55</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">47.06</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">22.3%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Advanced Metering</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">56.61</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">44.57</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">21.3%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">GP</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">52.16</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">41.33</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">20.8%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">E4</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">60.90</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">48.47</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">20.4%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Building Envelope</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">55.63</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">45.64</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">18.0%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">Shave Energy</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">57.84</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">48.81</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">15.6%</td>
+</tr>
+<tr>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">LEED_NC</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">44.46</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">42.25</td>
+<td  valign="bottom"  align="left"  style=" font-size:10pt;">5.0%</td>
+</tr>
+  </table>
+<li>Weather Normalized Saving by ECM Actions</li>
+<ol class="nested">
+  <li>Overview</li>
+    <img src="quant/saving_by_act_yuzhe/electricity_saving_summary_ordered_by_relative_value.png" alt="to be added" style="width:90%">
+    <img src="quant/saving_by_act_yuzhe/gas_saving_summary_ordered_by_relative_value.png" alt="to be added" style="width:90%">
+  <li>Top action groups
+    <ol class="nested">
+      <li>Capital</li>
+    <table align="center">
+      <caption>Envelope Only</caption>
+      <tr>
+	<th style="font-size: 20px">Electric</th>
+	<th style="font-size: 20px">Gas</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/envelope_only_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img src="quant/saving_by_act_yuzhe/envelope_only_gas.png" alt="to be added" style="width:90%"></th>
+      </tr>
+    </table>
+      <li>Operational</li>
+    <table align="center">
+      <caption>Advanced Metering Only</caption>
+      <tr>
+	<th style="font-size: 20px">Electric</th>
+	<th style="font-size: 20px">Gas</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/advanced_metering_only_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img src="quant/saving_by_act_yuzhe/advanced_metering_only_gas.png" alt="to be added" style="width:90%"></th>
+      </tr>
+    </table>
+    <li>Combined</li>
+    <table align="center">
+      <caption>GSALink after Capital Investment</caption>
+      <tr>
+	<th style="font-size: 20px">Electric</th>
+	<th style="font-size: 20px">Gas</th>
+      </tr>
+      <tr>
+    <th><img src="quant/saving_by_act_yuzhe/gsalink_after_c_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img src="quant/saving_by_act_yuzhe/gsalink_after_c_gas.png" alt="to be added" style="width:90%"></th>
+      </tr>
+    </table>
+    </ol>
+  </ol>
+<!-- </div> -->
+</ol>
+  <h1>Summary of level 3</h1>
+  <p>Haven't discussed
 		    </div>
 	    </div>
 	    <!-- /.row -->
