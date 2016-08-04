@@ -1279,6 +1279,46 @@ def plot_box_sets(theme, summary_step):
     P.savefig(os.getcwd() + '/plot_FY_annual/quant/eui_box_set.png'.format(theme, summary_step), dpi = 150)
     plt.close()
 
+def plot_median_trend(theme, summary_step, anno=False):
+    conn = uo.connect('all')
+    ai_set = gbs.get_cat_set(['A', 'I'], conn)
+    energy_set = gbs.get_energy_set('eui')
+    study_set = energy_set.intersection(ai_set)
+    (cap_only, op_only, cap_and_op, cap_or_op) = gbs.get_invest_set()
+    covered_set = gbs.get_covered_set()
+    no_invest = gbs.get_no_invest_set()
+    conn = uo.connect('all')
+    with conn:
+        if summary_step == 'Y':
+            df_energy= pd.read_sql('SELECT Building_Number, Fiscal_Year, eui_elec, eui_gas, eui FROM eui_by_fy WHERE Fiscal_Year < 2016', conn)
+        elif summary_step == 'M':
+            df_energy= pd.read_sql('SELECT Building_Number, Fiscal_Year, year, month, eui_elec, eui_gas, eui FROM EUAS_monthly WHERE Fiscal_Year < 2016', conn)
+    df_energy = df_energy[df_energy['Building_Number'].isin(study_set)]
+    print len(df_energy)
+    num = len(set(df_energy['Building_Number']))
+    if summary_step == 'M':
+        df_energy = df_energy[['Building_Number', 'year', 'month', theme]]
+        df_energy['Date'] = df_energy.apply(lambda r: datetime.datetime(int(r['year']), int(r['month']), 1), axis=1)
+    elif summary_step == 'Y':
+        df_energy = df_energy[['Building_Number', 'Fiscal_Year', theme]]
+        df_energy['Date'] = df_energy.apply(lambda r: datetime.datetime(int(r['Fiscal_Year']), 1, 1), axis=1)
+    dfs = []
+    labels = ['Capital_Only', 'Operational_Only',
+              'Capital_and_Operational', 'No_Known_Investment', 
+              'A + I', 'Covered A + I']
+    sets = [cap_only, op_only, cap_and_op, no_invest, study_set,
+            energy_set.intersection(covered_set)]
+    for x, l in zip(sets, labels):
+        df_cap = df_energy[df_energy['Building_Number'].isin(x)]
+        df = df_cap.groupby(['Date']).median()
+        df['status'] = l
+        dfs.append(df)
+        plt.plot(df.index, df[theme])
+    pd.concat(dfs, ignore_index=True).to_csv(r_input + \
+                                             'all_median_trend.csv')
+    plt.show()
+    return
+
 def plot_trend_fan_sets(theme, summary_step, anno=False):
     conn = uo.connect('all')
     ai_set = gbs.get_cat_set(['A', 'I'], conn)
@@ -1335,7 +1375,7 @@ def plot_fan(df_energy, ycol, alpha=0.7, palette="Blues", median_color="red", qu
                prop={'size':10})
 
 # anno: whether to annotate each point
-def plot_trend_fan(theme, summary_step, study_set, set_label, quantiles=None, anno=False):
+def plot_trend_fan(theme, summary_step, study_set, set_label, quantiles=None, anno=False, ax=None):
     conn = uo.connect('all')
     with conn:
         if summary_step == 'Y':
@@ -1352,7 +1392,6 @@ def plot_trend_fan(theme, summary_step, study_set, set_label, quantiles=None, an
     elif summary_step == 'Y':
         df_energy = df_energy[['Building_Number', 'Fiscal_Year', theme]]
         df_energy['Date'] = df_energy.apply(lambda r: datetime.datetime(int(r['Fiscal_Year']), 1, 1), axis=1)
-
 
     if quantiles is None:
         plot_fan(df_energy, theme, median_color="red", anno=anno)
@@ -1655,6 +1694,7 @@ def dynamic_trend():
     return
 
 def main():
+    plot_median_trend('eui', 'Y', anno=True)
     # create_index('eui_elec')
     # create_index('eui')
     # code_0712()
