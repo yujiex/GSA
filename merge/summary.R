@@ -153,9 +153,10 @@ mean.n <- function(x){
 return(c(y = median(x)*0.97, label = round(mean(x),2))) 
 # experiment with the multiplier to find the perfect position
 }
-# function for median labels
+# function for median labels uncomment here to show both median and n
 median.n <- function(x){
-return(c(y = median(x)*0.92, label = round(median(x),1))) 
+## return(c(y = median(x)*0.92, label = round(median(x),1))) 
+return(c(y = median(x)*1.10, label = round(median(x),1))) 
 # experiment with the multiplier to find the perfect position
 }
 actionCountEUIgb <- function(cat, plottype) {
@@ -203,9 +204,9 @@ actionCountEUIgb <- function(cat, plottype) {
         scale_fill_brewer(palette="Accent") +
         theme(legend.position="bottom") +
         scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
-        stat_summary(fun.data=give.n, geom="text", fun.y=median, position=position_dodge(width = 0.75), size=3) +
+        ## stat_summary(fun.data=give.n, geom="text", fun.y=median, position=position_dodge(width = 0.75), size=3) +
         stat_summary(fun.data=median.n, geom="text", fun.y=median, position=position_dodge(width = 0.75), size=3)
-    ggsave(file=sprintf("plot_FY_annual/quant/invest_eui_1315.png", cat, plottype), width=12, height=6, units="in")
+    ggsave(file=sprintf("plot_FY_annual/quant/invest_eui_1315_.png", cat, plottype), width=12, height=6, units="in")
     print(p)
 }
 actionCountEUIgb("AI", "box")
@@ -466,11 +467,50 @@ dev.off()
 df = read.csv("input_R/all_median_trend.csv")
 df$status <-
     factor(df$status, levels=levels(df$status)[c(1, 4, 3, 6, 2, 5)])
-ggplot(df, aes(x=Fiscal_Year, y=eui, color=status)) +
+ggplot(df, aes(x=Fiscal_Year, y=eui_perdd, color=status)) +
     geom_line() +
     geom_point() +
     scale_x_continuous(breaks=seq(2003, 2015, 1)) +
-    ylab("Electric + Gas [kBtu/sq.ft]") +
-    ggtitle("Median EUI trend") +
+    ylab("Electric per cdd + Gas per hdd [kBtu/sq.ft * F * year]") +
+    ggtitle("Median EUI per degree day trend") +
     scale_colour_brewer(palette="Set3")
-## ggsave(file="plot_FY_annual/quant/median_eui_trend.png", width=8, height=4, units="in")
+ggsave(file="plot_FY_annual/quant/median_eui_trend_perdd.png", width=8, height=4, units="in")
+
+## check weather distribution across year
+df = dbGetQuery(con, 'SELECT Fiscal_Year, SUM(hdd65) AS hdd65, SUM(cdd65) AS cdd65 FROM EUAS_monthly_weather WHERE Fiscal_Year < 2016 GROUP BY Fiscal_Year')
+p1 <- ggplot(df) +
+    geom_line(aes(x=Fiscal_Year, y=hdd65)) +
+    geom_point(aes(x=Fiscal_Year, y=hdd65)) +
+    ggtitle("Total Degree Day for All Buildings") +
+    scale_x_continuous(breaks=seq(2003, 2015, 1))
+p2 <- ggplot(df) +
+    geom_line(aes(x=Fiscal_Year, y=cdd65)) +
+    geom_point(aes(x=Fiscal_Year, y=cdd65)) +
+    scale_x_continuous(breaks=seq(2003, 2015, 1))
+png(file="plot_FY_annual/quant/tot_degreeday.png", width=14, height=7, units="in", res=300)
+multiplot(p1, p2, cols=1)
+dev.off()
+
+df1 = dbGetQuery(con, 'SELECT Building_Number, Fiscal_Year, Fiscal_Month, hdd65, cdd65 FROM EUAS_monthly_weather WHERE Fiscal_Year < 2016')
+df2 = dbGetQuery(con, 'SELECT Building_Number, Cat FROM EUAS_category WHERE Cat in (\'A\', \'I\')')
+print(nrow(df2))
+print(nrow(df1))
+dfall = merge(x=df1, y=df2, by="Building_Number", all.x=TRUE)
+dfall <- dfall[complete.cases(dfall),]
+toagg = dfall[, c("Fiscal_Year", "hdd65", "cdd65")]
+df <- aggregate(toagg, by=list(toagg$Fiscal_Year), FUN=sum)
+df <- df[, c("Group.1", "hdd65", "cdd65")]
+df <- rename(df, c("Group.1"="Fiscal_Year"))
+print(nrow(df))
+p1 <- ggplot(df) +
+    geom_line(aes(x=Fiscal_Year, y=hdd65)) +
+    geom_point(aes(x=Fiscal_Year, y=hdd65)) +
+    ggtitle("Total Degree Day for A + I Buildings") +
+    scale_x_continuous(breaks=seq(2003, 2015, 1))
+p2 <- ggplot(df) +
+    geom_line(aes(x=Fiscal_Year, y=cdd65)) +
+    geom_point(aes(x=Fiscal_Year, y=cdd65)) +
+    scale_x_continuous(breaks=seq(2003, 2015, 1))
+png(file="plot_FY_annual/quant/tot_degreeday_ai.png", width=14, height=7, units="in", res=300)
+multiplot(p1, p2, cols=1)
+dev.off()

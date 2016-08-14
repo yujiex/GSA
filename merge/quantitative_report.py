@@ -1279,6 +1279,47 @@ def plot_box_sets(theme, summary_step):
     P.savefig(os.getcwd() + '/plot_FY_annual/quant/eui_box_set.png'.format(theme, summary_step), dpi = 150)
     plt.close()
 
+def plot_median_trend_perdd(theme, summary_step, anno=False):
+    conn = uo.connect('all')
+    ai_set = gbs.get_cat_set(['A', 'I'], conn)
+    energy_set = gbs.get_energy_set('eui')
+    study_set = energy_set.intersection(ai_set)
+    (cap_only, op_only, cap_and_op, cap_or_op) = gbs.get_invest_set()
+    covered_set = gbs.get_covered_set()
+    no_invest = gbs.get_no_invest_set()
+    conn = uo.connect('all')
+    with conn:
+        if summary_step == 'Y':
+            df_energy= pd.read_sql('SELECT Building_Number, Fiscal_Year, {0} FROM eui_by_fy_weather WHERE Fiscal_Year < 2016'.format(theme), conn)
+        # M is not right
+        elif summary_step == 'M':
+            df_energy= pd.read_sql('SELECT Building_Number, Fiscal_Year, year, month, eui_elec, eui_gas, eui FROM EUAS_monthly_weather WHERE Fiscal_Year < 2016', conn)
+    df_energy = df_energy[df_energy['Building_Number'].isin(study_set)]
+    print len(df_energy)
+    num = len(set(df_energy['Building_Number']))
+    if summary_step == 'M':
+        df_energy = df_energy[['Building_Number', 'year', 'month', theme]]
+        df_energy['Date'] = df_energy.apply(lambda r: datetime.datetime(int(r['year']), int(r['month']), 1), axis=1)
+    elif summary_step == 'Y':
+        df_energy = df_energy[['Building_Number', 'Fiscal_Year', theme]]
+        df_energy['Date'] = df_energy.apply(lambda r: datetime.datetime(int(r['Fiscal_Year']), 1, 1), axis=1)
+    dfs = []
+    labels = ['Capital_Only', 'Operational_Only',
+              'Capital_and_Operational', 'No_Known_Investment', 
+              'A + I', 'Covered A + I']
+    sets = [cap_only, op_only, cap_and_op, no_invest, study_set,
+            energy_set.intersection(covered_set)]
+    for x, l in zip(sets, labels):
+        df_cap = df_energy[df_energy['Building_Number'].isin(x)]
+        df = df_cap.groupby(['Date']).median()
+        df['status'] = l
+        dfs.append(df)
+        plt.plot(df.index, df[theme])
+    pd.concat(dfs, ignore_index=True).to_csv(r_input + \
+                                             'all_median_trend.csv')
+    plt.show()
+    return
+
 def plot_median_trend(theme, summary_step, anno=False):
     conn = uo.connect('all')
     ai_set = gbs.get_cat_set(['A', 'I'], conn)
@@ -1694,7 +1735,8 @@ def dynamic_trend():
     return
 
 def main():
-    plot_median_trend('eui', 'Y', anno=True)
+    plot_median_trend_perdd('eui_perdd', 'Y', anno=True)
+    # plot_median_trend('eui', 'Y', anno=True)
     # create_index('eui_elec')
     # create_index('eui')
     # code_0712()

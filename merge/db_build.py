@@ -213,20 +213,56 @@ def concat():
     # conn.close()
     print 'end'
     return
+
+def get_eui_weather():
+    conn = sqlite3.connect(homedir + 'db/all.db')
+    with conn:
+        df1 = pd.read_sql('SELECT * FROM EUAS_monthly_weather', conn)
+        df2 = pd.read_sql('SELECT Building_Number, Cat FROM EUAS_category', conn)
+    df = pd.merge(df1, df2, on='Building_Number', how='left')
+    df = df[df['eui_total'] != np.inf]
+    df.info()
+    df_f = df.groupby(['Building_Number', 'Fiscal_Year']).agg({'Cat': 'first', 'eui_elec': 'sum', 'eui_gas': 'sum', 'eui': 'sum', 'eui_total': 'sum', 'hdd65':'sum', 'cdd65': 'sum'})
+    df_f.reset_index(inplace=True)
+    df_f = df_f[['Building_Number', 'Fiscal_Year', 'Cat', 'eui_elec', 'eui_gas', 'eui', 'eui_total', 'hdd65', 'cdd65']]
+    df_f['eui_gas_perdd'] = df_f['eui_gas']/df_f['hdd65']
+    df_f['eui_elec_perdd'] = df_f['eui_elec']/df_f['cdd65']
+    df_f['eui_perdd'] = df_f['eui_gas_perdd'] + df_f['eui_elec_perdd']
+    df_f.sort(['Building_Number', 'Fiscal_Year'], inplace=True)
+    df_f.info()
+    # def get_status(e, g):
+    #     if e >= 12 and g >= 3:
+    #         return 'Electric EUI >= 12 and Gas EUI >= 3'
+    #     elif e >= 12 and g < 3:
+    #         return 'Low Gas EUI'
+    #     elif e < 12 and g >= 3:
+    #         return 'Low Electric EUI'
+    #     else:
+    #         return 'Low Gas and Electric EUI'
+    # print df_f.groupby(['Fiscal_Year']).count()[['Building_Number']]
+    # df_f['status'] = df_f.apply(lambda r: get_status(r['eui_elec'],
+    #                                                  r['eui_gas']),
+    #                             axis=1)
+    # print df_f['status'].value_counts()
+    with conn:
+        df_f.to_sql('eui_by_fy_weather', conn, if_exists='replace')
+    print 'end'
+    return
     
 # compute eui of each single building 
 # eui_total != np.inf removes records with zero square footage but 
 # non-zero gas/oil/steam/electric consumption
 def get_eui():
     conn = sqlite3.connect(homedir + 'db/all.db')
-    df = pd.read_sql('SELECT * FROM EUAS_monthly', conn)
+    df = pd.read_sql('SELECT * FROM EUAS_monthly_weather', conn)
     df = df[df['eui_total'] != np.inf]
     df.info()
     # df_f = df.groupby(['Building_Number', 'Fiscal_Year']).sum()
-    df_f = df.groupby(['Building_Number', 'Fiscal_Year']).agg({'Gross_Sq.Ft': 'mean', 'Cat': 'first', 'eui_elec': 'sum', 'eui_gas': 'sum', 'eui_oil': 'sum', 'eui_steam': 'sum', 'eui_water': 'sum', 'eui': 'sum', 'eui_total': 'sum'})
+    df_f = df.groupby(['Building_Number', 'Fiscal_Year']).agg({'Gross_Sq.Ft': 'mean', 'Cat': 'first', 'eui_elec': 'sum', 'eui_gas': 'sum', 'eui_oil': 'sum', 'eui_steam': 'sum', 'eui_water': 'sum', 'eui': 'sum', 'eui_total': 'sum', 'eui':'sum', 'hdd65':'sum', 'cdd65': 'sum'})
     df_f.reset_index(inplace=True)
-    df_f = df_f[['Building_Number', 'Fiscal_Year', 'Cat', 'Gross_Sq.Ft', 'eui_elec', 'eui_gas', 'eui_oil', 'eui_steam', 'eui_water', 'eui', 'eui_total']]
+    df_f = df_f[['Building_Number', 'Fiscal_Year', 'Cat', 'Gross_Sq.Ft', 'eui_elec', 'eui_gas', 'eui_oil', 'eui_steam', 'eui_water', 'eui', 'eui_total', 'hdd65', 'cdd65']]
     df_f.sort(['Building_Number', 'Fiscal_Year'], inplace=True)
+    df_f.info()
     def get_status(e, g):
         if e >= 12 and g >= 3:
             return 'Electric EUI >= 12 and Gas EUI >= 3'
@@ -241,8 +277,8 @@ def get_eui():
                                                      r['eui_gas']),
                                 axis=1)
     print df_f['status'].value_counts()
-    with conn:
-        df_f.to_sql('eui_by_fy', conn, if_exists='replace')
+    # with conn:
+    #     df_f.to_sql('eui_by_fy', conn, if_exists='replace')
     print 'end'
     return
     
@@ -821,6 +857,7 @@ def input_energy():
     # excel2csv_singlesheet()
     # concat()
     # get_eui()
+    get_eui_weather()
     # get_area()
     # get_cat()
     # dump_static()
@@ -1330,7 +1367,7 @@ def main():
     # read_ecm_program()
     # db_view('all', False, 'EUAS_monthly')
     # check()
-    get_use()
+    # get_use()
     # dump_covered()
     # concat_covered()
     # db_view('other_input', True)
