@@ -30,7 +30,7 @@ def compute_piecewise(measure_type, df_all, b, s):
         d = ltm.piecewise_reg_one(b, s, npar, 'eui_elec', False, None, df_reg)
     return d
         
-def join_interval(b, s, area, col, m, measure_type, conn):
+def join_interval(b, s, area, col, m, measure_type, conn, year=None):
     with conn:
         df_w = pd.read_sql('SELECT * FROM {0}'.format(s), conn)
         df_minute = pd.read_sql('SELECT Timestamp, [{0}] FROM {1} WHERE Building_Number = \'{2}\''.format(col, measure_type, b), conn)
@@ -51,6 +51,8 @@ def join_interval(b, s, area, col, m, measure_type, conn):
     # df_all = df_all[df_all['eui'] >= 0]
     # up = df_all['eui'].quantile(0.99)
     # df_all = df_all[df_all['eui'] < up]
+    if not year is None:
+        df_all = df_all[df_all['year'] == str(year)]
     return df_all
 
 # source: http://stackoverflow.com/questions/22354094/pythonic-way-of-detecting-outliers-in-one-dimensional-observation-data
@@ -318,7 +320,7 @@ def fit_time(measure_type, occtime):
     sns.set_context("talk", font_scale=1)
     jsondir = os.getcwd() + '/input/FY/interval/ion_0627/piecewise_all/json_{0}/'.format(occtime)
     # csvdir = os.getcwd() + '/input/FY/interval/ion_0627/piecewise_all/csv/'
-    for i, (b, s) in enumerate(bs_pair):
+    for i, (b, s) in enumerate(bs_pair)[:5]:
         print b, s
         try:
             area = df_area.ix[b, 'Gross_Sq.Ft']
@@ -326,7 +328,7 @@ def fit_time(measure_type, occtime):
             print 'No area found'
             continue
         df = join_interval(b, s, area, col, m, measure_type, conn)
-        df.to_csv(homedir + 'temp/{0}.csv'.format(b))
+        # df.to_csv(homedir + 'temp/{0}.csv'.format(b))
         df = df[df[col] >= 0]
         points = df[col]
         outliers = show_outlier(points, b, 'upper', measure_type, 5)
@@ -347,7 +349,7 @@ def fit_time(measure_type, occtime):
     plt.close()
     return
 
-def fit(measure_type):
+def fit(measure_type, year=None):
     conn = uo.connect('interval_ion')
     with conn:
         df_bs = pd.read_sql('SELECT * FROM {0}_id_station'.format(measure_type), conn)
@@ -370,6 +372,7 @@ def fit(measure_type):
     # bs_pair = [x for x in bs_pair if x[0] in test]
     lines = ['Building_Number,week night save%,weekend day save%,weekend night save%,aggregate save%,CVRMSE week day,CVRMSE week night,CVRMSE weekend day,CVRMSE weekend night']
     print len(bs_pair)
+    # bs_pair = bs_pair[:1]
     for b, s in bs_pair:
         print b, s
         try:
@@ -377,11 +380,14 @@ def fit(measure_type):
         except KeyError:
             print 'No area found'
             continue
-        df = join_interval(b, s, area, col, m, measure_type, conn)
+        df = join_interval(b, s, area, col, m, measure_type, conn, year)
+        if len(df) == 0:
+            continue
         df.to_csv(homedir + 'temp/{0}.csv'.format(b))
         df = df[df[col] >= 0]
         points = df[col]
-        outliers = show_outlier(points, b, 'upper', measure_type, 5)
+        # outliers = show_outlier(points, b, 'upper', measure_type, 5)
+        outliers = show_outlier(points, b, 'upper', measure_type, 1.5)
         df['outlier'] = outliers
         df = df[~np.array(outliers)]
         df['status_week_day_night'] = \
@@ -403,12 +409,19 @@ def fit(measure_type):
         save, err = compute_saving_all(d0, d1, d2, d3, axarr)
         plt.suptitle('{0} -- {1}'.format(min_time, max_time))
         f.text(0.5, 0.04, 'Temperature_F', ha='center', va='center')
-        path = os.getcwd() + '/input/FY/interval/ion_0627/piecewise/{1}/{0}_{1}.png'.format(b, measure_type)
+        if year is None:
+            path = os.getcwd() + '/input/FY/interval/ion_0627/piecewise/{1}/{0}_{1}.png'.format(b, measure_type)
+        else:
+            path = os.getcwd() + '/input/FY/interval/ion_0627/piecewise/{1}/{0}_{1}_{2}.png'.format(b, measure_type, int(year))
         P.savefig(path, dpi = my_dpi, figsize = (2000/my_dpi, 500/my_dpi), bbox_inches='tight')
         shutil.copy(path, path.replace('input/FY/interval/ion_0627/piecewise', 'plot_FY_weather/html/interval/lean'))
         plt.close()
         lines.append(','.join([b] + save + err))
-    with open(os.getcwd() + '/input/FY/interval/ion_0627/table/{0}_save.csv'.format(measure_type), 'w+') as wt:
+    if year is None:
+        table_path = os.getcwd() + '/input/FY/interval/ion_0627/table/{0}_save.csv'.format(measure_type)
+    else:
+        table_path = os.getcwd() + '/input/FY/interval/ion_0627/table/{0}_save_{1}.csv'.format(measure_type, int(year))
+    with open(table_path, 'w+') as wt:
         wt.write('\n'.join(lines))
     return
     
@@ -450,28 +463,41 @@ def read_interval_building(b):
         df = pd.read_sql('SELECT * FROM electric WHERE Building_Number = \'{0}\''.format(b), conn)
     df.to_csv(homedir + 'temp/{0}_int.csv'.format(b))
     
-def process_html(measure_type):
+# TODO: modify this for "electric.html" and "gas.html"
+def process_html(measure_type, year=None):
     with open (os.getcwd() + '/plot_FY_weather/html/interval/lean/template.html', 'r') as rd:
         lines = rd.readlines()
+    if year is None:
+        measureTypeYear = measure_type
+    else:
+        measureTypeYear = '{0}_{1}'.format(measure_type, year)
     for i, line in enumerate(lines):
         if 'start' in line:
             start_id = i
         elif 'end' in line:
             end_id = i
         lines[i] = lines[i].replace('measure_type', measure_type)
+        lines[i] = lines[i].replace('measureTypeYear', measureTypeYear)
     print start_id, end_id
-    files = glob.glob(os.getcwd() + '/plot_FY_weather/html/interval/lean/{0}/*.png'.format(measure_type))
+    if year is None:
+        files = glob.glob(os.getcwd() + '/plot_FY_weather/html/interval/lean/{0}/*_{0}.png'.format(measure_type))
+    else:
+        files = glob.glob(os.getcwd() + '/plot_FY_weather/html/interval/lean/{0}/*_{0}_{1}.png'.format(measure_type, year))
     to_replace = lines[start_id + 1: end_id]
     newlines = []
     for f in files:
-        building = f[f.rfind('/') + 1:f.rfind('_')]
+        building = f[f.rfind('/') + 1:f.rfind('/') + 9]
         print building
         for x in to_replace:
             newlines.append(x.replace('WY0029ZZ', building))
             print x
             print x.replace('WY0029ZZ', building)
     final = lines[:start_id] + newlines + lines[end_id + 1:]
-    with open(os.getcwd() + '/plot_FY_weather/html/interval/lean/{0}.html'.format(measure_type), 'w+') as wt:
+    if year is None:
+        outfile = os.getcwd() + '/plot_FY_weather/html/interval/lean/{0}.html'.format(measure_type)
+    else:
+        outfile = os.getcwd() + '/plot_FY_weather/html/interval/lean/{0}_{1}.html'.format(measure_type, year)
+    with open(outfile, 'w+') as wt:
         wt.write(''.join(final))
     return
     
@@ -559,6 +585,14 @@ def plot_json(dirname, measure_type, occtime):
 def create_summary_daynightlean():
     files = glob.glob(os.getcwd() + '/input/FY/interval/ion_0627/table/*.csv')
     for f in files:
+        df = pd.read_csv(f)
+        df['sortby'] = df['aggregate save%'].map(lambda x:
+                                                 float(x[:-1]))
+        df.sort('sortby', ascending=False, inplace=True)
+        df_out = df.copy()
+        df_out.drop('sortby', axis=1, inplace=True)
+        df_out.to_csv(f, index=False)
+    for f in files:
         uo.csv2html(f)
     files = glob.glob(os.getcwd() + '/input/FY/interval/ion_0627/table/*.html')
     for f in files:
@@ -578,20 +612,37 @@ def get_low_err_lean():
         df = df[df['CVRMSE week day'] < 0.35]
         df.to_csv(f.replace('.csv', '_lowerr.csv'), index=False)
     return
+    
+def lean():
+    # fit('gas')
+    # fit('electric')
+    # fit('gas', year=2014)
+    # fit('gas', year=2015)
+    # fit('electric', year=2014)
+    # fit('electric', year=2015)
+    # get_low_err_lean()
+    # create_summary_daynightlean()
+    process_html('electric')
+    process_html('gas')
+    # process_html('electric', year=2014)
+    # process_html('gas', year=2014)
+    # process_html('electric', year=2015)
+    # process_html('gas', year=2015)
+    return
 
 def main():
+    lean()
     # remove_outliers('electric')
-    remove_outliers('gas')
+    # remove_outliers('gas')
     # plot_saving_oneplot('weekend day')
     # plot_saving_oneplot('weekend night')
-    # get_low_err_lean()
     # create_summary_daynightlean()
     # plot_csv('piecewise_all', 'electric')
     # read_interval_building('NM0050ZZ')
     # read_interval_building('LA0085ZZ')
     # temp()
     # copy outlier files
-    # fit('electric')
+    # fit('gas')
     # uo.dir2html('/media/yujiex/work/SEED/gitDir/SEEDproject/Code/merge/input/FY/interval/ion_0627/outlier/', '*_gas.png', 'Gas Outlier', 'gas_outlier.html')
     # files = glob.glob(os.getcwd() + '/input/FY/interval/ion_0627/outlier/*')
     # for f in files:

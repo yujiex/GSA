@@ -481,18 +481,30 @@ def summary_long(measure_type):
 def create_index_interval():
     files = glob.glob(os.getcwd() +
                       '/input/FY/interval/ion_0627/summary_long/*.csv')
-    def type_err(n_outlier, n_neg):
-        if n_outlier > n_neg:
-            if n_neg > 0:
-                return 'negative|extreme'
-            else:
-                return 'extreme'
+    def type_err(n_outlier, n_neg, percent_data):
+        err_list = []
+        if (n_outlier > n_neg) or (n_outlier == n_neg and n_neg > 0):
+            err_list.append('Random - High Positive Values')
+        if n_neg > 0:
+            err_list.append('Negative Values')
+        if float(percent_data[:-1]) < 99:
+            err_list.append('Data Loss')
+        if len(err_list) == 0:
+            return 'NA'
         else:
-            if n_neg > 0:
-                return 'negative|extreme'
-            else:
-                return 'NA'
-
+            return ';'.join(err_list)
+    def get_method(string):
+        methods = []
+        if 'Random - High Positive Values' in string:
+            methods.append('95% cutoff')
+        if 'Negative Values' in string:
+            methods.append('0 cutoff')
+        if len(methods) == 0:
+            return 'NA'
+        else:
+            return ';'.join(methods)
+    # method_dict = {'negative|extreme': '90% cutoff 0 cutoff',
+    #                'extreme': '90% cutoff', 'negative': '0 cutoff'}
     df_err = pd.read_csv(homedir + 'temp/Updated error Table.csv')
     err_dict = dict(zip(df_err['Building_Number'], df_err['type_of_err']))
     clean_dict = dict(zip(df_err['Building_Number'], df_err['Cleaning Methods']))
@@ -509,19 +521,16 @@ def create_index_interval():
         df['data_time_span'] = df['max_time'] - df['min_time']
         df['percent_data_available'] = df.apply(lambda r: '{0:.2%}'.format(1 - float(r['missing_count'])/r['expect_count']), axis=1)
         df['before_cleaning'] = df['Building_Number'].map(lambda x: '<a href="trend/{0}_{1}.html">link</a>'.format(x, measure_type))
-        if measure_type == 'gas':
-            df['type_of_err'] = df.apply(lambda r: type_err(r['n_outlier'], r['neg_count']), axis=1)
-        else:
-            df['type_of_err'] = df['Building_Number'].map(lambda x: err_dict[x])
+        df['type_of_err'] = df.apply(lambda r: type_err(r['n_outlier'], r['neg_count'], r['percent_data_available']), axis=1)
         df['after_cleaning'] = df['Building_Number'].map(lambda x: '<a href="trend_no/{0}_{1}.html">link</a>'.format(x, measure_type))
-        if measure_type == 'electric':
-            df['Cleaning Method'] = df['Building_Number'].map(lambda x: clean_dict[x])
+        df['Cleaning Method'] = df['type_of_err'].map(get_method)
         df = df[['Building_Number', 'data_time_span', 
                  'percent_data_available', 'before_cleaning', 'after_cleaning', 'type_of_err', 'Cleaning Method']]
         print df.head()
         outfile = f.replace('.csv', '.html')
         outfile = outfile.replace('/input/FY/interval/ion_0627/summary_long/', '/plot_FY_weather/html/interval/')
-        df.to_html(outfile, index=False)
+        with pd.option_context('max_colwidth', 80):
+            df.to_html(outfile, index=False)
         with open(outfile, 'r') as rd:
             lines = rd.readlines()
         for i in range(len(lines)):
