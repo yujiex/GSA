@@ -11,18 +11,34 @@ qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
 col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
 con = dbConnect(drv=RSQLite::SQLite(), dbname="csv_FY/db/all.db")
 
+stackbar <- function(df, xcol, fillcol, ylabel, tit, legendloc) {
+    dfcount = plyr::count(df, c(xcol, fillcol))
+    dfcount <- transform(dfcount, mid_y = ave(dfcount$freq, dfcount[,xcol], FUN = function(val) cumsum(val) - (0.5 * val)))
+    g = ggplot(dfcount, aes_string(x=xcol, y="freq", fill=fillcol, label="freq")) +
+        geom_bar(stat="identity") +
+        ylab(ylabel) +
+        labs(title=tit) +
+        geom_text(aes(y=mid_y), size=2.5) +
+        scale_fill_brewer(palette="Set3")
+    if (!missing(legendloc)) {
+        g <- g + theme(legend.position=legendloc)
+    }
+    return(g)
+}
+
 df1 = dbGetQuery(con, 'SELECT DISTINCT Building_Number, Fiscal_Year FROM EUAS_monthly')
 df2 = dbGetQuery(con, 'SELECT Building_Number, Cat FROM EUAS_category')
 df = merge(x=df1, y=df2, by="Building_Number", all.x=TRUE)
 df <- df[df$Fiscal_Year < 2016,]
 ## qplot(factor(Fiscal_Year), data=df, geom="bar", fill=factor(Cat))
 df$Cat <- factor(df$Cat, levels=c("A", "I", "C", "B", "D", "E"))
-ggplot(df, aes(Fiscal_Year, fill=Cat)) + geom_bar() + ylab("Building Count") + labs(title="EUAS Building Count By Category") + scale_fill_brewer(palette="Set3")
-ggsave(file="plot_FY_annual/quant/building_by_cat.png", width=8, height=4, units="in")
-df$Fiscal_Year <- factor(df$Fiscal_Year)
-df %>% dplyr::group_by(Fiscal_Year, Cat) %>%
-    summarise(Building_Number = n()) %>% cast(Cat ~ Fiscal_Year) %>%
-    write.csv("plot_FY_annual/quant_data/cat_cnt_by_year.csv", row.names=FALSE)
+g = stackbar(df, "Fiscal_Year", "Cat", "Building Count", "EUAS Building Count By Category")
+print(g)
+ggsave(file="plot_FY_annual/quant/building_by_cat_.png", width=8, height=4, units="in")
+## df$Fiscal_Year <- factor(df$Fiscal_Year)
+## df %>% dplyr::group_by(Fiscal_Year, Cat) %>%
+##     summarise(Building_Number = n()) %>% cast(Cat ~ Fiscal_Year) %>%
+##     write.csv("plot_FY_annual/quant_data/cat_cnt_by_year.csv", row.names=FALSE)
 ## df %>% dplyr::group_by(Cat) %>% summarise(F = count(Fiscal_Year))
 
 ## Building type count by year
@@ -90,23 +106,32 @@ df1 = dbGetQuery(con, 'SELECT DISTINCT Building_Number, Fiscal_Year FROM EUAS_mo
 df = merge(df1, df, by="Building_Number", all.x=TRUE)
 df <- df[df$Fiscal_Year < 2016,]
 df$status <- factor(df$status, levels=c("Capital and Operational", "Capital Only", "Operational Only", "No Known Investment"))
-ggplot(df, aes(Fiscal_Year, fill=status)) + geom_bar() + ylab("Building Count") + labs(title="Capital vs Operational Investment By Fiscal Year") + scale_fill_brewer(palette="Set3") + theme(legend.position="bottom")
+ggplot(df, aes(Fiscal_Year, fill=status)) +
+    geom_bar() + ylab("Building Count") + labs(title="Capital vs Operational Investment By Fiscal Year") + scale_fill_brewer(palette="Set3") + theme(legend.position="bottom")
 ggsave(file="plot_FY_annual/quant/co_cnt_byyear.png", width=8, height=4, units="in")
 df %>% dplyr::group_by(Fiscal_Year, status) %>%
     summarise(Building_Number = n()) %>% cast(status ~ Fiscal_Year) %>%
     write.csv("plot_FY_annual/quant_data/co_cnt_byyear.csv", row.names=FALSE)
 
 df = read.csv("input_R/cap_op_cnt.csv")
-df1 = dbGetQuery(con, 'SELECT DISTINCT Building_Number, Fiscal_Year FROM EUAS_monthly')
+df1 = dbGetQuery(con, 'SELECT DISTINCT Building_Number, Fiscal_Year FROM EUAS_monthly WHERE Cat in (\'A\', \'I\')')
 df = merge(df1, df, by="Building_Number", all.x=TRUE)
 df <- df[df$Fiscal_Year < 2016,]
-df <- df[df$status != "No Known Investment",]
-df$status <- factor(df$status, levels=c("Capital and Operational", "Capital Only", "Operational Only"))
-ggplot(df, aes(Fiscal_Year, fill=status)) + geom_bar() + ylab("Building Count") + labs(title="Capital vs Operational Investment By Fiscal Year") + scale_fill_brewer(palette="Set3") + theme(legend.position="bottom") + ylim(0, 500)
-ggsave(file="plot_FY_annual/quant/co_cnt_byyear_with.png", width=8, height=4, units="in")
-df %>% dplyr::group_by(Fiscal_Year, status) %>%
-    summarise(Building_Number = n()) %>% cast(status ~ Fiscal_Year) %>%
-    write.csv("plot_FY_annual/quant_data/co_cnt_byyear.csv", row.names=FALSE)
+## df <- df[df$status != "No Known Investment",]
+df <- df[df$status != "With Investment",]
+df$status <- factor(df$status, levels=c("Capital and Operational", "Capital Only", "Operational Only", "No Known Investment"))
+df <- df[complete.cases(df),]
+stackbar(df, "Fiscal_Year", "status", "Building Count", "Capital vs Operational Investment By Fiscal Year", "bottom")
+ggsave(file="plot_FY_annual/quant/co_cnt_byyear_with_.png", width=8, height=4, units="in")
+
+df2 = df[df$Fiscal_Year == 2015,]
+pie <- ggplot(df2, aes(x=factor(1), fill=status)) +
+    geom_bar(width=1) +
+    scale_fill_brewer(palette="Set3") +
+    xlab("") +
+    ylab("") +
+    coord_polar(theta="y")
+ggsave(file="plot_FY_annual/quant/pie_2015.png", width=8, height=4, units="in")
 
 df = read.csv("input_R/cap_op_cnt.csv")
 df1 = dbGetQuery(con, 'SELECT Building_Number, Cat FROM EUAS_category')
@@ -125,6 +150,26 @@ df$investment <- factor(df$investment, levels=c("Capital and Operational", "Capi
 df <- df[complete.cases(df),]
 ggplot(df, aes(investment, fill=energy)) + geom_bar() + ylab("Building Count") + labs(title="Capital vs Operational Investment Energy Data Quality") + scale_fill_brewer(palette="Set3") + theme(legend.position="bottom")
 ggsave(file="plot_FY_annual/quant/co_energy.png", width=8, height=4, units="in")
+
+## separate out bad electric only and bad gas only
+df1 = read.csv("input_R/cap_op_cnt.csv")
+df2 = read.csv("input_R/robust_energy_sep.csv")
+df2 <- rename(df2, c("status"="energy"))
+df1 <- rename(df1, c("status"="investment"))
+df = merge(df2, df1, by="Building_Number", all.x=TRUE)
+df$investment <- factor(df$investment, levels=c("Capital and Operational", "Capital Only", "Operational Only"))
+df <- df[complete.cases(df),]
+df <- cbind(df[1:2], lapply(df[3], function(x) str_wrap(x, width = 30)), df[4])
+g = stackbar(df, "investment", "energy", "Building Count",
+             "Capital vs Operational Investment Energy Data Quality", "bottom")
+print(g)
+## ggplot(df, aes(investment, fill=energy)) +
+##     geom_bar() +
+##     ylab("Building Count") +
+##     labs(title="Capital vs Operational Investment Energy Data Quality") +
+##     scale_fill_brewer(palette="Set3") +
+##     theme(legend.position="bottom")
+ggsave(file="plot_FY_annual/quant/co_energy_sep.png", width=8, height=4, units="in")
 
 df1 = read.csv("input_R/cap_op_cnt.csv")
 df2 = read.csv("input_R/robust_energy.csv")
@@ -184,14 +229,22 @@ actionCountEUIgb <- function(cat, plottype) {
     dfall <- dfall[complete.cases(dfall),]
     dfall$Fiscal_Year <- factor(dfall$Fiscal_Year)
     dfall$investment <-
-    factor(dfall$investment, levels=c("LEED_EB","ESPC","GSALink",
-                                      "first fuel",
-                                      "Building Tuneup or Utility Improvements",
-                                      "HVAC","Lighting",
-                                      "Advanced Metering","GP","E4",
-                                      "Building Envelope",
-                                      "Shave Energy","LEED_NC"))
+    ## factor(dfall$investment, levels=c("LEED_EB","ESPC","GSALink",
+    ##                                   "first fuel",
+    ##                                   "Building Tuneup or Utility Improvements",
+    ##                                   "HVAC","Lighting",
+    ##                                   "Advanced Metering","GP","E4",
+    ##                                   "Building Envelope",
+    ##                                   "Shave Energy","LEED_NC"))
+        factor(dfall$investment, levels=c("Advanced Metering",
+                                          "GSALink",
+                                          "E4","Shave Energy",
+                                          "first fuel","LEED_EB","GP",
+                                          "Building Tuneup or Utility Improvements",
+                                          "HVAC","Lighting",
+                                          "Building Envelope", "ESPC"))
     dfall %>% dplyr::group_by(investment, Fiscal_Year) %>% dplyr::summarize(median=median(eui)) %>% write.csv(file="/media/yujiex/work/GSA/merge/plot_FY_annual/quant_data/box03vs15.csv")
+    dfall <- dfall[dfall$investment != "LEED_NC",]
     p <- ggplot(dfall, aes(x=investment, y=eui, fill=Fiscal_Year))
     if (plottype == "vio") {
         p <- p + geom_violin()
@@ -201,7 +254,8 @@ actionCountEUIgb <- function(cat, plottype) {
     }
     p <- p + ylab("kBtu/sq.ft") +
         labs(title=sprintf("Electric + Gas EUI by Energy Investment %s Building in FY2003 vs FY2015", cat)) +
-        scale_fill_brewer(palette="Accent") +
+        ## scale_fill_brewer(palette="Set3") +
+        scale_fill_manual(values=c("#8DD3C7", "#FB8072")) +
         theme(legend.position="bottom") +
         scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
         ## stat_summary(fun.data=give.n, geom="text", fun.y=median, position=position_dodge(width = 0.75), size=3) +
@@ -367,6 +421,30 @@ ggplot(dfs, aes(x=Cat, y=Gross_Sq.Ft, fill=Fiscal_Year)) + geom_bar(position=pos
 ggsave(file="plot_FY_annual/quant/ave_area_bycat.png", width=8, height=4, units="in")
 ## ggsave(file="plot_FY_annual/quant/ave_area_bycat_line.png", width=8, height=4, units="in")
 
+df1 = dbGetQuery(con, 'SELECT DISTINCT Building_Number from covered_facility')
+iscovered <- function (x) {
+    if (x %in% df1$Building_Number) {
+        return("Covered")
+    } else {
+        return("Non-Covered")
+    }
+}
+df2 = read.csv("input_R/cap_op_cnt.csv")
+df2 <- df2[df2$status != "No Known Investment",]
+df2 <- df2[df2$status != "With Investment",]
+df2$isCovered = sapply(df2$Building_Number, iscovered)
+g = stackbar(df2, "isCovered", "status", "Building Count", "Investment covered vs non-covered facility", "bottom")
+print(g)
+## with no label version
+## ggplot(df2, aes(isCovered, fill=status)) +
+##     geom_bar() +
+##     ylab("Building Count") +
+##     xlab("Is Covered") +
+##     labs(title="Investment covered vs non-covered facility") +
+##     theme(legend.position="bottom") +
+##     scale_fill_brewer(palette="Set3")
+ggsave(file="plot_FY_annual/quant/invest_cover_vs_no.png", width=8, height=4, units="in")
+
 ## covered by category
 df1 = dbGetQuery(con, 'SELECT DISTINCT Building_Number from covered_facility')
 df2 = dbGetQuery(con, 'SELECT Building_Number, Cat from EUAS_category')
@@ -386,6 +464,30 @@ ggsave(file="plot_FY_annual/quant/cover_bycat.png", width=8, height=4, units="in
 df %>% dplyr::group_by(Cat, Type) %>%
     summarise(Building_Number = n()) %>% cast(Cat ~ Type) %>%
     write.csv("plot_FY_annual/quant_data/covered_cat_type.csv", row.names=FALSE)
+
+## Why is it treating it as continuous variable?
+## covered by category with count label
+df1 = dbGetQuery(con, 'SELECT DISTINCT Building_Number from covered_facility')
+df2 = dbGetQuery(con, 'SELECT Building_Number, Cat from EUAS_category')
+df3 = dbGetQuery(con, 'SELECT Building_Number, [Self-Selected_Primary_Function] as Type FROM EUAS_type')
+df = merge(df1, df2, on='Building_Number')
+df <- merge(df, df3, on='Building_Number')
+levels(df$Type)
+## df[df["Type"]=="Data Center"] <- "Other"
+df$Cat <- factor(df$Cat, levels=c("A", "I", "C", "B", "D", "E"))
+df <- df[complete.cases(df),]
+df$Type <- factor(df$Type)
+df[(df=="Data Center")|(df=="Non-Refrigerated Warehouse")|(df=="Other - Public Services")] <- "Other"
+levels(df$Type)
+df$Type <- factor(df$Type, levels(df$Type)[c(4, 1, 5)])
+levels(df$Type)
+df$Cat <- factor(df$Cat, levels=c("A", "I", "C", "B", "D", "E"))
+g = stackbar(df, "Cat", "Type", "Building Count", "Covered facility by category and type")
+print(g)
+ggsave(file="plot_FY_annual/quant/cover_bycat_.png", width=8, height=4, units="in")
+## df %>% dplyr::group_by(Cat, Type) %>%
+##     summarise(Building_Number = n()) %>% cast(Cat ~ Type) %>%
+##     write.csv("plot_FY_annual/quant_data/covered_cat_type.csv", row.names=FALSE)
 
 ## area distribution by year cat I
 ## cat = "I"
@@ -418,7 +520,8 @@ p1 <- ggplot(df1, aes(x=Year, y=EUI_Btu_per_SF)) +
     ggtitle(sprintf("%s in EUAS data set (%s), EUI", title, eng)) +
     ylim(40000, 95000) +
     scale_x_continuous(breaks=seq(2003, 2015, 1)) +
-    geom_text(label=df1$EUI_Btu_per_SF, vjust=0, size=3.5)
+    geom_text(label=df1$EUI_Btu_per_SF, vjust=0, size=3.5) +
+    ## geom_text(label=df1.n, vjust=0, size=3.5)
 p2 <- ggplot(df2, aes(x=Year, y=EUI_Btu_per_SF)) +
     geom_line(color="red") +
     geom_point(color="red") +
@@ -463,18 +566,69 @@ png(file=sprintf("plot_FY_annual/quant/%s_trend.png", input), width=14, height=7
 multiplot(p1, p3, p5, p2, p4, p6, cols=2)
 dev.off()
 
-# capital vs operation median trend
-df = read.csv("input_R/all_median_trend.csv")
+# capital vs operation median trend per degree day
+df = read.csv("input_R/all_median_trend_perdd.csv")
 df$status <-
     factor(df$status, levels=levels(df$status)[c(1, 4, 3, 6, 2, 5)])
-ggplot(df, aes(x=Fiscal_Year, y=eui_perdd, color=status)) +
+ggplot(df,
+       aes(x=Fiscal_Year, y=eui_perdd, color=status,
+           label=Building_Number)) +
     geom_line() +
     geom_point() +
+    geom_text(vjust=0, size=2.5, position=position_dodge(0.9)) +
     scale_x_continuous(breaks=seq(2003, 2015, 1)) +
     ylab("Electric per cdd + Gas per hdd [kBtu/sq.ft * F * year]") +
     ggtitle("Median EUI per degree day trend") +
     scale_colour_brewer(palette="Set3")
 ggsave(file="plot_FY_annual/quant/median_eui_trend_perdd.png", width=8, height=4, units="in")
+
+# capital vs operation median trend
+agg = "mean"
+df = read.csv(sprintf("input_R/all_%s_trend.csv", agg))
+df$status <-
+    factor(df$status, levels=levels(df$status)[c(1, 4, 3, 6, 2, 5)])
+ggplot(df,
+       aes(x=Fiscal_Year,
+           y=eui,
+           color=status,
+           label=Building_Number)) +
+    geom_line() +
+    geom_point() +
+    geom_text(vjust=0, size=2.5, position=position_dodge(0.9)) +
+    scale_x_continuous(breaks=seq(2003, 2015, 1)) +
+    ylab("Electric + Gas [kBtu/sq.ft * year]") +
+    ggtitle(sprintf("%s EUI trend", agg)) +
+    scale_colour_brewer(palette="Set3")
+ggsave(file=sprintf("plot_FY_annual/quant/%s_eui_trend.png", agg), width=8, height=4, units="in")
+
+## very highest level
+agg = "median"
+df = read.csv(sprintf("input_R/all_%s_trend.csv", agg))
+df <- df[df$Fiscal_Year %in% c(2003, 2015),]
+df$eui <- sapply(df$eui, function(x) round(x, 1))
+## df$status <-
+##     factor(df$status, levels=levels(df$status)[c(1, 4, 3, 6, 2, 5)])
+df$Fiscal_Year <- factor(df$Fiscal_Year)
+df1 <- df[df$status == "A + I",]
+p1 <- ggplot(df1,
+       aes(x=Fiscal_Year, y=eui, label=eui)) +
+    geom_bar(stat="identity", position="dodge") +
+    ylab("Median Electric + Gas [kBtu/sq.ft]") +
+    ggtitle("Median EUI Reduction 2003 to 2015")
+    geom_text(nudge_y=1)
+print(p1)
+ggsave(file=sprintf("plot_FY_annual/quant/AI_%s_eui_0315.png", agg), width=4, height=4, units="in")
+df2 <- df[df$status %in% c("Capital_and_Operational",
+                           "Capital_Only", "Operational_Only"),]
+p2 <- ggplot(df2, aes(x=Fiscal_Year, y=eui, fill=status, label=eui)) +
+    geom_bar(stat="identity", position="dodge") +
+    ylab("Median Electric + Gas [kBtu/sq.ft]") +
+    ggtitle("Median EUI Reduction 2003 to 2015") +
+    geom_text(aes(y = eui + 1), position=position_dodge(0.9)) +
+    theme(legend.position="bottom")
+    scale_fill_brewer(palette="Set3")
+print(p2)
+ggsave(file=sprintf("plot_FY_annual/quant/AI_%s_eui_co_0315.png", agg), width=4, height=4, units="in")
 
 ## check weather distribution across year
 df = dbGetQuery(con, 'SELECT Fiscal_Year, SUM(hdd65) AS hdd65, SUM(cdd65) AS cdd65 FROM EUAS_monthly_weather WHERE Fiscal_Year < 2016 GROUP BY Fiscal_Year')

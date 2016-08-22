@@ -1279,7 +1279,7 @@ def plot_box_sets(theme, summary_step):
     P.savefig(os.getcwd() + '/plot_FY_annual/quant/eui_box_set.png'.format(theme, summary_step), dpi = 150)
     plt.close()
 
-def plot_median_trend_perdd(theme, summary_step, anno=False):
+def plot_median_trend_perdd(theme, summary_step, anno=False, agg='median'):
     conn = uo.connect('all')
     ai_set = gbs.get_cat_set(['A', 'I'], conn)
     energy_set = gbs.get_energy_set('eui')
@@ -1311,16 +1311,17 @@ def plot_median_trend_perdd(theme, summary_step, anno=False):
             energy_set.intersection(covered_set)]
     for x, l in zip(sets, labels):
         df_cap = df_energy[df_energy['Building_Number'].isin(x)]
-        df = df_cap.groupby(['Date']).median()
+        df = df_cap.groupby(['Date']).agg({'Building_Number': 'count', theme: agg, 'Fiscal_Year': 'first'})
+        # df = df_cap.groupby(['Date']).median()
         df['status'] = l
         dfs.append(df)
         plt.plot(df.index, df[theme])
     pd.concat(dfs, ignore_index=True).to_csv(r_input + \
-                                             'all_median_trend.csv')
+                                             'all_{0}_trend_perdd.csv'.format(agg))
     plt.show()
     return
 
-def plot_median_trend(theme, summary_step, anno=False):
+def plot_median_trend(theme, summary_step, anno=False, agg='median'):
     conn = uo.connect('all')
     ai_set = gbs.get_cat_set(['A', 'I'], conn)
     energy_set = gbs.get_energy_set('eui')
@@ -1351,12 +1352,13 @@ def plot_median_trend(theme, summary_step, anno=False):
             energy_set.intersection(covered_set)]
     for x, l in zip(sets, labels):
         df_cap = df_energy[df_energy['Building_Number'].isin(x)]
-        df = df_cap.groupby(['Date']).median()
+        # df = df_cap.groupby(['Date']).median()
+        df = df_cap.groupby(['Date']).agg({'Building_Number': 'count', theme: agg, 'Fiscal_Year': 'first'})
         df['status'] = l
         dfs.append(df)
         plt.plot(df.index, df[theme])
     pd.concat(dfs, ignore_index=True).to_csv(r_input + \
-                                             'all_median_trend.csv')
+                                             'all_{0}_trend.csv'.format(agg))
     plt.show()
     return
 
@@ -1735,8 +1737,8 @@ def dynamic_trend():
     return
 
 def main():
-    plot_median_trend_perdd('eui_perdd', 'Y', anno=True)
-    # plot_median_trend('eui', 'Y', anno=True)
+    plot_median_trend_perdd('eui_perdd', 'Y', anno=True, agg='mean')
+    # plot_median_trend('eui', 'Y', anno=True, agg='mean')
     # create_index('eui_elec')
     # create_index('eui')
     # code_0712()

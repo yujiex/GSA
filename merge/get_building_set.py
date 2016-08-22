@@ -60,12 +60,12 @@ def get_energy_set(theme):
                                               r['eui_gas'] >= 3) else 0,
                               axis=1)
     elif theme == 'eui_gas':
-        df['good'] = df.apply(lambda r: 1 if r['eui_gas'] >= 3 else 0,
-                              axis=1)
+        df['good'] = df.apply(lambda r: 1 if r['eui_gas'] >= 3 and
+                              r['eui_elec'] < 12 else 0, axis=1)
     elif theme == 'eui_elec':
-        df['good'] = df.apply(lambda r: 1 if r['eui_elec'] >= 12 else
-                              0, axis=1)
-    elif theme == 'none':
+        df['good'] = df.apply(lambda r: 1 if r['eui_elec'] >= 12 and
+                              r['eui_gas'] < 3 else 0, axis=1)
+    elif theme is None:
         df['good'] = 1
     df = df[['Building_Number', 'good']]
     df2 = df.groupby('Building_Number').sum()

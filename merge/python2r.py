@@ -9,11 +9,23 @@ r_input = os.getcwd() + '/input_R/'
 
 def write_robust_energy_set():
     s = gbs.get_energy_set('eui')
+    e = gbs.get_energy_set('eui_elec')
+    g = gbs.get_energy_set('eui_gas')
     conn = uo.connect('all')
+    def get_status(x):
+        if x in s:
+            return "Electric EUI >= 12 and Gas EUI >= 3for at least 6 years from FY2007 to FY2015"
+        elif x in e:
+            return "Electric EUI >= 12 for at least 6 years from FY2007 to FY2015, there exist at least 4 years from FY2007 to FY2015 where Gas EUI < 3"
+        elif x in g:
+            return "Gas EUI >= 3 for at least 6 years from FY2007 to FY2015, there exist at least 4 years from FY2007 to FY2015 where Electric EUI < 12"
+        else:
+            return "There exist at least 4 years from FY2007 to FY2015 where Gas EUI < 3 and there exist at least 4 years from FY2007 to FY2015 where Electric EUI < 12"
     with conn:
         df = pd.read_sql('SELECT Building_Number, Cat FROM EUAS_category', conn)
-    df['status'] = df['Building_Number'].map(lambda x: "Electric EUI >= 12 and Gas EUI >= 3for at least 6 years from FY2007 to FY2015" if x in s else 'Not robust energy')
-    df.to_csv(r_input + 'robust_energy.csv', index=False)
+    # df['status'] = df['Building_Number'].map(lambda x: "Electric EUI >= 12 and Gas EUI >= 3for at least 6 years from FY2007 to FY2015" if x in s else 'Not robust energy')
+    df['status'] = df['Building_Number'].map(get_status)
+    df.to_csv(r_input + 'robust_energy_sep.csv', index=False)
     
 def write_co_sets():
     (cap_only, op_only, cap_and_op, cap_or_op) = gbs.get_invest_set()
@@ -33,8 +45,8 @@ def write_co_sets():
     print 'end'
     
 def main():
-    # write_robust_energy_set()
-    write_co_sets()
+    write_robust_energy_set()
+    # write_co_sets()
     return
     
 main()
