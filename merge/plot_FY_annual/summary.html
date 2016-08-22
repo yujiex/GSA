@@ -73,198 +73,58 @@
   <li id="count">Count
   <ol class="nested">
   <li>Total number of buildings in the EUAS data set by category</li>
-  
-  <p style="font-size: 15px"> Assumption: take the record of building category, <code>"Cat"</code>, in the most recent year as the category designation for a building</p>
+  <!-- <p style="font-size: 15px"> Assumption: take the record of building category, <code>"Cat"</code>, in the most recent year as the category designation for a building</p> -->
   <div style="width:60%">
-  <img src="quant/building_by_cat_.png" alt="total building count by category" style="width:100%">
+    <p style="font-size: 15px">GSA has 1000 - 1500 buildings in their
+    portfolio with multiple year energy monitoring at some level,
+    including around 700 buildings of category A or I required to meet
+    federal energy mandates
+    (<a href="https://www.gpo.gov/fdsys/pkg/USCODE-2010-title42/html/USCODE-2010-title42-chap91-subchapIII-partB-sec8253.htm
+    ">42 U.S.C. 8253 - Energy management requirements</a>)<br>
+<p style="font-size: 15px">According to the EUAS data set, GSA has
+reduced the total number of buildings in their portfolio by 30% since
+2003, and shifted a greater percent to government owned goal buildings (A
+category) each year.
+  <img id="building_by_cat_" src="quant/building_by_cat_.png" alt="total building count by category" style="width:100%">
   <!-- <img src="quant/building_by_cat.png" alt="total building count by category" style="width:100%"> -->
   <ul class="d">
-    <li style="font-size: 15px">A: Government Goal</li>
-    <li style="font-size: 15px">I: Energy Intensive</li>
-    <li style="font-size: 15px">C: Lease</li>
-    <li style="font-size: 15px">B: Government Exempt</li>
-    <li style="font-size: 15px">D: Lease Exempt</li>
-    <li style="font-size: 15px">E: Reimbursable non reportable</li>
+    <!-- <li style="font-size: 15px">A: Government Goal</li> -->
+    <!-- <li style="font-size: 15px">I: Energy Intensive</li> -->
+    <!-- <li style="font-size: 15px">C: Lease</li> -->
+    <!-- <li style="font-size: 15px">B: Government Exempt</li> -->
+    <!-- <li style="font-size: 15px">D: Lease Exempt</li> -->
+    <!-- <li style="font-size: 15px">E: Reimbursable non reportable</li> -->
+    <li style="font-size: 15px">A: government owned buildings subject to the energy reduction goals
+    <li style="font-size: 15px">B: government owned buildings exempt from the goals
+    <li style="font-size: 15px">I: energy intensive buildings (usually, but not always, owned) subject to the goals
+    <li style="font-size: 15px">C: Standard Active Lease
+    <li style="font-size: 15px">D: Exempt Leases
+    <li style="font-size: 15px">E: Reimbursable & Non-Reportable
   </ul>
-<br>
-<!-- <table style="width: 90%" align="center" class="table table-condensed"> -->
-<!-- <thead> -->
-<!-- <tr> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">Category</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2003</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2004</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2005</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2006</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2007</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2008</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2009</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2010</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2011</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2012</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2013</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2014</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2015</th> -->
-<!-- </tr> -->
-<!-- </thead> -->
-<!-- <tbody> -->
-<!-- <tr> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">A</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">511</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">513</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">514</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">514</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">515</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">514</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">520</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">523</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">529</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">531</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">545</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">544</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">540</td> -->
-<!-- </tr> -->
-<!-- <tr> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">I</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">125</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">124</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">123</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">122</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">122</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">122</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">123</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">127</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">128</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">128</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">128</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">127</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">119</td> -->
-<!-- </tr> -->
-<!-- <tr> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">C</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">89</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">90</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">90</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">89</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">90</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">92</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">89</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">91</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">88</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">85</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">82</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">76</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">72</td> -->
-<!-- </tr> -->
-<!-- <tr> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">B</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">200</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">181</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">157</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">145</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">137</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">128</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">121</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">110</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">102</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">100</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">87</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">83</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">79</td> -->
-<!-- </tr> -->
-<!-- <tr> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">D</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">491</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">470</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">444</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">425</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">418</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">390</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">362</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">344</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">312</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">284</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">244</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">224</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">191</td> -->
-<!-- </tr> -->
-<!-- <tr> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">E</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">23</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">29</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">28</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">27</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">28</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">24</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">23</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">23</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">34</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">35</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">37</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">42</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">38</td> -->
-<!-- </tr> -->
-<!-- </tbody> -->
-<!-- </table> -->
+  <br>
+<p style="font-size: 15px">This reduction in total building numbers
+does not corresponds to a reduction of total square footage for the
+entire GSA portfolio, since on average buildings become larger in
+size.
+  <ul class="d">
+    <li style="font-size: 15px">The total square footage for the whole GSA portfolio increased by 1%.</li>
+    <li style="font-size: 15px">The total square footage increased by 2% for A + C + I category.</li>
+    <li style="font-size: 15px">The total square footage increased by 10% for the A + I category with at least 6 years of Electric EUI >= 12 kBtu/sq.ft and Gas EUI >= 3 kBtu/sq.ft from FY2007 to FY2015</li>
+  </ul>
+  <img id="ave_area" src="quant/ave_area.png" alt="total building count by category" style="width:100%">
 </div>
-  <!-- <li>Building types in the EUAS data set by year</li> -->
-  <!-- <img src="quant/type_by_year.png" alt="total building count by category" style="width:60%"> -->
-  <!-- <li>Building types in the EUAS data set by category</li> -->
-  <!-- <img src="quant/type_by_cat.png" alt="total building count by category" style="width:60%"> -->
   <li><code>Covered</code> facility by category and type</li>
   <div style="width: 60%">
-  <img src="quant/cover_bycat_.png" alt="building eui by year" style="width:100%">
-  <!-- <img src="quant/cover_bycat.png" alt="building eui by year" style="width:100%"> -->
-<!--   <table class="table table-condensed" style="width: 50%" align="center"> -->
-<!--     <thead> -->
-<!-- <tr> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">Cat</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">Office</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">Courthouse</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">Other</th> -->
-<!-- </tr> -->
-<!--     </thead> -->
-<!--     <tbody> -->
-<!-- <tr> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">A</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">115</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">53</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">4</td> -->
-<!-- </tr> -->
-<!-- <tr> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">I</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">12</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">0</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">1</td> -->
-<!-- </tr> -->
-<!-- <tr> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">B</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">6</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">2</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">4</td> -->
-<!-- </tr> -->
-<!-- <tr> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">E</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">11</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">0</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">0</td> -->
-<!-- </tr> -->
-<!--     </tbody> -->
-<!-- </table> -->
+<p style="font-size: 15px">The majority of the covered facilities are
+office buildings, followed by courthouses. There are 173 covered
+facilities within category A and I, and is subject to the energy
+reduction goal.
+  <img id="cover_bycat_" src="quant/cover_bycat_.png" alt="building eui by year" style="width:100%">
   </div>
-  <!-- <li>Building EUI check, EUAS data set (<code>All</code> buildings)</li> -->
-  <!-- <p  style="font-size: 15px"> Assumption: 12 kBtu/sq.ft (lowest 10th percentile of electric EUI), and 3 kBtu/sq.ft (lowest 10th percentile of gas consumption) are used as the cutoff for energy robustness.</p> -->
-  <!-- <img src="quant/eui_byyear.png" alt="building eui by year" style="width:60%"> -->
-  <!-- <li>Building EUI check, EUAS data set (<code>A + I</code> buildings)</li> -->
-  <!-- <img src="quant/eui_byyear_ai.png" alt="building eui by year" style="width:60%"> -->
-  <!-- <li>Flow chart</li> -->
-  <!-- <img src="quant/flow_chart.png" alt="to be added" style="width:60%"> -->
-  <!-- <li>Robust Energy Set: buildings with at least 6 years of Electric EUI >= 12 and Gas EUI >= 3</li> -->
-  <!-- <img src="quant/robust_energy_cnt.png" alt="to be added" style="width:60%"> -->
   <li>Energy Programs/Actions: Capital and Operational</li>
   <ul class="d">
     <li>capital upgrade investment
     <ul class="c">
-      <!-- <li>BA54 expenditures</li> -->
       <li style="font-size: 15px">American Recovery and Reinvestment Act (ARRA)</li>
       <li style="font-size: 15px">Energy Service Performance Contracts (ESPC)</li>
       <li style="font-size: 15px">CTS ECM action record</li>
@@ -284,90 +144,33 @@
   </ul>
   <li>Capital vs operational investment building count <code>by year</code> in EUAS data set (All buildings)</li>
 <div style="width: 60%">
-  <img src="quant/co_cnt_byyear_with_.png" alt="to be added" style="width:100%">
-  <!-- <img src="quant/co_cnt_byyear_with.png" alt="to be added" style="width:100%"> -->
-<!--   <table class="table table-condensed"> -->
-<!--     <thead> -->
-<!-- <tr> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">status</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2003</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2004</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2005</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2006</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2007</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2008</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2009</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2010</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2011</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2012</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2013</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2014</th> -->
-<!-- <th  valign="bottom"  align="left"  style=" font-size:10pt;">2015</th> -->
-<!-- </tr> -->
-<!--     </thead> -->
-<!-- <tr> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">Capital and Operational</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">223</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">228</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">228</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">233</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">234</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">236</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">238</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">238</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">240</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">240</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">243</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">244</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">242</td> -->
-<!-- </tr> -->
-<!-- <tr> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">Capital Only</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">52</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">52</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">52</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">53</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">53</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">53</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">53</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">54</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">54</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">55</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">57</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">57</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">58</td> -->
-<!-- </tr> -->
-<!-- <tr> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">Operational Only</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">83</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">84</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">85</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">89</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">91</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">93</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">92</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">95</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">102</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">106</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">106</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">106</td> -->
-<!-- <td  valign="bottom"  align="left"  style=" font-size:10pt;">105</td> -->
-<!-- </tr> -->
-<!-- </table> -->
+  <p style="font-size: 15px">To meet federal energy mandates of 30%
+    EUI reductions from 2003 to 2015 for goal buildings (A + I), GSA
+    has invested in energy metering as well as operational, capital
+    and combined operational-capital upgrades to the building stock.
+  <img id="co_cnt_byyear_with_" src="quant/co_cnt_byyear_with_.png" alt="to be added" style="width:100%">
+  <!-- <img src="quant/co_cnt_bycat.png" alt="to be added" style="width:100%"> -->
+  <p style="font-size:15px">Almost all covered facilities have some
+  type of investment. There are also 250 to 300 non-covered
+  facilities with investment.
+  <img id="invest_cover_vs_no" src="quant/invest_cover_vs_no.png" alt="building eui by year" style="width:100%">
 </div>
-  <!-- <li>Capital vs operational investment building count <code>by category</code> in EUAS data set (All buildings)</li> -->
-  <!-- <img src="quant/co_cnt_bycat.png" alt="to be added" style="width:60%"> -->
   <li>Capital vs operational investment <code>robust vs non-robust energy</code> set</li>
-  <img src="quant/with_wout_energy.png" alt="to be added" style="width:60%">
-  <img src="quant/co_energy.png" alt="to be added" style="width:60%">
+<div style="width: 60%">
+  <p style="font-size: 15px">Energy monitoring of GSA facilities has improved over time. However, there remain a significant number of buildings without gas meters, and some with inaccurate electric meters.
+  <img id="co_energy_sep" src="quant/co_energy_sep.png" alt="to be added" style="width:100%">
+  </div>
   <li>Energy investment breakdown</li>
-  <p style="font-size: 15px"> The chart denotes the number of buildings that participate in
-  each of the following energy investments (program or action), could
-  be double counted if a building participates in two
-  programs/actions.</p>
-  <p style="font-size: 15px">TODO: break GP EB vs NC</p>
+  <!-- <p style="font-size: 15px"> The chart denotes the number of buildings that participate in -->
+  <!-- each of the following energy investments (program or action), could -->
+  <!-- be double counted if a building participates in two -->
+  <!-- programs/actions.</p> -->
+  <!-- <p style="font-size: 15px">TODO: break GP EB vs NC</p> -->
   <div style="width: 60%">
-  <img src="quant/invest_cnt_All_.png" alt="to be added" style="width:100%">
+  <p style="font-size: 15px">To meet federal energy mandates of 30%
+  EUI reductions from 2003 to 2015, a diversity of operational and
+  capital investments have been made.
+  <img id="invest_cnt_All_" src="quant/invest_cnt_All_.png" alt="to be added" style="width:100%">
   <!-- <img src="quant/invest_cnt_All.png" alt="to be added" style="width:100%"> -->
 <!--   <table align="center" class="table table-condensed" style="width: 60%"> -->
 <!--     <thead> -->
@@ -447,12 +250,15 @@
 </div>
   </ol>
   <li id="totalTrend">Total Energy Trend
+  <p style="font-size: 15px">Given the robustness of the energy data
+  sets, and the focus on owned buildings that should meet
+  the federal mandate, the following portfolio conclusions can be drawn
   <ol class="nested">
-  <li>EUI trend of <code>A + I</code> buildings in EUAS data set
-  with <code>robust energy</code> (with at least 6 years of Electric
-  EUI >= 12kBtu/sq.ft and Gas EUI >= 3 kBtu/sq.ft from FY2007 to
-  FY2015) data, only consider <code>Gas + Electric</code> for EUI (24%
-  reduction till 2015, 18% reduction till 2013)</li>
+  <li>EUI trend of <code>A + I</code> buildings in EUAS data set with
+  at least 6 years of Electric EUI >= 12kBtu/sq.ft and Gas EUI >= 3
+  kBtu/sq.ft from FY2007 to FY2015 data, only consider <code>Gas +
+  Electric</code> for EUI</li>
+ <!-- (24% reduction till 2015, 18% reduction till 2013) -->
   <!-- <p style="font-size: 15px"> Assumptions</p> -->
   <!-- <ul class="d"> -->
   <!--   <li style="font-size: 15px">The buildings plotted are the set of A + I buildingss that have at least 6 years of robust energy data (Electric EUI >= 12 kBtu/sq.ft and Gas EUI >= 3 kBtu/sq.ft) from FY2007 to FY2015. </li> -->
@@ -461,8 +267,12 @@
   <!--   <li style="font-size: 15px">The square footage uses the record of the corresponding year -->
   <!--   (not averaged across years)</li> -->
   <!-- </ul> -->
-  <img src="quant/ai_good_eng_trend.png" alt="to be added" style="width:100%">
-  <li>EUI trend of <code>A + C + I</code> buildings in EUAS data set using <code>raw Category</code> designation, EUI computed including <code>all energy types</code> (23% reduction till 2015, 20% reduction till 2013)</li>
+  <p style="font-size: 15px">While overall square footage of owned GSA
+facilities (A+I) increased by 10%, total energy use dropped by 16% for
+a final 2003 to 2015 EUI drop of 24%
+  <img id="ai_good_eng_trend" src="quant/ai_good_eng_trend.png" alt="to be added" style="width:100%">
+  <li>EUI trend of <code>A + C + I</code> buildings in EUAS data set using <code>raw Category</code> designation, EUI computed including <code>all energy types</code> </li>
+<!-- (23% reduction till 2015, 20% reduction till 2013) -->
   <!-- <p style="font-size: 15px"> Assumptions</p> -->
   <!-- <ul class="d"> -->
   <!--   <li style="font-size: 15px">The buildings plotted are A + C + I buildingss in EUAS data set. </li> -->
@@ -472,7 +282,10 @@
   <!--   <li style="font-size: 15px">The category uses the record of the corresponding year -->
   <!--   (not the most recent record)</li> -->
   <!-- </ul> -->
-  <img src="quant/ai_all_trend.png" alt="to be added" style="width:100%">
+  <p style="font-size: 15px">While overall square footage of owned and
+  leased GSA facilities (A+C+I) increased by 2%, total energy use
+  dropped by 21% for a final 2003 to 2015 EUI drop of 23%
+  <img id="ai_all_trend" src="quant/ai_all_trend.png" alt="to be added" style="width:100%">
   <!-- <li>PNNL study (24% reduction till 2013)</li> -->
   <!-- <p style="font-size: 15px"> source: <a href="http://www.pnnl.gov/main/publications/external/technical_reports/PNNL-23063.pdf">link</a></p> -->
   <!-- <img src="quant/pnnl.png" alt="to be added" style="width:60%"> -->
@@ -480,10 +293,19 @@
   <!-- <img src="quant/ave_area.png" alt="to be added" style="width:60%"> -->
   </ol>
   <li id="box_co">EUI distribution of FY2013 vs FY2014-2015
+    <div style="width: 80%">
+    <p style="font-size: 15px">While the GSA database of investments
+still needs to be refined for over 140 buildings with no known
+investments, the largest contributor of energy usage reduction has
+been buildings with operational investments, with 24% reduction in
+median EUI; followed by 21% reduction in median EUI for buildings with
+capital investments, as well as 19% reduction in median EUI for
+buildings with both operational and capital investments
+    </div>
   <ol class="nested">
     <li><code>A + I</code> Buildings Median EUI Reduction FY2013 vs FY2014-2015</li>
     <div style="width: 80%">
-  <img src="quant/invest_box_AI.png" alt="to be added" style="width:80%">
+  <img id="invest_box_AI" src="quant/invest_box_AI.png" alt="to be added" style="width:80%">
     <table class="table table-condensed">
     <tr>
     <td  style=""></td>
@@ -529,7 +351,7 @@
     </div>
     <li><code>A + I Covered Facility</code> Median EUI Reduction FY2013 vs FY2014-2015</li>
     <div style="width: 80%">
-  <img src="quant/invest_box_AIcovered.png" alt="to be added" style="width:80%">
+  <img id="invest_box_AIcovered" src="quant/invest_box_AIcovered.png" alt="to be added" style="width:80%">
     <table class="table table-condensed" align="center">
     <tr>
     <td  style=""></td>
@@ -562,18 +384,35 @@
   <p class="lead">Annual Gas + Electric Median EUI Trend (with at
   least 6 years of Electric EUI >= 12 kBtu/sq.ft and Gas EUI >= 3
   kBtu/sq.ft from FY2007 to FY2015)
-  <img src="quant/median_eui_trend.png" alt="to be added" style="width:90%">
+    <p style="font-size:15px">Even with non-weather normalized data,
+the annual EUI’s for GSA facilities (that have at least 6 years of EUI
+electric >= 12 kBtu/sq.ft and Gas EUI >= 3 kBtu/sq.ft from FY2007 to
+FY2015) shows the constant reductions in median energy use achieved
+over the 2003-2015 time frame, with the greatest improvements in the
+2011-2013 time frame when the majority of investments were made
+    <!-- <li style="font-size:15px">Buildings with only investments in -->
+    <!-- capital programs need matching operational programs to ensure -->
+    <!-- sustained savings</li> -->
+    </ul>
+  <img id="median_eui_trend" src="quant/median_eui_trend.png" alt="to be added" style="width:90%">
+  <p class="lead">Total HDD (65F base) and CDD (65F base) trend for A + I buildings
+  <img id="tot_degreeday_ai" src="quant/tot_degreeday_ai.png" alt="to be added" style="width:90%">
   <p class="lead">Annual Gas per hdd (base 65F) + Electric per cdd
   (base 65F) Median EUI Trend (with at least 6 years of Electric EUI
   >= 12 kBtu/sq.ft and Gas EUI >= 3 kBtu/sq.ft from FY2007 to FY2015)
-  <img src="quant/median_eui_trend_perdd.png" alt="to be added" style="width:90%">
+    <p style="font-size:15px">With simplified weather normalization
+approach: EUI per degree day = Gas EUI / hdd (base 65F) + Electric EUI
+/ cdd (base 65F), the annual EUI’s for GSA facilities (that have at
+least 6 years of Electric EUI >= 12 kBtu/sq.ft and Gas EUI >= 3
+kBtu/sq.ft from FY2007 to FY2015) shows the constant reductions in
+median energy use achieved over the 2003-2015 time frame, demonstrating even more substantial EUI drops starting from 2010.
+  <img id="median_eui_trend_perdd" src="quant/median_eui_trend_perdd.png" alt="to be added" style="width:90%">
   </ol>
   <h1 id="pagetop">Summary of level 2</h1>
   <ol class="nested">
   <li>Box plot Electric + Gas EUI FY2003 vs FY2015 (Ranked by percent reduction high to low)</li>
-  <img src="quant/invest_eui_1315_.png" alt="to be added" style="width:100%">
+  <img id="invest_eui_1315_" src="quant/invest_eui_1315_.png" alt="to be added" style="width:100%">
   <!-- <img src="quant/invest_eui_1315.png" alt="to be added" style="width:100%"> -->
-  <p align="center">[<b>top number</b>: building count, <b>bottom number</b>: median]<br>
   <!-- <div style="width: 50%"> -->
   <table align="center" class="table table-condensed" style="width: 50%">
 <th  valign="bottom"  align="left"  style=" font-size:10pt;">investment</th>
@@ -663,11 +502,33 @@
 <li>Weather Normalized Saving by ECM Actions</li>
 <ol class="nested">
   <li>Overview</li>
-    <img src="quant/saving_by_act_yuzhe/electricity_saving_summary_ordered_by_relative_value.png" alt="to be added" style="width:90%">
-    <img src="quant/saving_by_act_yuzhe/gas_saving_summary_ordered_by_relative_value.png" alt="to be added" style="width:90%">
+  <p style="font-size:15px">To identify which operational and capital
+  investments made the greatest contribution to energy savings, it is
+  critical to note that buildings with capital investments often were
+  the worst performing in the portfolio leading to the highest
+  absolute savings.  Ordered by percent of savings
+  </p>
+  <ul class="d">
+    <li>New air handlers (n = 2), controls (n = 1) and HVAC actions (n = 7) resulted in 20-25% electricity savings.</li>
+    <li>GSAlink programs that followed the introduction of advanced
+metering resulted in just under 20% energy savings across the 2
+      projects.</li>
+    <li>Combinations of capital and operational programs consistently
+    saved at least 10% of electricity as well as 10% of gas energy
+    use.
+      </ul>
+  <br>
+    <img id="electricity_saving_summary_ordered_by_relative_value" src="quant/saving_by_act_yuzhe/electricity_saving_summary_ordered_by_relative_value.png" alt="to be added" style="width:90%">
+    <img id="saving_by_act_yuzhe/gas_saving_summary_ordered_by_relative_value" src="quant/saving_by_act_yuzhe/gas_saving_summary_ordered_by_relative_value.png" alt="to be added" style="width:90%">
   <li>Top action groups
     <ol class="nested">
       <li>Capital</li>
+	<p style="font-size:15px">By reviewing individual projects, it
+is clear that investments in 10 envelope upgrades resulted in energy
+savings of 8-30% of electric energy demand with two upgrades
+increasing electric loads. In four projects with robust gas energy
+records, three of those projects revealed 20-48% reductions in gas
+energy demand after envelope upgrades! (with one ineffective).
     <table align="center">
       <caption>Envelope Only</caption>
       <tr>
@@ -675,11 +536,20 @@
 	<th style="font-size: 20px">Gas</th>
       </tr>
       <tr>
-    <th><img src="quant/saving_by_act_yuzhe/envelope_only_elec.png" alt="to be added" style="width:90%"></th>
-    <th><img src="quant/saving_by_act_yuzhe/envelope_only_gas.png" alt="to be added" style="width:90%"></th>
+    <th><img id="envelope_only_elec" src="quant/saving_by_act_yuzhe/envelope_only_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img id="envelope_only_gas" src="quant/saving_by_act_yuzhe/envelope_only_gas.png" alt="to be added" style="width:90%"></th>
       </tr>
     </table>
+    <br>
       <li>Operational</li>
+      <ul class="d">
+	<li style="font-size:15px">The advanced metering actions in 15
+buildings corresponds to an average of 15.5% electric savings (ranged
+from 3-35%, with two projects ineffective).</li>
+	<li style="font-size:15px">In 7 projects with robust gas data,
+	advanced metering corresponds to an average of 18.9% gas
+	savings (ranged from 5-42%, with one project ineffective).</li>
+      </ul>
     <table align="center">
       <caption>Advanced Metering Only</caption>
       <tr>
@@ -687,11 +557,22 @@
 	<th style="font-size: 20px">Gas</th>
       </tr>
       <tr>
-    <th><img src="quant/saving_by_act_yuzhe/advanced_metering_only_elec.png" alt="to be added" style="width:90%"></th>
-    <th><img src="quant/saving_by_act_yuzhe/advanced_metering_only_gas.png" alt="to be added" style="width:90%"></th>
+    <th><img id="advanced_metering_only_elec" src="quant/saving_by_act_yuzhe/advanced_metering_only_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img id="advanced_metering_only_gas" src="quant/saving_by_act_yuzhe/advanced_metering_only_gas.png" alt="to be added" style="width:90%"></th>
       </tr>
     </table>
+    <br>
     <li>Combined</li>
+      <ul class="d">
+	<li style="font-size:15px">Following investments in advanced
+metering and capital investments, the introduction of GSA link
+programs in 22 buildings resulted in additional electric savings of
+3-20% beyond what had been achieved with those initial investments
+	  (metering alone averages at 15.1% elec and 18.9% gas savings).</li>
+	<li style="font-size:15px">In 7 of 8 projects with robust gas
+data, additional gas savings ranged from 14-28% in GSALink buildings
+with previous capital investments.</li>
+      </ul>
     <table align="center">
       <caption>GSALink after Capital Investment</caption>
       <tr>
@@ -699,8 +580,8 @@
 	<th style="font-size: 20px">Gas</th>
       </tr>
       <tr>
-    <th><img src="quant/saving_by_act_yuzhe/gsalink_after_c_elec.png" alt="to be added" style="width:90%"></th>
-    <th><img src="quant/saving_by_act_yuzhe/gsalink_after_c_gas.png" alt="to be added" style="width:90%"></th>
+    <th><img id="gsalink_after_c_elec" src="quant/saving_by_act_yuzhe/gsalink_after_c_elec.png" alt="to be added" style="width:90%"></th>
+    <th><img id="gsalink_after_c_gas" src="quant/saving_by_act_yuzhe/gsalink_after_c_gas.png" alt="to be added" style="width:90%"></th>
       </tr>
     </table>
     </ol>
