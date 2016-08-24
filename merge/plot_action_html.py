@@ -660,7 +660,7 @@ def plot_action_fromdb():
     lines = ['Building_Number,Time,Action,Electric_Saving,Gas_Saving,Electric_Before,Electric_After,Gas_Before,Gas_After,Electric_CVRMSE,Gas_CVRMSE']
     # FIXME: PA0060ZZ has None in eui_gas
     del names[153]
-    # names = ['TX0224ZZ']
+    # names = ['CA0306ZZ']
     for i, name in enumerate(names):
         print i, name, '222222222222222222222222222222'
         group = gr.get_group(name)
@@ -707,10 +707,13 @@ def plot_action_fromdb():
             string = string.replace('\n', ';')
             string = string.replace('pre ', '')
             return string
+        def concat(string):
+            return string.replace('\n', ';')
         for i in range(len(results) - 1):
             d_save, d_cvrmse = plot_saving_fromdb(b, s, results[i], results[i + 1])
             lines.append(','.join(map(str, [b, breakpoints[i],
-                                            (merge_action(actions[i])),
+                                            # (merge_action(actions[i])),
+                                            concat(actionpoints[i]),
                                             d_save['elec_percent'],
                                             d_save['gas_percent'],
                                             d_save['elec_before'],
@@ -923,8 +926,8 @@ def main():
     # modify_index()
     # plot_action_alone()
     # plot_action()
-    # plot_action_fromdb()
-    table_for_robust_set()
+    plot_action_fromdb()
+    # table_for_robust_set()
     return
     
 main()
