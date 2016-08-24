@@ -10,15 +10,9 @@
     <meta name="author" content="Yujie Xu">
     <meta name="robots" content="index, follow">
 
-    <!-- icons -->
-    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-    <link rel="shortcut icon" href="favicon.ico">
-
-    <!-- Bootstrap Core CSS file -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
     <!-- Override CSS file - add your own CSS rules -->
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/styletin.css">
 
     <!-- Conditional comment containing JS files for IE6 - 8 -->
     <!--[if lt IE 9]>
@@ -28,50 +22,36 @@
     </head>
 <title>Home</title>
 <body>
-    <!-- Navigation -->
-	<nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
-	    <div class="container-fluid">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		    <div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			    <span class="sr-only">Toggle navigation</span>
-			    <span class="icon-bar"></span>
-			    <span class="icon-bar"></span>
-			    <span class="icon-bar"></span>
-			</button>
-				    <a class="navbar-brand" href="#pagetop">GSA Home</a>
-			    </div>
-			    <!-- /.navbar-header -->
-
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li><a href="#goals">GSA's Energy Goals</a></li>
-						<li><a href="#obj">Project Objective</a></li>
-						<li><a href="summary.html">Summary</a></li>
-						<li><a href="level1.html">level 1 analysis</a></li>
-						<li><a href="level2.html">level 2 analysis</a></li>
-						<li><a href="interval/level3.html">level 3 analysis</a></li>
-						<li><a href="glossary.html">Glossary</a></li>
-					</ul>
-				</div>
-				<!-- /.navbar-collapse -->
-			</div>
-			<!-- /.container-fluid -->
-		</nav>
-		<!-- /.navbar --> 
+    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+    	<div class="container-fluid">
+    	    <div class="navbar-header">
+    		<a href="index.html"><img src="assets/img/nav-logo.jpg" alt="total building count by category" style="height: 90px"></a>
+    	    </div>
+    		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    		<ul class="nav navbar-nav">
+    		    <li><a href="summary.html">Summary</a></li>
+    		    <li><a href="level1.html">Level 1 analysis</a></li>
+    		    <li><a href="level2.html">level 2 analysis</a></li>
+    		    <li><a href="interval/level3.html">level 3 analysis</a></li>
+    		    <li><a href="glossary.html">Glossary</a></li>
+    		</ul>
+    	    </div>
+    	</div>
+    </nav>
+    <div class="navbar-fix">
+	<ul class="nav-inline">
+	    <li><a href="#goals">Energy Goals</a></li>
+	    <li><a href="#obj">Project Objective</a></li>
+	</ul>
+    </div>
 
 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-12">
-	<!-- Page breadcrumb -->
-	<ol class="breadcrumb">
-	    <li class="active">home</li>
-	</ol>
+    	<div class="container-fluid">
+
+	  <div class="blank"></div>
   <h1 id="pagetop">GSA Energy Saving Analysis</h1>
-  <h2 id="goals">Introduction: Executive Orders and GSA's Energy
-  Goals</h2>
+  <span class="symbol-target" id="goals">&nbsp;</span>
+  <h2>Introduction: Executive Orders and GSA's Energy Goals</h2>
 
 <p>Launched in December 2007, "Energy Independence and Security Act
 (EISA)" stated energy reduction goals for federal agencies.[<a href="https://www.epa.gov/laws-regulations/summary-energy-independence-and-security-act">source</a>] <br>
@@ -147,7 +127,8 @@ specified in the following table<br>
     <td>30</td>
     </tr>
   </table>
-  <h2 id="obj">Stated goals and objectives</h2>
+  <span class="symbol-target" id="obj">&nbsp;</span>
+  <h2>Stated goals and objectives</h2>
 <p>This data driven study will support the documentation and
 categorization of the key areas of operational and capital investments
 that generated the US General Services Administration energy
@@ -158,7 +139,7 @@ operational energy upgrades in GSA's owned portfolio. The tasks include:
    <h3><li>Qualification and Quantification of historical energy
 savings in relation to energy upgrade investments in 3 Tiers of
 Analysis
-</h3>      
+</h3>
    <h4>Database development</h4>
 <p>Carnegie Mellon uses Sqlite to hold energy data, static
 information, weather data, as well as available energy upgrade ECM
@@ -171,7 +152,7 @@ three levels of analysis.
   <img src="quant/data_source.png" alt="total building count by category" style="width:60%">
 
   <h4>Three tiers analysis</h4>
-<p>The three tiers of analysis correspond to the depth of data available from the GSA. 
+<p>The three tiers of analysis correspond to the depth of data available from the GSA.
 <ul>
   <li><h5><a href="level1.html">Level 1 analysis</h5></a>
 <p>Level 1 analysis addresses the full portfolio of GSA buildings for
@@ -209,10 +190,10 @@ these tiered data sources to generate data driven recommendations for
 future operational and capital investments to ensure ongoing success
 in meeting commitments under the Energy Independence and Security Act.
    </ol>
-		    </div>
-	    </div>
-	    <!-- /.row -->
-    </div>
+  
+</div>
+</div>
+</div>
     <!-- /.container-fluid -->
     <!-- JQuery scripts -->
 <script src="assets/js/jquery-1.11.2.min.js"></script>
