@@ -1,0 +1,173 @@
+\documentclass[12pt]{article}
+% \linespread{1.3}
+\usepackage{hyperref}
+\usepackage{enumitem}
+%\usepackage{enumerate}
+\usepackage{changepage,lipsum,titlesec, longtable}
+\usepackage{cite}
+\usepackage{comment, xcolor}
+\usepackage[pdftex]{graphicx}
+  \graphicspath{{images/}, {images/stat/}}
+  \DeclareGraphicsExtensions{.pdf,.jpeg,.png, .jpg}
+\usepackage[cmex10]{amsmath}
+\usepackage{tikz}
+\usepackage{array} 
+\usepackage{subfigure} 
+\usepackage{geometry}
+ \geometry{
+ a3paper,landscape
+ }
+\newcommand{\grey}[1]{\textcolor{black!30}{#1}}
+\newcommand{\red}[1]{\textcolor{red!50}{#1}}
+\newcommand{\question}[1]{\textcolor{magenta}{\textbf{Question: } {#1}}}
+\newcommand{\fref}[1]{Figure~\ref{#1}}
+\newcommand{\tref}[1]{Table~\ref{#1}}
+\newcommand{\eref}[1]{Equation~\ref{#1}}
+\newcommand{\cref}[1]{Chapter~\ref{#1}}
+\newcommand{\sref}[1]{Section~\ref{#1}}
+\newcommand{\aref}[1]{Appendix~\ref{#1}}
+
+\renewcommand{\labelenumii}{\theenumii}
+\renewcommand{\theenumii}{\theenumi.\\arabic{enumii}.}
+
+\oddsidemargin0cm
+\topmargin-2cm %I recommend adding these three lines to increase the
+\textwidth16.5cm %amount of usable space on the page (and save trees)
+\textheight23.5cm
+
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+            {-2.5ex\@plus -1ex \@minus -.25ex}%
+            {1.25ex \@plus .25ex}%
+            {\normalfont\normalsize\bfseries}}
+\makeatother
+\setcounter{secnumdepth}{4} % how many sectioning levels to assign numbers to
+\setcounter{tocdepth}{4}    % how many sectioning levels to show in ToC
+
+% draw diagram
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{anno} = [font=\small]
+\tikzstyle{data} = [font=\footnotesize, rectangle, rounded corners, minimum width=3cm, minimum height=1cm,align=left, draw=black, fill=black!30]
+\tikzstyle{database} = [font=\footnotesize, rectangle, rounded corners, minimum width=3cm, minimum height=1cm,align=left, draw=black, fill=black!20]
+\tikzstyle{query} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{spliter} = [diamond, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\tikzstyle{bi-arrow} = [thick,->,>=stealth]
+\begin{document}
+\begin{tikzpicture}
+  \node (monthly) [database]{\textbf{EUAS\_monthly\_weather}:\\
+\textbf{\textbf{Building\_Number}}\\
+Fiscal\_Year\\
+Fiscal\_Month\\
+year\\
+month\\
+Electric\_(kBtu)\\
+Gas\_(kBtu)\\
+eui\_elec\\
+eui\_gas\\
+eui\\
+eui\_total\\
+\textbf{ICAO}\\
+Distance\_Mile\\
+ave\\
+hdd65\\
+cdd65\\
+};
+  \node (area) [database, below of=monthly, yshift=-4.5cm]{\textbf{EUAS\_area}:\\
+\textbf{Building\_Number}\\
+Fiscal\_Year\\
+Gross\_Sq.Ft\\
+};
+  \node (category) [database, below of=area, yshift=-1.8cm]{\textbf{EUAS\_category}:\\
+\textbf{Building\_Number}\\
+Record\_Year\\
+Cat\\
+};
+  \node (btype) [database, below of=category, yshift=-1.8cm]{\textbf{EUAS\_type}:\\
+\textbf{Building\_Number}\\
+Self-Selected\_\\Primary\_Function\\
+};
+  \node (cover) [database, below of=btype, yshift=-1.8cm]{\textbf{covered\_facility}:\\
+\textbf{Building\_Number}\\
+source\\
+};
+  \node (address) [database, right of=monthly, xshift=4cm, yshift=1.9cm]{\textbf{EUAS\_address}:\\
+\textbf{Building\_Number}\\
+State\\
+Street\_Address\\
+City\\
+Zip\_Code\\
+source\\
+\textbf{geocoding\_input}\\
+};
+  \node (latlng) [database, below of=address, yshift=-2.5cm]{\textbf{EUAS\_latlng}:\\
+\textbf{Building\_Number}\\
+\textbf{geocoding\_input}\\
+latlng\\
+};
+  \node (ecm) [database, right of=address, xshift=6cm]{\textbf{EUAS\_ecm}:\\
+\textbf{Building\_Number}\\
+ECM\_combined\_header\\
+Substantial\_Completion\_Date\\
+detail\_level\_ECM\\
+high\_level\_ECM\\
+source\_detail\\
+source\_highlevel\\
+};
+  \node (pro) [database, below of=ecm, yshift=-3cm]{\textbf{EUAS\_ecm\_program}:\\
+\textbf{Building\_Number}\\
+ECM\_program\\
+start\_date\\
+end\_date\\
+source\\
+};
+  \node (ielec) [database, right of=ecm, xshift=6cm, yshift=0.8cm]{\textbf{electric}:\\
+Timestamp\\
+\textbf{Building\_Number}\\
+Electric\_(KWH)\\
+};
+  \node (igas) [database, below of=ielec, yshift=-1.8cm]{\textbf{gas}:\\
+Timestamp\\
+\textbf{Building\_Number}\\
+Gas\_(CubicFeet)\\
+};
+  \node (ielecStation) [database, below of=igas, yshift=-1.5cm]{\textbf{electric\_id\_station}:\\
+\textbf{Building\_Number}\\
+\textbf{\textbf{ICAO}}\\
+};
+  \node (igasStation) [database, below of=ielecStation, yshift=-1.5cm]{\textbf{gas\_id\_station}:\\
+\textbf{Building\_Number}\\
+\textbf{\textbf{ICAO}}\\
+};
+  \node (level1) [anno, above of=monthly, yshift=3.2cm]{\textbf{Level 1}};
+  \node (level2) [anno, above of=ecm, yshift=1.8cm]{\textbf{Level 2}};
+  \node (level3) [anno, above of=ielec, yshift=1.5cm]{\textbf{Level 3}};
+\draw[rounded corners=15pt, dashed] (-3,-15) rectangle (8, 4);
+\draw[rounded corners=15pt, dashed] (-3.5,-15.5) rectangle (16, 4.5);
+\draw[rounded corners=15pt, dashed] (-4,-16.0) rectangle (24, 5);
+%   \node (iarea) [database, below of=iarea]{\textbf{area}:\\
+% 0$\lvert$\textbf{Building\_Number}$\lvert$TEXT\\
+% 1$\lvert$Gross\_Sq.Ft$\lvert$REAL\\
+% };
+
+  % \draw[arrow](PM_table) -- (upload);
+  % \draw[arrow](upload) -- (SEED db);
+  % \draw[arrow](PM_table) -- (upload2);
+  % \draw[arrow](upload2) -- (remote folder);
+  % \draw[arrow](remote folder) -- (download);
+  % \draw[arrow](download) -- (read);
+  % \draw[arrow](read) -- (dataframe);
+  % \draw[arrow](dataframe) -| (query);
+  % \draw[arrow](query) |- (dataframe);
+  % \draw[arrow](dataframe) -- (json);
+  % \draw[arrow](json) -- (ext);
+  % %\draw[arrow, xshift = -1cm](query) -- (SEED db);
+  % %\draw[arrow, xshift = 1cm](SEED db) -- (query);
+  % \draw[-latex] (query) to[bend left=10] node [xshift=-1cm]{Street Address} (SEED
+  % db); 
+  % \draw[-latex] (SEED db) to[bend left=10] node [xshift=2cm,align=center]{buildingsnapshot\_id\\canonical\_building}
+  % (query);
+\end{tikzpicture}
+\end{document}
