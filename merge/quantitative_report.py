@@ -1735,9 +1735,66 @@ def dynamic_trend():
     # create_index('eui')
     create_index('elec')
     return
+    
+def filter_summary(theme):
+    df = pd.read_csv(os.getcwd() + '/plot_FY_weather/html/table/action_saving.csv')
+    # df.info()
+    def get_highlevel(string):
+        tokens = string.split(';')
+        high_tokens = [x[:x.find(' -')] for x in tokens]
+        result = list(set(high_tokens))
+        return ';'.join(sorted(result))
+    df['high_level_ecm'] = df['Action'].map(get_highlevel)
+    df.drop_duplicates(cols=['Building_Number', 'Time',
+                             'high_level_ecm'], inplace=True)
+    if theme == 'elec':
+        df = df[['Building_Number', 'Time', 'high_level_ecm',
+                 'Electric_Saving', 'Electric_Before',
+                 'Electric_After', 'Electric_CVRMSE']]
+        df = df[df['Electric_Saving'] != 'None']
+        df = df[df['Electric_CVRMSE'].map(float) < 0.35]
+        df['Electric_abs'] = df['Electric_Before'].map(float) - \
+            df['Electric_After'].map(float)
+    elif theme == 'gas':
+        df = df[['Building_Number', 'Time', 'high_level_ecm',
+                 'Gas_Before', 'Gas_After', 'Gas_Saving',
+                 'Gas_CVRMSE']]
+        df = df[df['Gas_Saving'] != 'None']
+        df = df[df['Gas_CVRMSE'].map(float) < 0.35]
+        df['Gas_abs'] = df['Gas_Before'].map(float) - \
+            df['Gas_After'].map(float)
+    set_eng = gbs.get_energy_set(theme)
+    df = df[df['Building_Number'].isin(set_eng)]
+    df['number'] = df['high_level_ecm'].map(lambda x:
+                                            len(x.split(';')))
+    df['high_level_ecm'] = df['high_level_ecm'].map(lambda x: x.replace("Building Tuneup or Utility Improvements", "Commissioning"))
+    return df
+
+def lean_summary(theme):
+    df = filter_summary(theme)
+    print len(df)
+    df = df.groupby('Building_Number').filter(lambda x: len(x) < 2)
+    df.to_csv(r_input + '{0}_action_save.csv'.format(theme),
+              index=False)
+    print 'end'
+    print len(df)
+    # lst = df['high_level_ecm'].unique()
+    # for x in lst:
+    #     print x
+    # df['number'] = df['high_level_ecm'].map(lambda x:
+    #                                         len(x.split(';')))
+    # print 'number of action, number of building'
+    # print df['number'].value_counts()
+    # print 'action, number of building'
+    # # print df.groupby('high_level_ecm').agg()
+    # print 'For buildings with solo action:'
+    # print df[df['number'] == 1]['high_level_ecm'].value_counts()
+    return
 
 def main():
-    plot_median_trend_perdd('eui_perdd', 'Y', anno=True, agg='mean')
+    lean_summary('gas')
+    lean_summary('elec')
+    # plot_median_trend_perdd('eui_perdd', 'Y', anno=True, agg='mean')
     # plot_median_trend('eui', 'Y', anno=True, agg='mean')
     # create_index('eui_elec')
     # create_index('eui')
@@ -1756,7 +1813,7 @@ def main():
     # plot_trend_fan('eui', 'Y')
     # plot_trend_ave('eui', 'Y')
     # temp()
-    flow_chart()
+    # flow_chart()
     # plot_trend_all_possible()
     # energy_set = gbs.get_energy_set('eui')
     # ai_set = gbs.get_cat_set(['A', 'I'])

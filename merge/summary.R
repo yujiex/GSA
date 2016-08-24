@@ -11,6 +11,7 @@ qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
 col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
 con = dbConnect(drv=RSQLite::SQLite(), dbname="csv_FY/db/all.db")
 
+## helpers start ##
 stackbar <- function(df, xcol, fillcol, ylabel, tit, legendloc) {
     dfcount = plyr::count(df, c(xcol, fillcol))
     dfcount <- transform(dfcount, mid_y = ave(dfcount$freq, dfcount[,xcol], FUN = function(val) cumsum(val) - (0.5 * val)))
@@ -24,6 +25,47 @@ stackbar <- function(df, xcol, fillcol, ylabel, tit, legendloc) {
         g <- g + theme(legend.position=legendloc)
     }
     return(g)
+}
+## helpers end ##
+
+theme = "elec"
+title = "Electric"
+## theme = "gas"
+## title = "Gas"
+measure = "abs"
+df = read.csv(sprintf("input_R/%s_action_save.csv", theme))
+oldname <- sprintf("%s_%s", title, measure)
+for (i in 1:5) {
+    dftemp <- df[df["number"] == i,]
+    names(dftemp)[names(dftemp)==oldname] <- "Saving"
+    dfs <- summarySE(dftemp, measurevar="Saving", groupvars=c("high_level_ecm"))
+    dfs <- dfs[dfs$N > 5,]
+    dfs <- dfs[order(dfs$Saving, decreasing=TRUE),]
+    dfs$high_level_ecm <- factor(dfs$high_level_ecm, levels=dfs$high_level_ecm)
+    savewidth = ((nrow(dfs) %/% 3) + 1) * 4
+    textwidth = ((nrow(dfs) %/% 3) + 1) * 30
+    p <- ggplot(dfs, aes(x=high_level_ecm, y=Saving)) +
+        geom_bar(stat="identity") +
+        geom_errorbar(aes(ymin=Saving-ci, ymax=Saving+ci), width=.2, position=position_dodge(.9)) +
+        geom_text(aes(y=-1, label=sprintf("n = %s", N))) +
+        scale_x_discrete(labels = function(x) gsub(";", "\n", x))
+    if (measure == "percent") {
+        p <- p +
+            geom_text(aes(y=Saving, label=sprintf("%.0f %s", Saving, "%")),
+                    nudge_x=-0.2, vjust=0, nudge_y=0.5) +
+            ylab(sprintf("Average %s EUI Percent Saving", title)) +
+            ggtitle(str_wrap(sprintf("Average %s EUI Percent Saving for Buildings with %s Action", title, i), width=textwidth))
+    } else {
+        p <- p +
+            geom_text(aes(y=Saving, label=sprintf("%.0f", Saving)),
+                      nudge_x=-0.2, vjust=0, nudge_y=0.5) +
+            ylab(sprintf("Average EUI Absolute Saving", title)) +
+            ggtitle(str_wrap(sprintf("Average %s EUI Absolute Saving for Buildings with %s Action", title, i), width=textwidth))
+    }
+    print(p)
+    ggsave(file=sprintf("plot_FY_annual/quant/%s_%s_%s_action.png",
+                        measure, theme, i),
+           width=savewidth, height=4, units="in")
 }
 
 df1 = dbGetQuery(con, 'SELECT DISTINCT Building_Number, Fiscal_Year FROM EUAS_monthly')
@@ -191,11 +233,11 @@ getType <- function(s) {
 }
 
 give.n <- function(x){
-return(c(y = median(x)*1.10, label = length(x))) 
+    return(data.frame(y = 0, label = paste0("n=",length(x)))) 
 }
 # function for mean labels
 mean.n <- function(x){
-return(c(y = median(x)*0.97, label = round(mean(x),2))) 
+    return(c(y = median(x)*0.97, label = round(mean(x),2))) 
 # experiment with the multiplier to find the perfect position
 }
 # function for median labels uncomment here to show both median and n
@@ -226,7 +268,6 @@ actionCountEUIgb <- function(cat, plottype) {
     dfall$type = sapply(dfall$investment, getType)
     dfall$type <-
         factor(dfall$type, levels=c("Capital", "Operational"))
-    dfall <- dfall[complete.cases(dfall),]
     dfall$Fiscal_Year <- factor(dfall$Fiscal_Year)
     dfall$investment <-
     ## factor(dfall$investment, levels=c("LEED_EB","ESPC","GSALink",
@@ -245,6 +286,7 @@ actionCountEUIgb <- function(cat, plottype) {
                                           "Building Envelope", "ESPC"))
     dfall %>% dplyr::group_by(investment, Fiscal_Year) %>% dplyr::summarize(median=median(eui)) %>% write.csv(file="/media/yujiex/work/GSA/merge/plot_FY_annual/quant_data/box03vs15.csv")
     dfall <- dfall[dfall$investment != "LEED_NC",]
+    dfall <- dfall[complete.cases(dfall),]
     p <- ggplot(dfall, aes(x=investment, y=eui, fill=Fiscal_Year))
     if (plottype == "vio") {
         p <- p + geom_violin()
@@ -258,7 +300,7 @@ actionCountEUIgb <- function(cat, plottype) {
         scale_fill_manual(values=c("#8DD3C7", "#FB8072")) +
         theme(legend.position="bottom") +
         scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
-        ## stat_summary(fun.data=give.n, geom="text", fun.y=median, position=position_dodge(width = 0.75), size=3) +
+        stat_summary(fun.data=give.n, geom="text", fun.y=median, position=position_dodge(width = 0.75), size=3) +
         stat_summary(fun.data=median.n, geom="text", fun.y=median, position=position_dodge(width = 0.75), size=3)
     ggsave(file=sprintf("plot_FY_annual/quant/invest_eui_1315_.png", cat, plottype), width=12, height=6, units="in")
     print(p)
